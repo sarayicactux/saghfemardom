@@ -1,0 +1,459 @@
+<div class="row ">
+    <div class="col-12 col-md-12 p-1 formPlaceHolder " >
+        <input type="text" class="form-control border bg-light siteInputs"  name="title" id="title" placeholder="  " required>
+        <label for="title">عنوان آگهی</label>
+    </div>
+    <div class="col-md-6 p-1  mt-2 ">
+        <select id="pro" name="pro" class="select2 form-control siteInputs" onchange="citiesList(this.value);">
+
+            <% pros = res.daily.proCity
+            for (i=0;i<pros.length;i++){%>
+                <option value="<%- i %>"<% if( i == 6 ){  %> selected<% } %>><%- pros[i].name %></option>
+            <% }  %>
+        </select>
+    </div>
+
+    <div  class="col-md-6 p-1  mt-2 "><span id="citiesListPlace">
+        <select id="city" name="city" class="select2 form-control siteInputs">
+
+            <% cities = pros[6].cities;
+            for (i=0;i<cities.length;i++){%>
+                <option value="<%-  i %>"<% if( i == 14 ){  %> selected<% } %>><%- cities[i].name %></option>
+            <% }  %>
+        </select></span>
+    </div>
+    <div class="col-md-6 p-1  mt-2 ">
+        <select id="brand" name="brand" class="select2 form-control siteInputs" onchange="modelsList(this.value);">
+            <option value="0">برند را انتخاب کنید</option>
+            <% brands = res.daily.brands
+            for (i=0;i<brands.length;i++){%>
+                <option value="<%- brands[i].id %>"><%- brands[i].title %></option>
+            <% }  %>
+        </select>
+    </div>
+
+    <div  class="col-md-6 p-1  mt-2 mb-3 "><span id="carsListPlace">
+        <select id="model" name="model" class="select2 form-control siteInputs">
+            <option value="0">برند را انتخاب کنید</option>
+        </select>
+    </span>
+    </div>
+    <div class="col-12 col-md-12 p-1 formPlaceHolder " >
+        <input type="text" class="form-control border bg-light siteInputs num" maxlength="11"  name="price" id="price" placeholder="  " required>
+        <label for="title">قیمت خودرو به تومان</label>
+    </div>
+    <div class="col-12 col-md-12 p-1 formPlaceHolder " >
+        <input type="text" class="form-control border bg-light siteInputs num"  name="pre_payment" id="pre_payment" placeholder="  " required>
+        <label for="title">پیش پرداخت به تومان</label>
+    </div>
+    <div class="col-12 col-md-12 p-1 formPlaceHolder " >
+        <input type="text" class="form-control border bg-light siteInputs num"  name="loan_amount" id="loan_amount" placeholder="  " required>
+        <label for="title">مبلغ وام به تومان</label>
+    </div>
+    <div class="col-12 col-md-12 p-1 formPlaceHolder " >
+        <input type="text" class="form-control border bg-light siteInputs num"  name="payment_count" id="payment_count" placeholder="  " required>
+        <label for="title">تعداد اقساط</label>
+    </div>
+    <div class="col-12 col-md-12 p-1 formPlaceHolder " >
+        <input type="text" class="form-control border bg-light siteInputs num"  name="payment_pr" id="payment_pr" placeholder="  " required>
+        <label for="title">مبلغ قسط به تومان</label>
+    </div>
+    <div class="col-12 col-md-12 p-1 formPlaceHolder " >
+        <input type="text" class="form-control border bg-light siteInputs"  name="payment_amount" id="payment_amount" placeholder="  " required>
+        <label for="title">سررسید اقساط</label>
+    </div>
+    <div class="col-12 col-md-12 p-1 formPlaceHolder " >
+        <input type="text" class="form-control border bg-light siteInputs"  name="delivery_time" id="delivery_time" placeholder="  " required>
+        <label for="title">موعد تحویل</label>
+    </div>
+    
+    <div class="col-12 col-md-12 p-1 formPlaceHolder " >
+        <textarea class="form-control border bg-light  siteTextaria" id="description" name="description"  placeholder="  " required></textarea>
+        <label for="description">لطفا توضیحات آگاهی را وارد کنید</label>
+    </div>
+    
+
+
+
+</div>
+<div class="row p-1 mt-4">
+    <div class="col-12 rounded border bg-light">
+        <div class="col-12 p-2">
+            <div align="center">
+                برای آگهی خود،تعدادی تصویر اضافه کنید
+
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="row   mt-1 mb-2 ml-1 mr-1" id="upImgs">
+            </div>
+        </div>
+        <div class="col-12">
+
+            <div class="upload-btn-wrapper col-12">
+                <button  class="uploadBtn" id="uploadBtn">ارسال تصویر</button>
+                <input onchange="uploadImage()" accept=".jpeg,.jpg,.png" type="file" name="advImage" id="advImage" />
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row p-1 mt-4">
+    <div class="col-12 rounded border bg-light">
+        <div class="col-12 p-2">
+            <div align="center">
+                 میتوانید یک ویدئو همراه آگهی ارسال کنید<br>
+<h2>حداکثر حجم ویدئو 10 مگابایت </h2>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="row   mt-1 mb-2 ml-1 mr-1 upVideo" id="upVideo">
+                <input id="videoPath" data-path=""  type="hidden" value="">
+            </div>
+        </div>
+        <div class="col-12">
+
+            <div class="upload-btn-wrapper col-12"  id="sendVideo">
+                <button  class="uploadBtn " id="uploadVideoBtn">ارسال ویدئو</button>
+                <input onchange="uploadVideo()" accept=".mp4" type="file" name="video" id="video" />
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="col-12  p-1" >
+    <button class="btn mainBtn  btn-sm btn-block" id="sendAdv" > ارسال آگهی </button>
+</div>
+<link rel="stylesheet" href="<%- host%>/local/css/select2.css">
+<script src="<%- host%>/admin/vendors/select2/dist/js/select2.full.min.js"></script>
+
+<script>
+    $(function () {
+        //Initialize Select2 Elements
+        $('.select2').select2();
+
+
+    })
+    imageCnt = 0;
+    function uploadImage() {
+        var file  = $('#advImage').prop('files')[0];
+        if (file){
+            $('#uploadBtn').html('در حال ارسال <span class="spinner-border spinner-border-sm mb-1"></span>');
+            var form_data = new FormData();
+            form_data.append('file', file);
+            form_data.append('advType', 'carAdv');
+
+
+            $.ajax({
+                url: '/siteUploadImage',
+                data: form_data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                type: 'POST',
+                success :function(data){
+                    if (data.length < 10){
+                        $('#uploadBtn').html('مشکل در ارسال، مجدد سعی کنید');
+                        setTimeout(function () {
+                            $('#uploadBtn').html('ارسال تصویر');
+                        }, 1500);
+                    }
+                    else {
+                        $('#uploadBtn').html('ارسال تصویر دیگر');
+                        imageCnt ++ ;
+
+                        htm = '<div class="col-md-4 col-6 p-2" id="image'+imageCnt+'">\n' +
+                            '                                   <div align="center">  <a href="javascript:void(0)" onclick="deleteUploadedFile('+"'"+data+"'"+','+"'"+imageCnt+"'"+');" class="btn btn-danger deleteIcon" title="حذف"  >\n' +
+                            '                                        <i  class="fa fa-recycle"></i>\n' +
+                            '                                    </a>\n' +
+                            '                                        <img id="path'+imageCnt+'" data-path="'+data+'" class=" rounded-lg"  width="150px" src="/'+data+'" alt="تصویر آگهی">\n' +
+                            '                                </div></div>';
+                        $("#upImgs").append(htm);
+
+                    }
+
+
+                    //$('#bg').fadeOut(100);
+
+                }});
+        }
+
+    }
+    function deleteUploadedFile(userfile,inputId) {
+        $('#image'+inputId).remove();
+        imageCnt--;
+        $.post('/sitedeleteUploaded', {
+                fileName        : userfile,
+            },
+            function(data){
+
+
+            });
+
+    }
+    function uploadVideo() {
+        var file  = $('#video').prop('files')[0];
+        if (file){
+            $('#uploadVideoBtn').html('در حال ارسال <span class="spinner-border spinner-border-sm mb-1"></span>');
+            var form_data = new FormData();
+            form_data.append('file', file);
+            form_data.append('advType', 'carAdv');
+
+
+            $.ajax({
+                url: '/siteUploadVideo',
+                data: form_data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                type: 'POST',
+                success :function(data){
+                    if (data.length < 10){
+                        $('#uploadVideoBtn').html('مشکل در ارسال، مجدد سعی کنید');
+                        setTimeout(function () {
+                            $('#uploadVideoBtn').html('ارسال ویدئو');
+                        }, 1500);
+                    }
+                    else {
+                        $('#sendVideo').fadeOut(300);
+                        $('#uploadVideoBtn').html('ارسال ویدئو');
+                        htm =  '<a href="javascript:void(0)" onclick="deleteUploadedVideo('+"'"+data+"'"+','+"'"+imageCnt+"'"+');" class="btn btn-danger deleteVideoIcon" title="حذف"  >\n' +
+                            '<i  class="fa fa-recycle"></i>' +
+                            ' </a>' +
+                            '<video id="videoPath" class="videoU" data-path="'+data+'" controls preload="auto">\n' +
+                            '        <source src="'+data+'" type="video/mp4">\n' +
+                            '    </video>'
+                        $("#upVideo").html(htm);
+
+                    }
+
+
+                    //$('#bg').fadeOut(100);
+
+                }});
+        }
+
+    }
+    function deleteUploadedVideo(userfile) {
+        $("#upVideo").html('');
+        $("#videoPath").data('path','');
+        $('#sendVideo').fadeIn(300);
+        $.post('/sitedeleteUploaded', {
+                fileName        : userfile,
+            },
+            function(data){
+
+
+            });
+
+    }
+    function citiesList(pro) {
+        $('#citiesListPlace').html('در حال دریافت لیست <span class="spinner-border spinner-border-sm mb-1"></span>');
+        $.post('/citiesList', {
+                pro        : pro,
+            },
+            function(data){
+                $('#citiesListPlace').html(data);
+
+            });
+    }
+    function modelsList(br) {
+        if (br != '0'){
+            $('#carsListPlace').html('در حال دریافت لیست <span class="spinner-border spinner-border-sm mb-1"></span>');
+        $.post('/modelsList', {
+            br        : br,
+            },
+            function(data){
+                $('#carsListPlace').html(data);
+
+            });
+        }
+        else {
+            htm = '<select id="model" name="model" class="select2 form-control siteInputs"><option value="0">برند را انتخاب کنید</option></select>';
+            $('#carsListPlace').html(htm);
+        }
+        
+    }
+    $('#sendAdv').click(function () {
+        $('#sendAdv').prop('disabled', true);
+        title = $('#title').val();
+        description = $('#description').val();
+        pro = $('#pro').val();
+        city = $('#city').val();
+        brand = $('#brand').val();
+        model = $('#model').val();
+        price = $('#price').val();
+        pre_payment = $('#pre_payment').val();
+        loan_amount = $('#loan_amount').val();
+        payment_count = $('#payment_count').val();
+        payment_pr = $('#payment_pr').val();
+        payment_amount = $('#payment_amount').val();
+        delivery_time = $('#delivery_time').val();
+        videoPath = $("#videoPath").data('path');
+        if (title == ''){
+
+            $('#sendAdv').html(' "عنوان آگهی" اجباری است');
+            setTimeout(function () {
+                $('#sendAdv').html('تایید');
+            }, 1500);
+            $('#sendAdv').prop('disabled', false);
+            return false;
+        }
+        else if (brand == '0'){
+
+            $('#sendAdv').html('"برند" خودرو انتخاب نشده');
+            setTimeout(function () {
+                $('#sendAdv').html('تایید');
+            }, 1500);
+            $('#sendAdv').prop('disabled', false);
+            return false;
+        }
+        else if (model == '0'){
+
+            $('#sendAdv').html('"خودرو"  انتخاب نشده');
+            setTimeout(function () {
+                $('#sendAdv').html('تایید');
+            }, 1500);
+            $('#sendAdv').prop('disabled', false);
+            return false;
+        }
+        else if (price == ''){
+
+            $('#sendAdv').html('"قیمت خودرو"  وارد نشده');
+            setTimeout(function () {
+                $('#sendAdv').html('تایید');
+            }, 1500);
+            $('#sendAdv').prop('disabled', false);
+            return false;
+        }
+        else if (pre_payment == ''){
+
+            $('#sendAdv').html('"مبلغ پیش پرداخت"  وارد نشده');
+            setTimeout(function () {
+                $('#sendAdv').html('تایید');
+            }, 1500);
+            $('#sendAdv').prop('disabled', false);
+            return false;
+        }
+        else if (loan_amount == ''){
+
+            $('#sendAdv').html('"مبلغ وام"  وارد نشده');
+            setTimeout(function () {
+                $('#sendAdv').html('تایید');
+            }, 1500);
+            $('#sendAdv').prop('disabled', false);
+            return false;
+        }
+        else if (payment_count == ''){
+
+            $('#sendAdv').html('"تعداد اقساط"  وارد نشده');
+            setTimeout(function () {
+                $('#sendAdv').html('تایید');
+            }, 1500);
+            $('#sendAdv').prop('disabled', false);
+            return false;
+        }
+        else if (payment_pr == ''){
+
+            $('#sendAdv').html('"سررسید اقساط"  وارد نشده');
+            setTimeout(function () {
+                $('#sendAdv').html('تایید');
+            }, 1500);
+            $('#sendAdv').prop('disabled', false);
+            return false;
+        }
+        else if (payment_amount == ''){
+
+            $('#sendAdv').html('"مبلغ قسط"  وارد نشده');
+            setTimeout(function () {
+                $('#sendAdv').html('تایید');
+            }, 1500);
+            $('#sendAdv').prop('disabled', false);
+            return false;
+        }
+        else if (delivery_time == ''){
+
+            $('#sendAdv').html('"موعد تحویل"  وارد نشده');
+            setTimeout(function () {
+                $('#sendAdv').html('تایید');
+            }, 1500);
+            $('#sendAdv').prop('disabled', false);
+            return false;
+        }
+        else if (description.length < 20){
+
+            $('#sendAdv').html('محتوای توضیحات آگهی معتبر نیست');
+            setTimeout(function () {
+                $('#sendAdv').html('تایید');
+            }, 1300);
+            $('#sendAdv').prop('disabled', false);
+            return false;
+        }
+        else if (imageCnt < 2){
+
+                $('#sendAdv').html('حداقل دو تصویر برای آگهی اجباری است');
+                setTimeout(function () {
+                    $('#sendAdv').html('تایید');
+                }, 1300);
+                $('#sendAdv').prop('disabled', false);
+                return false;
+        }
+        else {
+            $('#wait').fadeIn(100);
+            $('#sendAdv').html('در حال ارسال <span class="spinner-border spinner-border-sm mb-1"></span>');
+            $('#sendAdv').prop('disabled', true);
+
+
+            images = [];
+            for (i=1;i<=imageCnt;i++){
+                imgPath = $('#path'+i).data('path');
+                images.push(imgPath);
+            }
+            $.ajax({
+                url: 'registeinstCar',
+                data: {
+                    payment_amount: payment_amount,
+                    payment_pr    : payment_pr,
+                    payment_count : payment_count,
+                    loan_amount   : loan_amount,
+                    pre_payment   : pre_payment,
+                    title         : title,
+                    description   : description,
+                    pro           : pro,
+                    city          : city,
+                    brand         : brand,
+                    model         : model,
+                    price         : price,
+                    delivery_time : delivery_time,
+                    advImgs       : images,
+                    videoPath     : videoPath,
+
+                },
+                method: 'POST',
+                success :function(data){
+                    if (data.status){
+                        $('#sendAdv').html('آگهی ثبت شد، شما به سقف من هدایت میشوید');
+                        setTimeout(function () {
+                            window.location.href = "<% host%>/my";
+                        }, 1500);
+
+                    }
+                    else {
+                        $('#sendAdv').html('در ثبت آگهی مشکلی وجود دارد، لطفا مجددا تلاش کنید');
+                        setTimeout(function () {
+                            $('#sendAdv').html('تایید');
+                        }, 1300);
+                        $('#sendAdv').prop('disabled', false);
+                    }
+
+                }});
+
+
+
+        }
+    });
+   
+</script>
+
+</html>

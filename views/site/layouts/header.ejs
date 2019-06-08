@@ -1,0 +1,74 @@
+<svg  onclick="topFunction()" id="myBtn" class="topIcon  text-danger"><use xlink:href="#up"></use></svg>
+<nav id="topNav" class="navbar navbar-expand-xl navbar-light make-me-sticky m-md-0 p-md-0 pt-2 pb-2 pr-0 pl-0 topNav"  >
+    <a class="custom-link pr-md-5 mr-md-4 pr-2 text-white" href=""> سقف مردم</a>
+
+    <div class="navbar-toggler  border-0 p-0 mt-0 pl-1 pb-1 pt-1" >
+
+        <% if (res.people)  {%>
+            <a href="<%- host %>/logOut" class="btn btn-warning">خروج</a>
+        <% } %>
+        <a href="<%- host %>/send" class="btn btn-danger">ارسال </a>
+        <a class="custom-link border-0 pt-0 pb-0 pr-2 text-white"  data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="fa fa-bars"></span>
+        </a>
+
+    </div>
+
+
+
+
+
+
+    <div class="collapse navbar-collapse  p-0 m-0" id="collapsibleNavbar" >
+        <div class="menus border-0 p-0 m-0">
+            <ul class="navbar-nav pr-md-3 " >
+
+
+                <li class="nav-item pr-md-4">
+                    <a class="nav-link text-white " href="<%- host %>">صفحه اصلی</a>
+                </li>
+                <li class="nav-item pr-md-4">
+                    <a class="nav-link text-white " href="<%- host %>/my">سقف من</a>
+                </li>
+                <li class="nav-item pr-md-2">
+                    <a class="nav-link text-white " href="#">خرید خودرو</a>
+                </li>
+                <li class="nav-item pr-md-2">
+                    <a class="nav-link text-white " href="#">خودروها</a>
+                </li>
+                <li class="nav-item pr-md-2">
+                    <a class="nav-link text-white " href="#">کسب و کار</a>
+                </li>
+                <li class="nav-item pr-md-2">
+                    <a class="nav-link text-white " href="#">کارگاه های تولیدی</a>
+                </li>
+                <li class="nav-item pr-md-2">
+                    <a class="nav-link text-white " href="#">کارگاه های صنعتی</a>
+                </li>
+                <li class="nav-item pr-md-2">
+                    <a class="nav-link text-white " href="#">اخبار</a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="collapse navbar-collapse"   >
+
+    </div>
+
+    <div class="collapse navbar-collapse m-0 p-0">
+        <div class="row  m-0 p-0">
+            <div class="col-md-12 m-0 p-3">
+                <% if (res.people)  {%>
+                    <a href="<%- host %>/logOut" class="btn btn-warning">خروج</a>
+                <% } %>
+           <a href="<%- host %>/send" class="btn btn-danger">ارسال آگهی</a>
+
+
+            </div>
+        </div>
+
+
+    </div>
+</nav>

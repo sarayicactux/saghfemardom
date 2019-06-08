@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html class="no-js">
+<%- include("../panel/layouts/head.ejs",{
+title:"کنترل پنل مدیریت" ,
+des:"کنترل پنل مدیریت" ,
+}) %>
+
+<body class="nav-md">
+<div class="container body">
+    <div class="main_container">
+
+        <%- include ../panel/layouts/menu.ejs  %>
+        <!-- top navigation -->
+        <%- include ../panel/layouts/topNav.ejs  %>
+        <!-- /top navigation -->
+        <!-- /header content -->
+
+        <!-- page content -->
+        <div id="panelContent" class="right_col" role="main">
+
+        </div>
+        <%- include ../panel/layouts/footer.ejs %>
+    </div>
+</div>
+<div id="lock_screen">
+    <table>
+        <tr>
+            <td>
+                <div class="clock"></div>
+                <span class="unlock">
+                    <span class="fa-stack fa-5x">
+                      <i class="fa fa-square-o fa-stack-2x fa-inverse"></i>
+                      <i id="icon_lock" class="fa fa-lock fa-stack-1x fa-inverse"></i>
+                    </span>
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="modal modal-danger fade" id="modal-delete">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body" >
+                آیا برای حذف این مورد، اطمینان دارید
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info pull-right" data-dismiss="modal">بستن</button>
+                <button type="button" class="btn btn-warning pull-left" data-id="q" id="delete_item" onclick="deleteItem()" data-dismiss="modal">حذف</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<%- include ../panel/layouts/scripts.ejs %>
+<div id="reload" style="display:none;"></div>
+<div id="uploading" class="uploading"></div>
+<div class="uploadLoadingImg">
+    لطفا تا بارگذاری کامل فایل، منتظر بمانید
+
+</div>
+<div id="loading" style="display: none; position: fixed; top: 80px; left: 38%; width:19%; height: 40px; background: #fff0ff; padding: 6px; text-align: center">
+    <h4 class="modal-title">در حال دریافت اطلاعات</h4>
+</div>
+</body>
+</html>

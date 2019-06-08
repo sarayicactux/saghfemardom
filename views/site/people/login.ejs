@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html   dir=rtl lang=fa>
+<%- include("../layouts/head.ejs",{
+title:"سقف مردم" ,
+des:"" ,
+pageUrl:"https://saghfemardom.ir"
+}) %>
+<body   >
+
+<% include ../layouts/svg.ejs %>
+
+<%- include ../layouts/header.ejs%>
+
+
+
+<div class="container" style="margin-top:10px">
+
+
+    <div class="row">
+        <div class="col-12 shadow-sm bg-white mt-1 pt-1 pb-1">
+            <div align="right">
+                <h1 class="mainHeader text-dark">سقف مردم ..... سقف مردم</h1>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="row"  style="margin-top:10px">
+
+        <div class="col-md-3 mb-md-0  mb-1 newsBar">
+            <%- include("../layouts/news.ejs",{
+            res:res
+            }) %>
+        </div>
+        <div class="col-md-6 mb-md-0 mb-1 ">
+            <div class="row pl-md-2  ">
+                <div class="col-md-12 shadow-sm border pb-1  bg-white text-dark">
+                    <div class="p-2 row p-0">
+                        <div class="col-12 m-0 p-0">
+                            <h2  class="boxesWline linkColor">ورود </h2>
+                        </div>
+                    </div>
+                    <div class="row  mt-1">
+                        <div class="col-md-12  ">
+                            <div class="row">
+                                <div class="col-12 col-md-12 p-1 formPlaceHolder" >
+                                    <input type="text" class="form-control border bg-light siteInputs text-dark num" maxlength="11" name="mobile" id="mobile" placeholder="  " >
+                                    <label for="name">شماره تلفن همراه</label>
+                                </div>
+                                <div class="col-12 col-md-12 p-1 formPlaceHolder" >
+                                    <input type="password" id="password" name="password"  class="form-control border bg-light siteInputs" placeholder=" ">
+                                    <label for="name">رمز ورود</label>
+                                </div>
+                                <div class="col-12  p-1" >
+                                    <button id="loginBtn" class="btn mainBtn   btn-sm btn-block" > ورود</button>
+                                </div>
+                                <div class="col-12 col-md-12 p-1 formTxt" >
+                                    <div align="center">
+                                        رمز عبور خود را فراموش کرده اید؟ <a href="<%- host %>/fg/p" class="custom-link">اینجا</a> کلیک کنید
+                                    </div>
+
+
+                                </div>
+                                <div class="col-12 col-md-12 p-1 formTxt" >
+                                    <div align="center">
+                                        ثبت نام در <a href="<%- host %>/register" class="custom-link">سقف مردم</a>
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+        <div class="col-md-3 mb-md-0  mb-1  ">
+            <%- include("../layouts/sidebar.ejs",{
+            res:res
+            }) %>
+        </div>
+
+    </div>
+
+</div>
+<div class="col-12 bg-dark mt-3 text-white">
+    <%- include("../layouts/footer.ejs",{
+    res:res
+    }) %>
+</div>
+
+<div id="myModal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="img01">
+    <div id="caption"></div>
+</div>
+</body>
+<%- include ../layouts/scripts.ejs%>
+<script>
+    $('#loginBtn').click(function () {
+        $('#loginBtn').prop('disabled', true);
+        mobile = $('#mobile').val();
+        password = $('#password').val();
+        if (mobile == ''){
+
+            $('#loginBtn').html('"شماره تلفن همراه" وارد نشده');
+            setTimeout(function () {
+                $('#loginBtn').html('ورود');
+            }, 1300);
+            $('#loginBtn').prop('disabled', false);
+            return false;
+        }
+        else if (mobile.length != 11){
+
+            $('#loginBtn').html('"شماره تلفن همراه" وارد شده معتبر نیست');
+            setTimeout(function () {
+                $('#loginBtn').html('ورود');
+            }, 1300);
+            $('#loginBtn').prop('disabled', false);
+            return false;
+        }
+        else if (password == ''){
+
+            $('#loginBtn').html('"رمز عبور" وارد نشده');
+            setTimeout(function () {
+                $('#loginBtn').html('ورود');
+            }, 1300);
+            $('#loginBtn').prop('disabled', false);
+            return false;
+        }
+        else {
+            $('#wait').fadeIn(100);
+            $('#loginBtn').html('در حال ارسال <span class="spinner-border spinner-border-sm mb-1"></span>');
+            $('#sendCategoty').prop('disabled', true);
+
+            $.ajax({
+                url: 'login',
+                data: {
+                    mobile      : mobile,
+                    password    : password,
+                },
+                method: 'POST',
+                success :function(data){
+                    if (data.status){
+                        $('#loginBtn').html('ورود موفق، شما به "سقف من" هدایت خواهید شد');
+                        setTimeout(function () {
+                            window.location.href = "<% host%>/my";
+                        }, 1500);
+
+                    }
+                    else {
+                        $('#loginBtn').html('ورود نا موفق، لطفا اطلاعات صحیح وارد کنید');
+                        setTimeout(function () {
+                            $('#loginBtn').html('تایید');
+                        }, 1500);
+                        $('#loginBtn').prop('disabled', false);
+                    }
+
+
+
+                    //$('#bg').fadeOut(100);
+
+                }});
+
+
+
+        }
+    });
+</script>
+</html>

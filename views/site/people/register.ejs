@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html   dir=rtl lang=fa>
+<%- include("../layouts/head.ejs",{
+title:"سقف مردم" ,
+des:"" ,
+pageUrl:"https://saghfemardom.ir"
+}) %>
+<body   >
+
+<% include ../layouts/svg.ejs %>
+
+<%- include ../layouts/header.ejs%>
+
+
+
+<div class="container" style="margin-top:10px">
+
+
+    <div class="row">
+        <div class="col-12 shadow-sm bg-white mt-1 pt-1 pb-1">
+            <div align="right">
+                <h1 class="mainHeader text-dark">سقف مردم ..... سقف مردم</h1>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="row"  style="margin-top:10px">
+
+        <div class="col-md-3 mb-md-0  mb-1 newsBar">
+            <%- include("../layouts/news.ejs",{
+            res:res
+            }) %>
+        </div>
+        <div class="col-md-6 mb-md-0 mb-1 ">
+            <div class="row pl-md-2  ">
+                <div class="col-md-12 shadow-sm border pb-1  bg-white text-dark">
+                    <div class="p-2 row p-0">
+                        <div class="col-12 m-0 p-0">
+                            <h2  class="boxesWline linkColor"> ثبت نام در سقف مردم </h2>
+                        </div>
+                    </div>
+                    <div class="row  mt-1">
+                        <div class="col-md-12" id="registerForm">
+                            <div class="row ">
+                                <div class="col-12 col-md-12 p-1 formPlaceHolder required" >
+                                    <input type="text" class="form-control border bg-light siteInputs" name="name" id="name" placeholder="  " required>
+                                    <label for="name">نام</label>
+                                </div>
+                                <div class="col-12 col-md-12 p-1 formPlaceHolder" >
+                                    <input type="text" class="form-control border bg-light siteInputs" name="family" id="family" placeholder="  " required>
+                                    <label for="name">نام خانوادگی</label>
+
+                                </div>
+                                <div class="col-12 col-md-12 p-1 formPlaceHolder" >
+                                    <input type="text" maxlength="11" class="form-control border bg-light num siteInputs" name="mobile" id="mobile" placeholder="  " required>
+                                    <label for="name">شماره تلفن همراه</label>
+                                </div>
+                                <div class="col-12 col-md-12 p-1 formPlaceHolder" >
+                                    <input type="password" class="form-control border bg-light siteInputs" name="password" id="password" placeholder="  " required>
+                                    <label for="name">رمز عبور</label>
+                                </div>
+                                <div class="col-12  p-1" id="regBtnDiv" >
+                                    <button type="submit" class="btn mainBtn  btn-sm btn-block" id="regBtn" > ثبت نام </button>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="col-md-12" id="rCode" style="display: none">
+                            <div class="row ">
+                                <div class="col-12 col-md-12 p-1 formPlaceHolder" >
+                                    <div class="rCode rounded" >برای تکمیل ثبت نام، لطفا کد ارسال به موبایل خود را در کادر زیر وارد کنید</div>
+                                </div>
+                                <div class="col-12 col-md-12 p-1" >
+                                    <input type="text" maxlength="4" class="form-control border bg-light siteInputs" name="msgCode" id="msgCode" placeholder="کد 4 رقمی دریافت شده را وارد کنید">
+                                </div>
+                                <div class="col-12  p-1" >
+                                    <button class="btn mainBtn  btn-sm btn-block" id="cCodeBtn" > تایید </button>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+        <div class="col-md-3 mb-md-0  mb-1  ">
+            <%- include("../layouts/sidebar.ejs",{
+            res:res
+            }) %>
+        </div>
+
+    </div>
+
+</div>
+<div class="col-12 bg-dark mt-3 text-white">
+    <%- include("../layouts/footer.ejs",{
+    res:res
+    }) %>
+</div>
+
+<div id="myModal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="img01">
+    <div id="caption"></div>
+</div>
+</body>
+<%- include ../layouts/scripts.ejs%>
+<script>
+    $('#regBtn').click(function () {
+        $('#regBtn').prop('disabled', true);
+        name = $('#name').val();
+        family = $('#family').val();
+        mobile  = $('#mobile').val();
+        password  = $('#password').val();
+        if (name == ''){
+
+            $('#regBtn').html('وارد کردن "نام" اجباری است');
+            setTimeout(function () {
+                $('#regBtn').html('ثبت نام');
+            }, 1300);
+            $('#regBtn').prop('disabled', false);
+            return false;
+        }
+        else if (family == ''){
+
+            $('#regBtn').html('وارد کردن "نام خانوادگی" اجباری است');
+            setTimeout(function () {
+                $('#regBtn').html('ثبت نام');
+            }, 1300);
+            $('#regBtn').prop('disabled', false);
+            return false;
+        }
+        else if (mobile == ''){
+
+            $('#regBtn').html('وارد کردن "شماره تلفن همراه" اجباری است');
+            setTimeout(function () {
+                $('#regBtn').html('ثبت نام');
+            }, 1300);
+            $('#regBtn').prop('disabled', false);
+            return false;
+        }
+        else if ( mobile.length != 11){
+
+            $('#regBtn').html('"شماره تلفن همراه" وارد شده، نامعتبر است');
+            setTimeout(function () {
+                $('#regBtn').html('ثبت نام');
+            }, 1300);
+            $('#regBtn').prop('disabled', false);
+            return false;
+        }
+        else if (password == ''){
+
+            $('#regBtn').html('وارد کردن "رمز عبور" اجباری است');
+            setTimeout(function () {
+                $('#regBtn').html('ثبت نام');
+            }, 1300);
+            $('#regBtn').prop('disabled', false);
+            return false;
+        }
+        else if (password.length < 6){
+
+            $('#regBtn').html('طول رشته "رمز عبور" باید حداقل 6 حرف باشد');
+            setTimeout(function () {
+                $('#regBtn').html('ثبت نام');
+            }, 1300);
+            $('#regBtn').prop('disabled', false);
+            return false;
+        }
+
+        else {
+            $('#wait').fadeIn(100);
+            $('#regBtn').html('در حال ارسال <span class="spinner-border spinner-border-sm mb-1"></span>');
+            $('#cCodeBtn').prop('disabled', true);
+
+            $.ajax({
+                url: 'sendRcode',
+                data: {
+                    name      : name,
+                    family    : family,
+                    mobile    : mobile,
+                    password  : password,
+                },
+                method: 'POST',
+                success :function(data){
+                    if(data.status == false){
+                        $('#regBtn').html('"شماره تلفن همراه" وارد شده تکراری است');
+                        setTimeout(function () {
+                            $('#regBtn').html('ثبت نام');
+                        }, 1300);
+                        $('#regBtn').prop('disabled', false);
+                    }
+                    else {
+                        $('#regBtnDiv').fadeOut(300,function () {
+                            $('#rCode').fadeIn(300);
+                        });
+                    }
+
+
+                    //$('#bg').fadeOut(100);
+
+                }});
+
+
+
+        }
+    });
+    $('#cCodeBtn').click(function () {
+        $('#cCodeBtn').prop('disabled', true);
+        msgCode = $('#msgCode').val();
+        if (msgCode == ''){
+
+            $('#cCodeBtn').html('"کد" وارد نشده');
+            setTimeout(function () {
+                $('#cCodeBtn').html('تایید');
+            }, 1300);
+            $('#cCodeBtn').prop('disabled', false);
+            return false;
+        }
+        else if (msgCode.length != 4){
+
+            $('#cCodeBtn').html('"کد" وارد شده معتبر نیست');
+            setTimeout(function () {
+                $('#cCodeBtn').html('تایید');
+            }, 1300);
+            $('#cCodeBtn').prop('disabled', false);
+            return false;
+        }
+       else {
+            $('#wait').fadeIn(100);
+            $('#cCodeBtn').html('در حال ارسال <span class="spinner-border spinner-border-sm mb-1"></span>');
+            $('#cCodeBtn').prop('disabled', true);
+
+            $.ajax({
+                url: 'register',
+                data: {
+                    rCode      : msgCode,
+                },
+                method: 'POST',
+                success :function(data){
+                    if (data.status){
+                        $('#cCodeBtn').html('ثبت نام کامل شد، شما به صفحه ورود هدایت میشوید');
+                        setTimeout(function () {
+                            window.location.href = "<% host%>/login";
+                        }, 1500);
+
+                    }
+                    else {
+                        $('#cCodeBtn').html('"کد" وارد شده معتبر نیست');
+                        setTimeout(function () {
+                            $('#cCodeBtn').html('تایید');
+                        }, 1300);
+                        $('#cCodeBtn').prop('disabled', false);
+                    }
+
+
+
+                    //$('#bg').fadeOut(100);
+
+                }});
+
+
+
+        }
+    });
+
+
+</script>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html   dir=rtl lang=fa>
+<%- include("../layouts/head.ejs",{
+title:"سقف مردم" ,
+des:"" ,
+pageUrl:"https://saghfemardom.ir"
+}) %>
+<body   >
+
+<% include ../layouts/svg.ejs %>
+
+<%- include ../layouts/header.ejs%>
+
+
+
+<div class="container" style="margin-top:10px">
+
+
+    <div class="row">
+        <div class="col-12 shadow-sm bg-white mt-1 pt-1 pb-1">
+            <div align="right">
+                <h1 class="mainHeader text-dark">سقف مردم ..... سقف مردم</h1>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="row"  style="margin-top:10px">
+
+        <div class="col-md-3 mb-md-0  mb-1 newsBar">
+            <%- include("../layouts/news.ejs",{
+            res:res
+            }) %>
+        </div>
+        <div class="col-md-6 mb-md-0 mb-1 ">
+            <div class="row pl-md-2  ">
+                <div class="col-md-12 shadow-sm border pb-1  bg-white text-dark">
+                    <div class="p-2 row p-0">
+                        <div class="col-12 m-0 p-0">
+                            <h2  class="boxesWline linkColor"> ارسال آگهی </h2>
+                        </div>
+                    </div>
+                    <div class="row  mt-1">
+                        <div class="col-md-12">
+                            <span id="advPlace">
+                                <div class="row ">
+
+                                <div class="col-12 col-md-12 p-1" >
+                                    <div class="list-group">
+  <button  type="button"  class="list-group-item list-group-item-action chooseAdvType" data-type="1">کسب و کار</button>
+  <button  type="button"  class="list-group-item list-group-item-action chooseAdvType" data-type="2">خودرو نقدی</button>
+  <button  type="button"  class="list-group-item list-group-item-action chooseAdvType" data-type="3">خودرو اقساطی</button>
+</div>
+                                </div>
+
+                                </div>
+                            </span>
+
+                        </div>
+
+
+
+
+                              </div>
+                </div>
+
+            </div>
+
+
+        </div>
+        <div class="col-md-3 mb-md-0  mb-1  ">
+            <%- include("../layouts/sidebar.ejs",{
+            res:res
+            }) %>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="col-12 bg-dark mt-3 text-white">
+    <%- include("../layouts/footer.ejs",{
+    res:res
+    }) %>
+</div>
+
+<div id="myModal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="img01">
+    <div id="caption"></div>
+</div>
+</body>
+<%- include ../layouts/scripts.ejs%>
+<script>
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the image and insert it inside the modal - use its "alt" text as a caption
+    var modalImg = document.getElementById("img01");
+    var captionText = document.getElementById("caption");
+    $('.myImg').click(function(){
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    })
+
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+</script>
+<script>
+
+    $('.chooseAdvType').click(function () {
+        advType = $(this).data('type');
+
+
+            $(this).html('در حال دریافت اطلاعات <span class="spinner-border spinner-border-sm mb-1"></span>');
+            $('.chooseAdvType').prop('disabled', true);
+
+            $.ajax({
+                url: 'chooseAdvType',
+                data: {
+                    advType      : advType,
+                },
+                method: 'POST',
+                success :function(data){
+                    if (data.length > 5){
+                          $('#advPlace').html(data);
+                    }
+                    else {
+                        window.location.href = "<% host%>/my";
+                    }
+
+
+                }});
+
+
+
+
+    });
+
+
+</script>
+</html>

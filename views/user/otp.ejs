@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>ورود</title>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="admin/login/images/icons/favicon.ico"/>
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="admin/login/vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="admin/login/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="admin/login/vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="admin/login/vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="admin/login/vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="admin/login/css/util.css">
+    <link rel="stylesheet" type="text/css" href="admin/login/css/main.css">
+    <!--===============================================================================================-->
+
+
+
+</head>
+<body>
+
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <div class="login100-form validate-form" >
+					<span class="login100-form-title p-b-26" style="font-family: Vazir">
+						خوش آمدید
+					</span>
+                <span class="login100-form-title p-b-48">
+						<i class="zmdi zmdi-font"></i>
+					</span>
+
+                <div class="wrap-input100 validate-input" data-validate = "کلید ورود را وارد کنید">
+                    <input class="input100" type="text" id="otp_key" name="otp_key">
+                    <span class="focus-input100" data-placeholder="key"></span>
+                </div>
+
+                <div class="login100-pic js-tilt" data-tilt>
+                    <div style="font-family: Vazir; padding-top: 65px;color: red" id="otpErr" align="center"></div>
+
+                </div>
+
+
+                <div class="container-login100-form-btn">
+                    <div class="wrap-login100-form-btn">
+                        <div class="login100-form-bgbtn"></div>
+                        <button class="login100-form-btn g-recaptcha"
+                                onclick="checkOtp()"
+                                 style="font-family: yekan" >
+                            ورود
+                        </button>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--===============================================================================================-->
+<script src="admin/login/vendor/jquery/jquery-3.2.1.min.js"></script>
+<script src="admin/login/vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+<script src="admin/login/vendor/bootstrap/js/popper.js"></script>
+<script src="admin/login/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+<script src="admin/login/vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+<script src="admin/login/vendor/daterangepicker/moment.min.js"></script>
+<script src="admin/login/vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+<script src="admin/login/vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+<script src="admin/login/js/main.js"></script>
+<script>
+    function checkOtp(){
+        otp = $('#otp_key').val();
+        $.ajax({
+            url: './checkOtp',
+            type: 'POST',
+            dataType: 'json',
+            headers: {
+                'x-otp': otp,
+            },
+            contentType: 'application/json; charset=utf-8',
+            success: function (result) {
+                if(result.status){
+                    window.open('./landing','_self');
+                }
+                else {
+                    $('#otpErr').html('کد وارد شده نا معتبر است');
+                }
+            },
+            error: function (error) {
+
+            }
+        });
+    }
+</script>
+</body>
+</html>

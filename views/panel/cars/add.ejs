@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html class="no-js">
+<%- include("../../panel/layouts/head.ejs",{
+title:"کنترل پنل مدیریت" ,
+des:"کنترل پنل مدیریت" ,
+}) %>
+
+<body class="nav-md">
+<div class="container body">
+    <div class="main_container">
+
+        <%- include ../../panel/layouts/menu.ejs  %>
+        <!-- top navigation -->
+        <%- include ../../panel/layouts/topNav.ejs  %>
+        <!-- /top navigation -->
+        <!-- /header content -->
+
+        <!-- page content -->
+        <div id="panelContent" class="right_col" role="main">
+
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="preloader loading">
+                            <span class="slice"></span>
+                            <span class="slice"></span>
+                            <span class="slice"></span>
+                            <span class="slice"></span>
+                            <span class="slice"></span>
+                            <span class="slice"></span>
+                        </div>
+                        <div class="page-loader-wrapper3">
+                        </div>
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2> ثبت خودروی جدید
+
+                            </h2>
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+
+                            <form class="form-horizontal form-label-left">
+                                <div class="row">
+                                    <div class="col-md-4 form-group">
+                                        <label>برند اول<span class="required">*</span></label>
+                                        <select name="brand1" id="brand1" class="form-control select2">
+                                            <% for(i=0; i<brands.length;i++){ %>
+                                            <option value="<%- brands[i].id%>"><%- brands[i].title %></option>
+                                            <% } %>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label>برند دوم<span class="required">*</span></label>
+                                        <select name="brand2" id="brand2" class="form-control select2">
+                                            <option value="0">بدون برند دوم</option>
+                                            <% for(i=0; i<brands.length;i++){ %>
+                                                <option value="<%- brands[i].id%>"><%- brands[i].title %></option>
+                                            <% } %>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label>مدل<span class="required">*</span></label>
+                                        <input type="text" name="model" id="model"  class="form-control" >
+                                    </div>
+
+
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 form-group">
+                                        <label>مشاهده قیمت<span class="required">*</span></label>
+                                        <select name="show_price" id="show_price" class="form-control ">
+                                            <option value="0">عدم نمایش قیمت در لیست</option>
+                                            <option value="1">قیمت در لیست نمایش داده شود</option>
+
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label>قیمت<span class="required"></span></label>
+                                        <input type="text" name="price" id="price"  class="form-control num" >
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12 form-group">
+                                        <label>مشخصات فنی<span class="required">*</span></label>
+                                        <textarea id="tech_spec" rows="15"  class="form-control"></textarea>
+
+
+                                    </div>
+
+
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 form-group">
+                                        <label>توضیحات<span class="required">*</span></label>
+                                        <textarea id="description" rows="15"  class="form-control"></textarea>
+
+
+                                    </div>
+
+
+
+                                </div>
+                                <div class="row">
+
+
+                                    <div class="col-md-4 form-group">
+
+                                        <label   style="padding:2px">&nbsp;فایل ویدئویی</label>
+
+
+
+                                        <input type="file" name="video"  onchange="uploadFile('video','2')" id="video" accept=".mp4,.MP4" class="inputfile inputfile-6" data-multiple-caption="{count} files selected" multiple />
+                                        <label for="video"><span></span> <strong><i class="fa fa-cloud-upload" ></i> انتخاب فایل</strong></label>
+
+                                    </div>
+
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-10 form-group">
+
+
+                                <span id="tagvideo">
+<input id="videoPath" value="" type="hidden" class="form-control">
+</span>
+
+
+
+
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+
+
+                                    <div class="col-md-4 form-group">
+
+                                        <label   style="padding:2px">&nbsp;تصویر اول</label>
+
+
+
+                                        <input type="file" name="image1"  onchange="uploadFile('image1','4')" id="image1" accept=".jpeg,.jpg,.png" class="inputfile inputfile-6" data-multiple-caption="{count} files selected" multiple />
+                                        <label for="image1"><span></span> <strong><i class="fa fa-cloud-upload" ></i> انتخاب فایل</strong></label>
+
+                                    </div>
+
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 form-group">
+
+
+                                <span id="tagimage1">
+<input id="image1Path" value="" type="hidden" class="form-control">
+</span>
+
+
+
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+
+
+                                    <div class="col-md-4 form-group">
+
+                                        <label   style="padding:2px">&nbsp;تصویر دوم</label>
+
+
+
+                                        <input type="file" name="image2"  onchange="uploadFile('image2','4')" id="image2" accept=".jpeg,.jpg,.png" class="inputfile inputfile-6" data-multiple-caption="{count} files selected" multiple />
+                                        <label for="image2"><span></span> <strong><i class="fa fa-cloud-upload" ></i> انتخاب فایل</strong></label>
+
+                                    </div>
+
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 form-group">
+
+
+                                <span id="tagimage2">
+<input id="image2Path" value="" type="hidden" class="form-control">
+</span>
+
+
+
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+
+
+                                    <div class="col-md-4 form-group">
+
+                                        <label   style="padding:2px">&nbsp;تصویر سوم</label>
+
+
+
+                                        <input type="file" name="image3"  onchange="uploadFile('image3','4')" id="image3" accept=".jpeg,.jpg,.png" class="inputfile inputfile-6" data-multiple-caption="{count} files selected" multiple />
+                                        <label for="image3"><span></span> <strong><i class="fa fa-cloud-upload" ></i> انتخاب فایل</strong></label>
+
+                                    </div>
+
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 form-group">
+
+
+                                <span id="tagimage3">
+<input id="image3Path" value="" type="hidden" class="form-control">
+</span>
+
+
+
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+
+
+                                    <div class="col-md-4 form-group">
+
+                                        <label   style="padding:2px">&nbsp;تصویر چهارم</label>
+
+
+
+                                        <input type="file" name="image4"  onchange="uploadFile('image4','4')" id="image4" accept=".jpeg,.jpg,.png" class="inputfile inputfile-6" data-multiple-caption="{count} files selected" multiple />
+                                        <label for="image4"><span></span> <strong><i class="fa fa-cloud-upload" ></i> انتخاب فایل</strong></label>
+
+                                    </div>
+
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 form-group">
+
+
+                                <span id="tagimage4">
+<input id="image4Path" value="" type="hidden" class="form-control">
+</span>
+
+
+
+
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col-md-2  form-group">
+                                        <label >&nbsp;</label>
+
+                                        <button data-pid="q" type="button" id="sendCar" class="form-control btn btn-success">ارسال</button>
+
+                                    </div>
+                                </div>
+                                <div class="ln_solid"></div>
+                                <div class="row"  align="center" id="alertmsg" style="color: red; height: 40px" ></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <%- include ../../panel/layouts/footer.ejs %>
+<div id="lock_screen">
+    <table>
+        <tr>
+            <td>
+                <div class="clock"></div>
+                <span class="unlock">
+                    <span class="fa-stack fa-5x">
+                      <i class="fa fa-square-o fa-stack-2x fa-inverse"></i>
+                      <i id="icon_lock" class="fa fa-lock fa-stack-1x fa-inverse"></i>
+                    </span>
+                </span>
+            </td>
+        </tr>
+    </table>
+</div></div>
+
+<%- include ../../panel/layouts/scripts.ejs %>
+<script src="admin/vendors/tinymce/tinymce.min.js"></script>
+<div id="reload" style="display:none;"></div>
+<div id="uploading" class="uploading"></div>
+<div class="uploadLoadingImg">
+    لطفا تا بارگذاری کامل فایل، منتظر بمانید
+
+</div>
+<div id="loading" style="display: none; position: fixed; top: 80px; left: 38%; width:19%; height: 40px; background: #fff0ff; padding: 6px; text-align: center">
+    <h4 class="modal-title">در حال دریافت اطلاعات</h4>
+</div>
+
+<script>
+    function uploadFile(inputId,mimeType) {
+        var file  = $('#'+inputId).prop('files')[0];
+        if (file){
+            var form_data = new FormData();
+            form_data.append('inputId', inputId);
+            form_data.append('file', file);
+            form_data.append('mimeType', mimeType);
+
+            $('.uploading').fadeIn(100);
+            $('.uploadLoadingImg').fadeIn(100);
+            $.ajax({
+                url: '/uploading',
+                data: form_data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                type: 'POST',
+                success :function(data){
+                    $('.uploading').fadeOut(100);
+                    $('.uploadLoadingImg').fadeOut(100);
+                    $('#tag'+inputId).html(data);
+
+
+                    //$('#bg').fadeOut(100);
+
+                }});
+        }
+
+    }
+    function deleteUploadedFile(userfile,inputId) {
+
+        $.post('/deleteUploaded', {
+                fileName        : userfile,
+                inputId         : inputId,
+            },
+            function(data){
+
+                $('#tag'+inputId).html(data);
+                $('#'+inputId).html('');
+            });
+
+    }
+    $(function () {
+        //Initialize Select2 Elements
+        $('.select2').select2();
+        setTimeout(function () { $('.page-loader-wrapper3').fadeOut(); }, 50);
+        setTimeout(function () { $('.preloader').fadeOut(); }, 50);
+
+
+    })
+    $('#sendCar').click(function () {
+        $('#sendCar').prop('disabled', true);
+        tech_spec  = tinyMCE.editors[$('#tech_spec').attr('id')].getContent();
+        description  = tinyMCE.editors[$('#description').attr('id')].getContent();
+        brand1 = $('#brand1').val();
+        brand2 = $('#brand2').val();
+        model  = $('#model').val();
+        price  = $('#price').val();
+        show_price  = $('#show_price').val();
+        video  = $('#videoPath').val();
+        image1 = $('#image1Path').val();
+        image2 = $('#image2Path').val();
+        image3 = $('#image3Path').val();
+        image4 = $('#image4Path').val();
+        if (   tech_spec == ''   || model == '' ||  price == '' ||  image1 == '' ||  image2 == ''  ){
+
+            $('#alertmsg').html('لطفا همه فیلد ها را پر کنید');
+            $('#sendCar').prop('disabled', false);
+            return false;
+        }
+        else {
+            $.ajax({
+                url: 'createUpdateCar',
+                data: {
+                    tech_spec   : tech_spec,
+                    description : description,
+                    brand1      : brand1,
+                    brand2      : brand2,
+                    model       : model,
+                    price       : price,
+                    show_price  : show_price,
+                    video       : video,
+                    image1      : image1,
+                    image2      : image2,
+                    image3      : image3,
+                    image4      : image4,
+                    mid         : 'q',
+
+                },
+                method: 'POST',
+                success :function(data){
+
+                    if(data.status == true){
+                        $('#loading').fadeOut(100);
+                        new PNotify({
+                            title: 'عملیات موفق',
+                            text: 'خودرو، با موفقیت ایجاد شد' +
+                                '<br>' +
+                                'شما به صفحه لیست هدایت خواهید شد',
+                            type: 'success',
+                            styling: 'bootstrap3'
+                        });
+                        setTimeout(function () {
+                            window.location = "../cars";
+                        }, 1000);
+                        $('html, body').animate({ scrollTop: 0 }, 'slow');
+
+
+
+
+                    }
+
+
+                }});
+        }
+    });
+
+
+tinymce.init({ selector:'#tech_spec',
+        language: 'fa_IR',
+        theme: 'modern',
+        plugins: [
+            'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+            'searchreplace wordcount visualblocks visualchars code fullscreen',
+            'insertdatetime media nonbreaking save table contextmenu directionality',
+            'emoticons template paste textcolor colorpicker textpattern imagetools codesample toc'
+        ],
+        toolbar1: 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media | forecolor backcolor emoticons | codesample',
+        image_advtab: true,
+        templates: [
+            { title: 'Test template 1', content: 'Test 1' },
+            { title: 'Test template 2', content: 'Test 2' }
+        ],
+        content_css: [
+            '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+            '//www.tinymce.com/css/codepen.min.css',
+            'admin/build/css/tiny.css'
+        ],
+        images_upload_url: '/upload'
+    });
+tinymce.init({ selector:'#description',
+        language: 'fa_IR',
+        theme: 'modern',
+        plugins: [
+            'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+            'searchreplace wordcount visualblocks visualchars code fullscreen',
+            'insertdatetime media nonbreaking save table contextmenu directionality',
+            'emoticons template paste textcolor colorpicker textpattern imagetools codesample toc'
+        ],
+        toolbar1: 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media | forecolor backcolor emoticons | codesample',
+        image_advtab: true,
+        templates: [
+            { title: 'Test template 1', content: 'Test 1' },
+            { title: 'Test template 2', content: 'Test 2' }
+        ],
+        content_css: [
+            '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+            '//www.tinymce.com/css/codepen.min.css',
+            'admin/build/css/tiny.css'
+        ],
+        images_upload_url: '/upload'
+    });
+
+</script>
+</body>
+</html>

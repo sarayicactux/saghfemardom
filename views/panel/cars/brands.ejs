@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html class="no-js">
+<%- include("../../panel/layouts/head.ejs",{
+title:"کنترل پنل مدیریت" ,
+des:"کنترل پنل مدیریت" ,
+}) %>
+
+<body class="nav-md">
+<div class="container body">
+    <div class="main_container">
+
+        <%- include ../../panel/layouts/menu.ejs  %>
+        <!-- top navigation -->
+        <%- include ../../panel/layouts/topNav.ejs  %>
+        <!-- /top navigation -->
+        <!-- /header content -->
+
+        <!-- page content -->
+        <div id="panelContent" class="right_col" role="main">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2> ثبت/ویرایش برندها
+                            </h2>
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <br/>
+                            <form class="form-horizontal form-label-left">
+                                <div class="row">
+                                    <div class="col-md-4 form-group">
+                                        <label>نام برند<span class="required">*</span></label>
+                                        <input type="text" name="title" id="title" class="form-control persian" >
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label>نام لاتین<span class="required">*</span></label>
+                                        <input type="text" name="en_title" id="en_title" class="form-control english" >
+                                    </div>
+
+
+                                </div>
+                                <div class="row">
+
+
+                                    <div class="col-md-4 form-group">
+
+                                        <label   style="padding:2px">&nbsp;لوگو</label>
+
+
+
+                                        <input type="file" name="image"  onchange="uploadFile('image','4')" id="image" accept=".jpeg,.jpg,.png" class="inputfile inputfile-6" data-multiple-caption="{count} files selected" multiple />
+                                        <label for="image"><span></span> <strong><i class="fa fa-cloud-upload" ></i> انتخاب فایل</strong></label>
+
+                                    </div>
+
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 form-group">
+
+
+                                <span id="tagimage">
+<input id="imagePath" value="" type="hidden" class="form-control">
+</span>
+
+
+
+
+                                    </div>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-md-2  form-group">
+                                        <label >&nbsp;</label>
+
+                                        <button data-mid="q" type="button" id="sendBrand" class="form-control btn btn-success">ارسال</button>
+                                        <button  type="button" id="newcase" style="display: none"  class="form-control btn btn-warning">انصراف</button>
+
+                                    </div>
+                                </div>
+                                <div class="ln_solid"></div>
+                                <div class="row"  align="center" id="alertmsg" style="color: red; height: 40px" ></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="box-header table-title">
+                            <h3 class="box-title">لیست برندها  ، تعداد <%- brands.length %></h3>
+                        </div>
+                        <div id="menus">
+                            <table id="list" class="table table-striped table-bordered datatable dt-responsive">
+                                <thead>
+                                <tr>
+                                    <th>عنوان</th>
+                                    <th>عنوان لاتین</th>
+                                    <th>تاریخ ثبت</th>
+                                    <th>تاریخ ویرایش</th>
+                                    <th>عملیات</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <% for(i=0 ; i<brands.length;i++) { %>
+                                <tr>
+                                    <td><%- brands[i].title%></td>
+                                    <td><%- brands[i].en_title%></td>
+                                    <td><%- jDate.jDate(brands[i].created_at) %></td>
+                                    <td><%- jDate.jDate(brands[i].updated_at) %></td>
+                                    <td><div class="btn-group">
+
+                                            <button type="button" title="ویرایش" onclick="$('html, body').animate({ scrollTop: 0 }, 'slow');editItem('<%- brands[i].id%>','<%- brands[i].title%>','<%- brands[i].en_title%>','<%- brands[i].logo%>');" class="btn btn-info"><i class="fa fa-edit"></i></button>
+
+                                        </div></td>
+                                </tr>
+
+
+                                <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <%- include ../../panel/layouts/footer.ejs %>
+    </div>
+</div>
+<div id="lock_screen">
+    <table>
+        <tr>
+            <td>
+                <div class="clock"></div>
+                <span class="unlock">
+                    <span class="fa-stack fa-5x">
+                      <i class="fa fa-square-o fa-stack-2x fa-inverse"></i>
+                      <i id="icon_lock" class="fa fa-lock fa-stack-1x fa-inverse"></i>
+                    </span>
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<%- include ../../panel/layouts/scripts.ejs %>
+<div id="reload" style="display:none;"></div>
+<div id="uploading" class="uploading"></div>
+<div class="uploadLoadingImg">
+    لطفا تا بارگذاری کامل فایل، منتظر بمانید
+
+</div>
+<div id="loading" style="display: none; position: fixed; top: 80px; left: 38%; width:19%; height: 40px; background: #fff0ff; padding: 6px; text-align: center">
+    <h4 class="modal-title">در حال دریافت اطلاعات</h4>
+</div>
+<script>
+
+    function uploadFile(inputId,mimeType) {
+        var file  = $('#'+inputId).prop('files')[0];
+        if (file){
+            var form_data = new FormData();
+            form_data.append('inputId', inputId);
+            form_data.append('file', file);
+            form_data.append('mimeType', mimeType);
+
+            $('.uploading').fadeIn(100);
+            $('.uploadLoadingImg').fadeIn(100);
+            $.ajax({
+                url: '/uploading',
+                data: form_data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                type: 'POST',
+                success :function(data){
+                    $('.uploading').fadeOut(100);
+                    $('.uploadLoadingImg').fadeOut(100);
+                    $('#tag'+inputId).html(data);
+
+
+                    //$('#bg').fadeOut(100);
+
+                }});
+        }
+
+    }
+    function deleteUploadedFile(userfile,inputId) {
+
+        $.post('/deleteUploaded', {
+                fileName        : userfile,
+                inputId         : inputId,
+            },
+            function(data){
+
+                $('#tag'+inputId).html(data);
+                $('#'+inputId).html('');
+            });
+
+    }
+
+    function editItem(id,title,en_title,logo){
+        $('#title').val(title);
+        $('#en_title').val(en_title);
+        $('#tagimage').html('<a href="/'+logo+'" target="_blank" >\n' +
+            '    <img height="90px" width="90px" src="/'+logo+'" class="user-image">\n' +
+            '</a>\n' +
+            '<input id="imagePath" type="hidden" value="'+logo+'">');
+        $('#sendBrand').data( "mid", id );
+        $('#newcase').css('display','block');
+
+    }
+    $('#newcase').click(function () {
+        $('#title').val('');
+        $('#en_title').val('');
+        $('#tagimage').html('');
+        $('#image').val('');
+        $('#imagePath').val('');
+        $('#sendBrand').data( "mid", 'q' );
+        $('#newcase').css('display','none');
+
+    });
+    $('#sendBrand').click(function () {
+        $('#sendBrand').prop('disabled', true);
+        title = $('#title').val();
+        en_title = $('#en_title').val();
+        logo  = $('#imagePath').val();
+        mid = $('#sendBrand').data( "mid");
+        if (title == ''){
+
+            $('#alertmsg').html('عنوان برند نمیتواند خالی باشد');
+            $('#sendBrand').prop('disabled', false);
+            return false;
+        }
+        else if (en_title == ''){
+
+            $('#alertmsg').html('عنوان لاتین برند نمیتواند خالی باشد');
+            $('#sendBrand').prop('disabled', false);
+            return false;
+        }
+        else if (logo == ''){
+
+            $('#alertmsg').html('لوگوی برند نمیتواند خالی باشد');
+            $('#sendBrand').prop('disabled', false);
+            return false;
+        }
+        else {
+            $('#wait').fadeIn(100);
+            $('#alertmsg').html('در حال ارسال');
+            $('#sendBrand').prop('disabled', true);
+
+            $.ajax({
+                url: 'createUpdateBrand',
+                data: {
+                    title       : title,
+                    en_title    : en_title,
+                    logo        : logo,
+                    mid         : mid,
+                },
+                method: 'POST',
+                success :function(data){
+
+                    $('#panelContent').html(data);
+                    $('#sendBrand').prop('disabled', false);
+                    $('#loading').fadeOut(100);
+                    new PNotify({
+                        title: 'عملیات موفق',
+                        text: 'اطلاعات برند، با موفقیت ثبت/ویرایش شد',
+                        type: 'success',
+                        styling: 'bootstrap3'
+                    });
+
+                    //$('#bg').fadeOut(100);
+
+                }});
+
+
+
+        }
+    });
+    $('#list').dataTable({
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Persian.json"},
+        "pageLength": 50,
+        "fixedHeader": {
+            header: true,
+        },
+        "lengthMenu": [[10, 25, 50, 100,200,300,500,5000], [10, 25, 50, 100, 200, 300, 500, 5000]],
+        "order": [[ 0, 'asc' ]]
+
+    });
+</script>
+
+</body>
+</html>

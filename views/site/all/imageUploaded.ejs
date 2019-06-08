@@ -1,0 +1,9 @@
+<a href="javascript:void(0)" onclick="deleteUploadedFile('<%- userFile %>','<%- inputId %>');" class="btn btn-danger" title="حذف"  >
+    <i  class="fa fa-recycle"></i>
+</a>
+<br>
+
+<a href="/<%- userFile %>" target="_blank" >
+    <img height="90px" width="90px" src="/<%- userFile %>" class="user-image">
+</a>
+<input id="<%- inputId %>Path" type="hidden" value="<%- userFile %>">

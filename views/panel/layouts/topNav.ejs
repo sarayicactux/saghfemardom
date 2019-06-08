@@ -1,0 +1,79 @@
+<div class="top_nav hidden-print">
+    <div class="nav_menu">
+        <nav>
+            <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+            </div>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li class="">
+                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
+                       aria-expanded="false">
+                        <%= user.name + ' ' + user.family %>
+                        <span class=" fa fa-angle-down"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-usermenu pull-right">
+
+                        <li><a href="#" data-toggle="modal" data-target="#modal-changePass">تغییر رمز ورود</a></li>
+                        <li><a href="<%- host %>/panel/logOut"><i class="fa fa-sign-out pull-right"></i> خروج</a></li>
+                    </ul>
+                </li>
+
+
+            </ul>
+        </nav>
+    </div>
+</div>
+<div class="modal fade" id="modal-changePass">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">تغییر رمز ورود</h4>
+            </div>
+            <div class="modal-body">
+
+                <form class="form-horizontal">
+                    <div class="box-body" id="changePassBox">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">رمز قبلی</label>
+
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" id="oldPass" placeholder="رمز عبور قبلی">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword3" class="col-sm-2 control-label">رمز جدید</label>
+
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" id="newPass" placeholder="رمز عبور جدید">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword3" class="col-sm-2 control-label">تکرار </label>
+
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" id="conNewPass" placeholder="تکرار رمز عبور جدید">
+                            </div>
+                        </div>
+                        <div class="modal-footer" align="center" id="alertMsg" style="color: red">
+
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+
+                    <!-- /.box-footer -->
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">بستن</button>
+                <button type="button" class="btn btn-primary" id="changePass">ذخیره</button>
+                <span style="display: none" class="control-label" id="wait">لطفا کمر صبر کنید</span>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
