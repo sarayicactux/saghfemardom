@@ -9,6 +9,7 @@
         <!-- menu profile quick info -->
         <div class="profile clearfix">
             <div class="profile_pic">
+
                 <!--<img src="/<%= user.img %>" alt="..." class="img-circle profile_img">-->
             </div>
             <div class="profile_info">
@@ -28,7 +29,33 @@
             </div>
             <div class="menu_section">
                 <ul class="nav side-menu">
+                    <% if (fullAccess){%>
+                    <li><a><i class="fa fa-users"></i> مدیریت سطوح دسترسی <span
+                                    class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
 
+                            <li><a>خودرو<span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li class="sub_menu"><a href="<%- host %>/panel/admin/users">کاربران</a></li>
+                                    <li class="sub_menu"><a href="<%- host %>/panel/admin/roles">نقشها</a></li>
+
+                                </ul>
+                            </li>
+
+                            </li>
+                            <li><a>کسب و کار<span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li class="sub_menu"><a href="<%- host %>/panel/admin/business/1">کسب و کار</a></li>
+                                    <li class="sub_menu"><a href="<%- host %>/panel/admin/business/2">کارگاه های تولیدی</a></li>
+                                    <li class="sub_menu"><a href="<%- host %>/panel/admin/business/3">کارگاه های صنعتی</a></li>
+                                </ul>
+                            </li>
+
+                            </li>
+
+                        </ul>
+                    </li>
+                    <% } %>
                     <li><a><i class="fa fa-list-alt"></i> اطلاعات پایه سیستم<span
                                     class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
@@ -53,11 +80,27 @@
                                     <li class="sub_menu"><a href="<%- host %>/panel/admin/business/3">کارگاه های صنعتی</a></li>
                                 </ul>
                             </li>
-
+                            <li class="sub_menu"><a href="<%- host %>/panel/admin/static/list">محتوای ثابت</a>
                             </li>
 
                         </ul>
                     </li>
+                        <li><a><i class="fa fa-newspaper-o"></i>اخبار<span
+                                        class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                                <li class="sub_menu"><a href="<%- host %>/panel/admin/news/add">خبر جدید</a>
+                                <li class="sub_menu"><a href="<%- host %>/panel/admin/news/list">لیست اخبار</a>
+
+                            </ul>
+                        </li>
+                        <li><a><i class="fa fa-question-circle-o"></i>پرسش های متداول<span
+                                        class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                                <li class="sub_menu"><a href="<%- host %>/panel/admin/faq/add">مورد جدید</a>
+                                <li class="sub_menu"><a href="<%- host %>/panel/admin/faq/list">لیست پرسش های متداول</a>
+
+                            </ul>
+                        </li>
                 </ul>
             </div>
 

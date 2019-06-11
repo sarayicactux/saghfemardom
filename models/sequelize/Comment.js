@@ -2,8 +2,8 @@ var sequelize = require('../../configs/seq-config');
 const   Sequelize = require('sequelize');
 
 const Comment = sequelize.define('Comment', {
-        user_id: Sequelize.INTEGER,
-        content_id: Sequelize.INTEGER,
+        people_id: Sequelize.INTEGER,
+        adv_id: Sequelize.INTEGER,
         parent_id: Sequelize.INTEGER,
         name: Sequelize.STRING,
         email: Sequelize.STRING,

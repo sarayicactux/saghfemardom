@@ -20,6 +20,12 @@ function daily(req,res,next){
           prB = []
           for(i=0;i<cities.length;i++){
                 if(cities[i].pro_id == 0){
+                    city = {
+                        id     : 9999,
+                        pro_id : cities[i].id,
+                        name   : 'همه شهرهای استان'
+
+                    };
                    pro= {
                     id     : cities[i].id,
                     pro_id : cities[i].pro_id,
@@ -27,6 +33,7 @@ function daily(req,res,next){
                     cities : [],
                    };
                    pros.push(pro);
+                    pros[pros.length - 1].cities.push(city) ;
                    prB.push(cities[i].id)
                 }
                 else {

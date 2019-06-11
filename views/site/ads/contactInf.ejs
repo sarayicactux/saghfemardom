@@ -1,0 +1,81 @@
+<div class="row ">
+    <div class="col-12 col-md-12 p-1 formPlaceHolder " >
+        <input type="text" dir="ltr" class="form-control border bg-light siteInputs "  value="<%- people.phone %>" name="phone" id="phone" placeholder="  " required>
+        <label for="title">شماره های تماس</label>
+    </div>
+
+
+    <div class="col-12 col-md-12 p-1 formPlaceHolder " >
+        <input type="text" dir="ltr" class="form-control border bg-light siteInputs " value="<%- people.telegram %>"  name="telegram" id="telegram" placeholder="  " required>
+        <label for="title">نشانی تلگرام</label>
+    </div>
+
+    <div class="col-12 col-md-12 p-1 formPlaceHolder " >
+        <input type="text" dir="ltr" class="form-control border bg-light siteInputs" value="<%- people.instagram %>"  name="instagram" id="instagram" placeholder="  " required>
+        <label for="title">نشانی اینستاگرام</label>
+    </div>
+
+
+
+
+
+<div class="col-12  p-1" >
+    <button class="btn mainBtn  btn-sm btn-block" id="updateProfile" > به روز رسانی اطلاعات تماس </button>
+</div>
+</div>
+<link rel="stylesheet" href="<%- host%>/local/css/select2.css">
+<script src="<%- host%>/admin/vendors/select2/dist/js/select2.full.min.js"></script>
+
+<script>
+    $(function () {
+        //Initialize Select2 Elements
+        $('.select2').select2();
+
+
+    })
+   
+    $('#updateProfile').click(function () {
+        $('#updateProfile').prop('disabled', true);
+        phone = $('#phone').val();
+        telegram = $('#telegram').val();
+        instagram = $('#instagram').val();
+
+
+            $('#wait').fadeIn(100);
+            $('#updateProfile').html('در حال ارسال <span class="spinner-border spinner-border-sm mb-1"></span>');
+            $('#updateProfile').prop('disabled', true);
+
+            $.ajax({
+                url: 'updateProfile',
+                data: {
+                    phone         : phone,
+                    telegram      : telegram,
+                    instagram     : instagram,
+                },
+                method: 'POST',
+                success :function(data){
+                    if (data.status){
+                        $('#updateProfile').html('اطلاعات تماس با موفقیت به روز شد');
+                        setTimeout(function () {
+                            window.location.href = "<% host%>/send";
+                        }, 1500);
+
+                    }
+                    else {
+                        $('#updateProfile').html('در ارسال اطلاعات مشکلی وجود دارد، لطفا مجددا تلاش کنید');
+                        setTimeout(function () {
+                            $('#updateProfile').html('تایید');
+                        }, 1300);
+                        $('#updateProfile').prop('disabled', false);
+                    }
+
+                }});
+
+
+
+
+    });
+   
+</script>
+
+</html>

@@ -20,11 +20,26 @@ const CommentLikeDislike    = require('../models/sequelize/CommentLikeDislike');
 const UserLog               = require('../models/sequelize/UserLog');
 const People                = require('../models/sequelize/People');
 const ProCity               = require('../models/sequelize/ProCity');
+const Faq                   = require('../models/sequelize/Faq');
+const StaticContent         = require('../models/sequelize/StaticContent');
+const Modules               = require('../models/sequelize/Module');
+const Role                  = require('../models/sequelize/Role');
+const Permission            = require('../models/sequelize/Permission');
 
 
 
 
 // define relations
+
+Role.hasMany(User,{foreignKey:'role_id'});
+User.belongsTo(Role,{foreignKey:'role_id'});
+
+Modules.hasMany(Permission,{foreignKey:'module_id'});
+Permission.belongsTo(Modules,{foreignKey:'module_id'});
+
+Role.hasMany(Permission,{foreignKey:'role_id'});
+Permission.belongsTo(Role,{foreignKey:'role_id'});
+
 User.hasMany(UserLog,{foreignKey:'user_id'});
 UserLog.belongsTo(User,{foreignKey:'user_id'});
 
@@ -67,6 +82,12 @@ AdvImage.belongsTo(Adv,{foreignKey:'adv_id'});
 People.hasMany(Adv,{foreignKey:'user_id'});
 Adv.belongsTo(People,{foreignKey:'user_id'});
 
+People.hasMany(Comment,{foreignKey:'people_id'});
+Comment.belongsTo(People,{foreignKey:'people_id'});
+
+Adv.hasMany(Comment,{foreignKey:'adv_id'});
+Comment.belongsTo(Adv,{foreignKey:'adv_id'});
+
 Brand1.hasMany(CarAdv,{foreignKey:'brand'});
 CarAdv.belongsTo(Brand1,{foreignKey:'brand'});
 
@@ -101,6 +122,11 @@ Models.PagesLog     = PagesLog;
 Models.Comment      = Comment;
 Models.People       = People;
 Models.ProCity      = ProCity;
+Models.Faq          = Faq;
+Models.StaticContent= StaticContent;
+Models.Modules      = Modules;
+Models.Role         = Role;
+Models.Permission   = Permission;
 Models.CommentLikeDislike     = CommentLikeDislike;
 
 

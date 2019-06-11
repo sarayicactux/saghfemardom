@@ -2,6 +2,7 @@ var sequelize = require('../../configs/seq-config');
 const   Sequelize = require('sequelize');
 
 const User = sequelize.define('user', {
+    role_id: Sequelize.INTEGER,
     username: Sequelize.STRING,
     password: Sequelize.STRING,
     user_id: Sequelize.INTEGER,

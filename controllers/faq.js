@@ -5,7 +5,6 @@ var prInj       = require('../helpers/prInj');
 var jDate       = require('../helpers/jDate');
 var Models      = require('../models/Models');
 var User        = require('../models/User');
-var News        = require('../models/News');
 
 
 module.exports = {
@@ -14,38 +13,24 @@ module.exports = {
 
     add:function (req,res) {
 
-        res.render('panel/news/add');
+        res.render('panel/faq/add');
     },
     create:function (req,res) {
         inputs      = prInj.PrAll(req.body);
 
-        summary     = inputs.summary;
         title       = inputs.title;
-        text        = inputs.text;
-        gr_id       = inputs.gr_id;
-        source      = inputs.source;
-        source_link = inputs.source_link;
-        thumb       = inputs.image;
-        var slug = title;
-        slug = slug.replace(/ /g,'-');
-        slug = slug.replace(/--/g,'-');
+        description = inputs.description;
         now = new Date();
         var created_at = date.format(now, 'YYYY-MM-DD HH:mm:ss');
 
-        var newC = {
-            slug           : slug,
-            gr_id          : gr_id,
+        var faqC = {
             title          : title,
-            text           : text,
-            summary        : summary,
-            source         : source,
-            source_link    : source_link,
-            thumb          : thumb,
+            description    : description,
             created_at     : created_at,
             updated_at     : created_at,
         };
 
-        Models.News.create(newC)
+        Models.Faq.create(faqC)
             .then(function (Nnew) {
 
 
@@ -62,7 +47,7 @@ module.exports = {
     },
     list:function (req,res) {
 
-        Models.News.findAll({
+        Models.Faq.findAll({
             order: [
                 ['id', 'DESC'],
             ],
@@ -70,8 +55,8 @@ module.exports = {
             limit:400,
 
         })
-            .then(function (news) {
-                res.render('panel/news/list',{news:news,jDate:jDate});
+            .then(function (faq) {
+                res.render('panel/faq/list',{faq:faq,jDate:jDate});
             })
             .catch(function (err) {
                 res.json(err);
@@ -79,7 +64,7 @@ module.exports = {
     },
     changeStatus:function (req,res) {
         inputs = prInj.PrAll(req.body);
-        Models.News.update({
+        Models.Faq.update({
                 active:inputs.status
             },
             {
@@ -95,9 +80,9 @@ module.exports = {
     },
     edit:function (req,res) {
         inputs = prInj.PrAll(req.params);
-        Models.News.findByPk(inputs.id)
+        Models.Faq.findByPk(inputs.id)
             .then(function (v) {
-                res.render('panel/news/edit',{v:v});
+                res.render('panel/faq/edit',{v:v});
             })
             .catch(function (err) {
                 console.log(err);
@@ -106,32 +91,22 @@ module.exports = {
     },
     Update:function (req,res) {
         inputs      = prInj.PrAll(req.body);
-        summary     = inputs.summary;
         title       = inputs.title;
-        gr_id       = inputs.gr_id;
-        text        = inputs.text;
-        source      = inputs.source;
-        source_link = inputs.source_link;
-        thumb       = inputs.image;
+        description = inputs.description;
 
         now = new Date();
         var updated_at = date.format(now, 'YYYY-MM-DD HH:mm:ss');
 
 
         var UpdateC = {
-            gr_id          : gr_id,
             title          : title,
-            text           : text,
-            summary        : summary,
-            source         : source,
-            source_link    : source_link,
-            thumb          : thumb,
+            description    : description,
             updated_at     : updated_at,
         };
         var where = {
             where:{id:inputs.id}
         };
-        Models.News.update(UpdateC,
+        Models.Faq.update(UpdateC,
             where)
             .then(function (rowsUpdated) {
                 res.json({status:true});return;

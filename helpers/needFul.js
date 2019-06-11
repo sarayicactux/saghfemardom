@@ -16,6 +16,12 @@ module.exports = {
         return str.join('.');
 
     },
+    menuAccess:function(module_id){
+
+            mod =  modules.indexOf(module_id)
+            return access[mod];
+
+    },
     sendSmsCode:function (mobile) {
 
         var val = Math.floor(1000 + Math.random() * 9000);

@@ -18,10 +18,12 @@ var home            = require('../controllers/home');
 
 router.route('/').get(preCond,dailyJson,hourlyJson,home.index);
 router.route('/sitemap.xml').get(sitemap,home.sitemap);
+router.route('/a/:id').get(preCond,dailyJson,hourlyJson,home.advs);
 router.route('/send').get(checkPeople,preCond,dailyJson,hourlyJson,home.send);
 router.route('/registeAdv').post(dailyJson,checkPeopleAjax,home.registeAdv);
 router.route('/registeCashCar').post(dailyJson,checkPeopleAjax,home.registeCashCar);
 router.route('/registeinstCar').post(dailyJson,checkPeopleAjax,home.registeinstCar);
+router.route('/updateProfile').post(dailyJson,checkPeopleAjax,home.updateProfile);
 router.route('/chooseAdvType').post(dailyJson,hourlyJson,checkPeopleAjax,home.chooseAdvType);
 router.route('/citiesList').post(dailyJson,home.citiesList);
 router.route('/modelsList').post(home.modelsList);
@@ -32,7 +34,7 @@ router.route('/logOut').get(home.logOut);
 router.route('/register').get(preCond,dailyJson,hourlyJson,home.register);
 router.route('/sendRcode').post(home.sendRcode);
 router.route('/register').post(preCond,dailyJson,hourlyJson,home.registerPeople);
-router.route('/my').get(checkPeople,preCond,dailyJson,hourlyJson,home.my);
+router.route('/my').get(checkPeople,preCond,dailyJson,hourlyJson,peopleInf,home.my);
 router.route('/cities/:id').get(home.cities);
 
 router.route('/siteUploadImage').post(type,home.siteUploadImage);
@@ -47,15 +49,121 @@ router.route('/deleteUploaded').post(home.deleteUploaded);
 
 //export this router to use in our index.js
 
+function peopleInf(req,res,next) {
+    if (req.session.people){
+        people_id = req.session.people.id;
+        Models.People.findOne(
+            { where:{ id : people_id},
+            include:[
+                Models.Comment
+
+            ]
+        }).then(function (peopleInf) {
+            res.peopleInf = peopleInf;
+            Models.Adv.findAll({
+                where: {
+                    user_id : people_id
+                },
+                include:[
+                    Models.BusinessGr,
+                    Models.AdvImage,
+                    Models.Comment
+                ]
+            }).then(function (advs) {
+                res.peopleAdvs = advs;
+                Models.CarAdv.findAll({
+                    where: {
+                        user_id : people_id
+                    },
+                    include:[
+                        Models.Brand1,
+                        Models.Car,
+                        Models.CarAdvImage
+                    ]
+                }).then(function (carAdvs) {
+                    res.peopleCarAdvs = carAdvs;
+                    next();
+                });
+            });
+
+
+        })
+
+    }
+
+}
 function preCond(req,res,next) {
     people = true
     if (!req.session.people){
         people = false;
     }
     res.people = people;
-    next();
+    Models.News.findAll({
+        where:{
+            active : 1,
+            gr_id : 2,
+        },
+        order:[
+            ['id','desc']
+        ],
+        offset:0,
+        limit:20,
+    }).then(function (news) {
+        res.saghfNews = news;
+        Models.News.findAll({
+            where:{
+                active : 1,
+                gr_id : 1,
+            },
+            order:[
+                ['id','desc']
+            ],
+            offset:0,
+            limit:20,
+        }).then(function (news) {
+            res.carNews = news;
+
+            Models.CarAdv.findAll({
+                where:{
+                    status : 1,
+                },
+                order:[
+                    ['id','desc']
+                ],
+                offset:0,
+                limit:20,
+                include:[
+                    Models.CarAdvImage
+                ]
+            }).then(function (lastCarAdv) {
+                res.lastCarAdv = lastCarAdv;
+                Models.Car.findAll({
+                    where:{
+                        show_price : 1,
+                    },
+                    order:[
+                        ['updated_at','desc']
+                    ],
+                    offset:0,
+                    limit:50,
+                }).then(function (carPrice) {
+                    res.carPrice = carPrice;
+                    next();
+                });
+
+
+
+            }).catch(function (err) {
+
+            });
+
+
+        });
+    });
+
 }
 function checkPeopleAjax(req,res,next) {
+
     if(!req.session.people){
         res.json({status:false});return
     }
@@ -63,10 +171,8 @@ function checkPeopleAjax(req,res,next) {
 }
 function checkPeople(req,res,next) {
     if(!req.session.people){
-        res.render('site/people/login',{
-            error: '',
-            res:res
-        });return
+        res.redirect('/login')
+        return;
     }
     next();
 }

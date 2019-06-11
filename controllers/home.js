@@ -13,7 +13,6 @@ var needFul = require('../helpers/needFul');
 var ProCity         = require('../models/ProCity');
 var Models          = require('../models/Models');
 const Password      = require("node-php-password");
-
 //   GpsgzN6jRm%6#h%Wqfuo3U
 
 //  mysql root password     pn3%c6xC70ATpbCgfNUmn$eXzfHRzXJEjmY8!Z
@@ -50,7 +49,55 @@ module.exports = {
         });
     },
     index: function (req,res) {
-        res.render('site/index',{res:res});
+        Models.Adv.findAll({
+            where:{
+                status: 1
+            },
+            order:[
+                ['id','desc']
+            ],
+            offset:0,
+            limit:12
+        }).then(function (advs) {
+            res.render('site/index',{advs:advs,res:res,jDate:jDate,needFul:needFul});
+
+        })
+    },
+    advs: function (req,res) {
+        business_type_id = prInj.PrInj(req.params.id);
+        Models.Adv.findAll({
+            where:{
+                status: 1,
+                business_type : business_type_id
+            },
+            order:[
+                ['id','desc']
+            ],
+            offset:0,
+            limit:12
+        }).then(function (advs) {
+            Models.BusinessType.findOne({
+                where:{
+                    id : business_type_id
+                },
+                include:[
+                    Models.BusinessGr
+                ]
+            }).then(function (bT) {
+                if (bT.length != 0){
+                    res.render('site/pages/advs',{bT:bT,advs:advs,res:res,jDate:jDate,needFul:needFul});
+
+                }
+                else {
+                    res.render('errors/404');
+                }
+            })
+
+        }).catch(function (err) {
+            console.log(err);
+            res.render('errors/404');
+        })
+
     },
     cities:function (req,res) {
         pro_id = req.params.id;
@@ -66,9 +113,10 @@ module.exports = {
     },
     send:function(req,res){
 
-            res.render('site/ads/chooseType',{res:res});
+            res.render('site/ads/chooseType',{res:res,jDate:jDate,needFul:needFul});
 
     },
+
     citiesList:function(req,res){
             pro_r = req.body.pro;
             allPro = res.daily.proCity;
@@ -103,13 +151,17 @@ module.exports = {
                 advType = prInj.PrInj(req.body.advType);
                 if (advType == '1'){
 
-                    res.render('site/ads/business',{res:res});
+                    res.render('site/ads/business',{res:res,jDate:jDate,needFul:needFul});
                 }
                 else if (advType == '2'){
-                    res.render('site/ads/cashCar',{res:res});
+                    res.render('site/ads/cashCar',{res:res,jDate:jDate,needFul:needFul});
                 }
                 else if (advType == '3'){
-                    res.render('site/ads/instCar',{res:res});
+                    res.render('site/ads/instCar',{res:res,jDate:jDate,needFul:needFul});
+                }
+                else if (advType == '4'){
+                    people = req.session.people;
+                    res.render('site/ads/contactInf',{people:people,res:res,jDate:jDate,needFul:needFul});
                 }
                 else {
                     res.json('');
@@ -149,7 +201,7 @@ module.exports = {
                     for(i = 0;i<advImgs.length;i++){
                                 newAdvImage(adv_id,advImgs[i]);
                     }
-                    res.json({status:true});return;
+                    res.json({status:true});
                     function newAdvImage(adv_id,imgPath){
                                 newImg = {
                                     adv_id : adv_id,
@@ -198,7 +250,7 @@ module.exports = {
                     for(i = 0;i<advImgs.length;i++){
                                 newCarAdvImage(adv_id,advImgs[i]);
                     }
-                    res.json({status:true});return;
+                    res.json({status:true});
                     function newCarAdvImage(adv_id,imgPath){
                                 newImg = {
                                     adv_id : adv_id,
@@ -252,7 +304,7 @@ module.exports = {
                     for(i = 0;i<advImgs.length;i++){
                                 newCarAdvImage(adv_id,advImgs[i]);
                     }
-                    res.json({status:true});return;
+                    res.json({status:true});
                     function newCarAdvImage(adv_id,imgPath){
                                 newImg = {
                                     adv_id : adv_id,
@@ -268,6 +320,30 @@ module.exports = {
             console.log(err);
                 res.json( {status: false});return;
             });
+    },
+    updateProfile:function(req,res){
+
+        var form        = req.body;
+        Models.People.update({
+                phone: prInj.PrInj(form.phone),
+                telegram: prInj.PrInj(form.telegram),
+                instagram: prInj.PrInj(form.instagram)
+        }
+        ,{
+         where:{
+             id : req.session.people.id
+         }
+         }
+            ).then(function (nProfile) {
+                req.session.people.phone    = prInj.PrInj(form.phone);
+                req.session.people.telegram = prInj.PrInj(form.telegram);
+                req.session.people.instagram= prInj.PrInj(form.instagram);
+            res.json({status:true});return;
+
+        }).catch(function (err) {
+            console.log(err);
+            res.json({status:false});return;
+        })
     },
     checkLogin:function(req,res){
         var pass     = prInj.PrInj(req.body.password);
@@ -303,10 +379,10 @@ module.exports = {
 
             now = new Date();
             req.session.regRq = Password.hash(now+'k');
-            res.render('site/people/register',{res:res});
+            res.render('site/people/register',{res:res,jDate:jDate,needFul:needFul});
         }
         else {
-            res.render('site/ads/chooseType',{res:res});
+            res.render('site/ads/chooseType',{res:res,jDate:jDate,needFul:needFul});
         }
 
     },
@@ -385,7 +461,39 @@ module.exports = {
     },
     my:function(req,res){
 
-            res.render('site/ads/my',{res:res});
+        peopleInf = res.peopleInf;
+        advs      = res.peopleAdvs;
+        carAdvs   = res.peopleCarAdvs;
+        accAdv  = [];
+        nAccAdv = [];
+        accCar  = [];
+        nAccCar = [];
+        for (i=0;i<advs;i++){
+            if (advs[i].status == 1){
+                accAdv.push(advs[i]);
+            }
+            else {
+                nAccAdv.push(advs[i]);
+            }
+        }
+        for (i=0;i<carAdvs;i++){
+            if (carAdvs[i].status == 1){
+                accCar.push(carAdvs[i]);
+            }
+            else {
+                nAccCar.push(carAdvs[i]);
+            }
+        }
+            res.render('site/ads/my',{
+                res:res,
+                accAdv  :accAdv,
+                nAccAdv :nAccAdv,
+                accCar  :accCar,
+                nAccCar :nAccCar,
+                jDate:jDate,
+                needFul:needFul
+
+            });
 
     },
     siteUploadImage:function(req,res){
@@ -499,11 +607,13 @@ module.exports = {
         if (!req.session.people){
             res.render('site/people/login',{
                 error: '',
-                res:res
+                res:res,
+                jDate:jDate,
+                needFul:needFul
             });
         }
         else {
-            res.render('site/ads/chooseType',{res:res});
+            res.render('site/ads/chooseType',{res:res,jDate:jDate,needFul:needFul});
         }
     },
     logOut:function(req,res){

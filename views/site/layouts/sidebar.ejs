@@ -7,138 +7,30 @@
         </div>
         <div class="row  mt-1">
             <div class="col-md-12 ">
-                <div class="row">
-                    <div class="col-6">
-                        <span class="carSideBarTitle">  پورشه باکستر مدل 2014 یکسال بیمه ثالث و بدنه </span><br>
-                        <span class="carSideBarCity">تهران</span><br>
-                        <span class="carSideBarTime">لحظاتی پیش</span>
+                <%
+                carAdv = res.lastCarAdv;
+                for (i=0;i<carAdv.length; i++){
+                imageA = carAdv[i].CarAdvImages[0];
+                %>
+                <a class="custom-link" href="<%- host+"/cd/"+carAdv[i].id%>">
+                    <div class="row">
+
+                        <div class="col-6">
+                            <span class="carSideBarsType"><%if (carAdv[i].selling_type == 2){%>فروش اقساطی<% } else { %>فروش نقدی<% } %></span><br>
+                            <span class="carSideBarTitle"> <%- carAdv[i].title %>   </span><br>
+                            <span class="carSideBarCity"><%- carAdv[i].pro_name %></span><br>
+                            <span class="carSideBarTime"><%- jDate.jDate( carAdv[i].actived_at) %></span>
+                        </div>
+                        <div class="col-6">
+                            <img class="sideBarImage" src="<%- host + '/' +imageA.img_url %>">
+                        </div>
+
                     </div>
-                    <div class="col-6">
-                        <img src="car1.jpg" style="width: 100%">
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-6">
-                        <span class="carSideBarTitle">  پورشه باکستر مدل 2014 یکسال بیمه ثالث و بدنه </span><br>
-                        <span class="carSideBarCity">تهران</span><br>
-                        <span class="carSideBarTime">لحظاتی پیش</span>
-                    </div>
-                    <div class="col-6">
-                        <img src="car2.jpg" style="width: 100%">
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-6">
-                        <span class="carSideBarTitle">  پورشه باکستر مدل 2014 یکسال بیمه ثالث و بدنه </span><br>
-                        <span class="carSideBarCity">شیراز</span><br>
-                        <span class="carSideBarTime">یک روز پیش</span>
-                    </div>
-                    <div class="col-6">
-                        <img src="car3.jpg" style="width: 100%">
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-6">
-                        <span class="carSideBarTitle">  پورشه باکستر مدل 2014 یکسال بیمه ثالث و بدنه </span><br>
-                        <span class="carSideBarCity">مشهد</span><br>
-                        <span class="carSideBarTime">دو ریز پیش</span>
-                    </div>
-                    <div class="col-6">
-                        <img src="car4.jpg" style="width: 100%">
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-6">
-                        <span class="carSideBarTitle">  پورشه باکستر مدل 2014 یکسال بیمه ثالث و بدنه </span><br>
-                        <span class="carSideBarCity">تهران</span><br>
-                        <span class="carSideBarTime">لحظاتی پیش</span>
-                    </div>
-                    <div class="col-6">
-                        <img src="car1.jpg" style="width: 100%">
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-6">
-                        <span class="carSideBarTitle">  پورشه باکستر مدل 2014 یکسال بیمه ثالث و بدنه </span><br>
-                        <span class="carSideBarCity">تهران</span><br>
-                        <span class="carSideBarTime">لحظاتی پیش</span>
-                    </div>
-                    <div class="col-6">
-                        <img src="car2.jpg" style="width: 100%">
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-6">
-                        <span class="carSideBarTitle">  پورشه باکستر مدل 2014 یکسال بیمه ثالث و بدنه </span><br>
-                        <span class="carSideBarCity">شیراز</span><br>
-                        <span class="carSideBarTime">یک روز پیش</span>
-                    </div>
-                    <div class="col-6">
-                        <img src="car3.jpg" style="width: 100%">
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-6">
-                        <span class="carSideBarTitle">  پورشه باکستر مدل 2014 یکسال بیمه ثالث و بدنه </span><br>
-                        <span class="carSideBarCity">مشهد</span><br>
-                        <span class="carSideBarTime">دو ریز پیش</span>
-                    </div>
-                    <div class="col-6">
-                        <img src="car4.jpg" style="width: 100%">
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-6">
-                        <span class="carSideBarTitle">  پورشه باکستر مدل 2014 یکسال بیمه ثالث و بدنه </span><br>
-                        <span class="carSideBarCity">تهران</span><br>
-                        <span class="carSideBarTime">لحظاتی پیش</span>
-                    </div>
-                    <div class="col-6">
-                        <img src="car1.jpg" style="width: 100%">
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-6">
-                        <span class="carSideBarTitle">  پورشه باکستر مدل 2014 یکسال بیمه ثالث و بدنه </span><br>
-                        <span class="carSideBarCity">تهران</span><br>
-                        <span class="carSideBarTime">لحظاتی پیش</span>
-                    </div>
-                    <div class="col-6">
-                        <img src="car2.jpg" style="width: 100%">
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-6">
-                        <span class="carSideBarTitle">  پورشه باکستر مدل 2014 یکسال بیمه ثالث و بدنه </span><br>
-                        <span class="carSideBarCity">شیراز</span><br>
-                        <span class="carSideBarTime">یک روز پیش</span>
-                    </div>
-                    <div class="col-6">
-                        <img src="car3.jpg" style="width: 100%">
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-6">
-                        <span class="carSideBarTitle">  پورشه باکستر مدل 2014 یکسال بیمه ثالث و بدنه </span><br>
-                        <span class="carSideBarCity">مشهد</span><br>
-                        <span class="carSideBarTime">دو ریز پیش</span>
-                    </div>
-                    <div class="col-6">
-                        <img src="car4.jpg" style="width: 100%">
-                    </div>
-                </div>
-                <hr>
+                </a>
+                    <hr>
+                <% } %>
+
+
             </div>
 
 

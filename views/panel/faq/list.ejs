@@ -35,16 +35,14 @@ des:"کنترل پنل مدیریت" ,
                     <!--</div>-->
                     <div class="x_panel">
                         <div class="box-header table-title">
-                            <h3 class="box-title">لیست  خبر ، تعداد <%- news.length %></h3>
+                            <h3 class="box-title">لیست  پرسشهای متداول ، تعداد <%- faq.length %></h3>
                         </div>
                         <table id="list" class="table table-striped table-bordered dt-responsive nowrap"
                                cellspacing="0" width="100%">
                             <thead>
                             <tr>
                                 <th>عنوان</th>
-                                <th>دسته بندی</th>
                                 <th>وضعیت</th>
-                                <th>تعداد بازدید</th>
                                 <th>تاریخ ثبت</th>
                                 <th>تاریخ ویرایش</th>
                                 <th>عملیات</th>
@@ -53,20 +51,13 @@ des:"کنترل پنل مدیریت" ,
 
 
                             <tbody>
-                            <% for(i=0;i<news.length;i++) {
-                                item = news[i];
+                            <% for(i=0;i<faq.length;i++) {
+                                item = faq[i];
 
                                %>
                                 <tr>
                                     <td><%= item.title %></td>
-                                    <td> <% if(item.gr_id == 1) { %>
-                                             خبرهای خودرویی
-                                        <% } else { %>
-                                             خبرهای سقف مردم
-                                        <% } %>
-
-                                    </td>
-                                    <td>
+                                    <th>
                                         <div id="status<%- item.id %>">
                                             <% if(item.active == 1) { %>
                                             <button onclick="changeStatus('<%- item.id %>','0')" class="btn btn-info btn-xs"><i class="fa fa-unlock"></i></button>
@@ -75,8 +66,7 @@ des:"کنترل پنل مدیریت" ,
                                             <% } %>
                                         </div>
 
-                                    </td>
-                                    <td class="fa-num"><%- item.visitcnt %></td>
+                                    </th>
                                     <td class="fa-num"><%- jDate.jDate(item.created_at) %></td>
                                     <td class="fa-num"><%- jDate.jDate(item.updated_at) %></td>
                                     <td><div class="btn-group">

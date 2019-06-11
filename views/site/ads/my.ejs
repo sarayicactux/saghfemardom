@@ -37,33 +37,19 @@ pageUrl:"https://saghfemardom.ir"
                 <div class="col-md-12 shadow-sm border pb-1  bg-white text-dark">
                     <div class="p-2 row p-0">
                         <div class="col-12 m-0 p-0">
-                            <h2  class="boxesWline linkColor"> ارسال آگهی </h2>
+                            <h2  class="boxesWline linkColor"> سقف من </h2>
                         </div>
                     </div>
                     <div class="row  mt-1">
                         <div class="col-md-12">
-                            <span id="advPlace">
-                                <div class="row ">
 
-                                <div class="col-12 col-md-12 p-1" >
-                                    <div class="list-group">
-  <button  type="button"  class="list-group-item list-group-item-action chooseAdvType" data-type="1">کسب و کار</button>
-  <button  type="button"  class="list-group-item list-group-item-action chooseAdvType" data-type="2">خودرو نقدی</button>
-  <button  type="button"  class="list-group-item list-group-item-action chooseAdvType" data-type="3">خودرو اقساطی</button>
-  <button  type="button"  class="list-group-item list-group-item-action chooseAdvType bg-primary text-white" data-type="4">به روز رسانی اطلاعات تماس</button>
-
-</div>
-                                </div>
-
-                                </div>
-                            </span>
 
                         </div>
 
 
 
 
-                              </div>
+                    </div>
                 </div>
 
             </div>
@@ -114,38 +100,5 @@ pageUrl:"https://saghfemardom.ir"
     span.onclick = function() {
         modal.style.display = "none";
     }
-</script>
-<script>
-
-    $('.chooseAdvType').click(function () {
-        advType = $(this).data('type');
-
-
-            $(this).html('در حال دریافت اطلاعات <span class="spinner-border spinner-border-sm mb-1"></span>');
-            $('.chooseAdvType').prop('disabled', true);
-
-            $.ajax({
-                url: 'chooseAdvType',
-                data: {
-                    advType      : advType,
-                },
-                method: 'POST',
-                success :function(data){
-                    if (data.length > 5){
-                          $('#advPlace').html(data);
-                    }
-                    else {
-                        window.location.href = "<% host%>/my";
-                    }
-
-
-                }});
-
-
-
-
-    });
-
-
 </script>
 </html>

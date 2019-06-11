@@ -8,7 +8,8 @@
         <div class="row  mt-0 pb-2">
             <div class="col-md-12">
                 <div align="center ">
-                    <span class="text-success fa fa-circle pr-1">&nbsp;</span>به روز رسانی شنبه 4 خرداد
+                    <% carPrice = res.carPrice; %>
+                    <span class="text-success fa fa-circle pr-1">&nbsp;</span>به روز شده در <%- jDate.jDate(carPrice[0].updated_at)%>
                 </div>
             </div>
 
@@ -17,87 +18,20 @@
         </div>
         <div class="row  mt-1  border-top">
             <div class="col-md-12">
+                <% for (i=0;i<carPrice.length;i++){ %>
+                <a class="custom-link" href="<%- host+"/ca/"+carPrice[i].id%>">
                 <div class="row">
-                    <div class="col-6 border-bottom  border-left p-2" >
-                        <div align="center ">پراید</div>
+                    <div class="col-6 border-bottom  border-left p-2 text-dark" >
+                        <div align="center "><%- carPrice[i].model %></div>
 
                     </div>
-                    <div class="col-6 border-bottom ">
-                        <div align="center ">37,000,000</div>
+                    <div class="col-6 border-bottom  p-2 text-dark">
+                        <div align="center "><%- needFul.Commafy(carPrice[i].price )%></div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-6 border-bottom  border-left p-2" >
-                        <div align="center ">سمند EF7</div>
+                </a>
+                <% } %>
 
-                    </div>
-                    <div class="col-6 border-bottom ">
-                        <div align="center ">67,000,000</div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6 border-bottom  border-left p-2" >
-                        <div align="center ">پژو پارس سال</div>
-
-                    </div>
-                    <div class="col-6 border-bottom ">
-                        <div align="center ">88,000,000</div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6 border-bottom  border-left p-2" >
-                        <div align="center ">پراید</div>
-
-                    </div>
-                    <div class="col-6 border-bottom ">
-                        <div align="center ">37,000,000</div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6 border-bottom  border-left p-2" >
-                        <div align="center ">سمند EF7</div>
-
-                    </div>
-                    <div class="col-6 border-bottom ">
-                        <div align="center ">67,000,000</div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6 border-bottom  border-left p-2" >
-                        <div align="center ">پژو پارس سال</div>
-
-                    </div>
-                    <div class="col-6 border-bottom ">
-                        <div align="center ">88,000,000</div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6 border-bottom  border-left p-2" >
-                        <div align="center ">پراید</div>
-
-                    </div>
-                    <div class="col-6 border-bottom ">
-                        <div align="center ">37,000,000</div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6 border-bottom  border-left p-2" >
-                        <div align="center ">سمند EF7</div>
-
-                    </div>
-                    <div class="col-6 border-bottom ">
-                        <div align="center ">67,000,000</div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6 border-bottom  border-left p-2" >
-                        <div align="center ">پژو پارس سال</div>
-
-                    </div>
-                    <div class="col-6 border-bottom ">
-                        <div align="center ">88,000,000</div>
-                    </div>
-                </div>
             </div>
 
 
@@ -113,73 +47,24 @@
             </div>
         </div>
         <div class="row  mt-1">
+            <%
+            carNews = res.carNews;
+            for (i=0;i<carNews.length;i++){
+            %>
             <div class="col-md-12 sideBarBox">
+
                 <div class="row">
                     <div class="col-1 " >
                         <span class="linkT">&blacksquare;</span>
 
                     </div>
                     <div class="col-10 border-bottom sideBarLink">
-                        <a href="#" class="custom-link text-dark" >احتمال کاهش قیمت خودروی های داخلی </a>
+                        <a href="<%- host+'/news/'+carNews[i].id%>" class="custom-link text-dark" ><%- carNews[i].title %></a>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-12 sideBarBox">
-                <div class="row">
-                    <div class="col-1 " >
-                        <span class="linkT">&blacksquare;</span>
 
-                    </div>
-                    <div class="col-10  border-bottom sideBarLink">
-                        <a href="#" class="custom-link text-dark" >واردات خودروهای با ظرفیت بیشتر از 2000 ممنوع شد</a>
-                    </div>
-                </div>
             </div>
-            <div class="col-md-12 sideBarBox">
-                <div class="row">
-                    <div class="col-1 " >
-                        <span class="linkT">&blacksquare;</span>
-
-                    </div>
-                    <div class="col-10 border-bottom sideBarLink">
-                        <a href="#" class="custom-link text-dark" >احتمال کاهش قیمت خودروی های داخلی </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12 sideBarBox">
-                <div class="row">
-                    <div class="col-1 " >
-                        <span class="linkT">&blacksquare;</span>
-
-                    </div>
-                    <div class="col-10  border-bottom sideBarLink">
-                        <a href="#" class="custom-link text-dark" >واردات خودروهای با ظرفیت بیشتر از 2000 ممنوع شد</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12 sideBarBox">
-                <div class="row">
-                    <div class="col-1 " >
-                        <span class="linkT">&blacksquare;</span>
-
-                    </div>
-                    <div class="col-10 border-bottom sideBarLink">
-                        <a href="#" class="custom-link text-dark" >احتمال کاهش قیمت خودروی های داخلی </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12 sideBarBox">
-                <div class="row">
-                    <div class="col-1 " >
-                        <span class="linkT">&blacksquare;</span>
-
-                    </div>
-                    <div class="col-10  border-bottom sideBarLink">
-                        <a href="#" class="custom-link text-dark" >واردات خودروهای با ظرفیت بیشتر از 2000 ممنوع شد</a>
-                    </div>
-                </div>
-            </div>
-
+            <% } %>
 
         </div>
     </div>
@@ -191,140 +76,25 @@
                 <h2  class="boxesWline linkColor">اخبار سقف مردم </h2>
             </div>
         </div>
-        <div class="row  mt-1 ">
-            <div class="col-md-12 sideBarBox">
-                <div class="row">
-                    <div class="col-1 " >
-                        <span class="linkT">&blacksquare;</span>
+        <div class="row  mt-1">
+            <%
+            saghfNews = res.saghfNews;
+            for (i=0;i<saghfNews.length;i++){
+            %>
+                <div class="col-md-12 sideBarBox">
 
+                    <div class="row">
+                        <div class="col-1 " >
+                            <span class="linkT">&blacksquare;</span>
+
+                        </div>
+                        <div class="col-10 border-bottom sideBarLink">
+                            <a href="<%- host+'/news/'+saghfNews[i].id%>" class="custom-link text-dark" ><%- saghfNews[i].title %></a>
+                        </div>
                     </div>
-                    <div class="col-10 border-bottom sideBarLink">
-                        <a href="#" class="custom-link text-dark" >خبر های گروه سقف مردم </a>
-                    </div>
+
                 </div>
-            </div>
-            <div class="col-md-12 sideBarBox">
-                <div class="row">
-                    <div class="col-1 " >
-                        <span class="linkT">&blacksquare;</span>
-
-                    </div>
-                    <div class="col-10  border-bottom sideBarLink">
-                        <a href="#" class="custom-link text-dark" >خبر های گروه سقف مردم</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12 sideBarBox">
-                <div class="row">
-                    <div class="col-1 " >
-                        <span class="linkT">&blacksquare;</span>
-
-                    </div>
-                    <div class="col-10 border-bottom sideBarLink">
-                        <a href="#" class="custom-link text-dark" >خبر های گروه سقف مردم </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12 sideBarBox">
-                <div class="row">
-                    <div class="col-1 " >
-                        <span class="linkT">&blacksquare;</span>
-
-                    </div>
-                    <div class="col-10  border-bottom sideBarLink">
-                        <a href="#" class="custom-link text-dark" >خبر های گروه سقف مردم</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12 sideBarBox">
-                <div class="row">
-                    <div class="col-1 " >
-                        <span class="linkT">&blacksquare;</span>
-
-                    </div>
-                    <div class="col-10 border-bottom sideBarLink">
-                        <a href="#" class="custom-link text-dark" >خبر های گروه سقف مردم </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12 sideBarBox">
-                <div class="row">
-                    <div class="col-1 " >
-                        <span class="linkT">&blacksquare;</span>
-
-                    </div>
-                    <div class="col-10  border-bottom sideBarLink">
-                        <a href="#" class="custom-link text-dark" >خبر های گروه سقف مردم</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12 sideBarBox">
-                <div class="row">
-                    <div class="col-1 " >
-                        <span class="linkT">&blacksquare;</span>
-
-                    </div>
-                    <div class="col-10 border-bottom sideBarLink">
-                        <a href="#" class="custom-link text-dark" >خبر های گروه سقف مردم </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12 sideBarBox">
-                <div class="row">
-                    <div class="col-1 " >
-                        <span class="linkT">&blacksquare;</span>
-
-                    </div>
-                    <div class="col-10  border-bottom sideBarLink">
-                        <a href="#" class="custom-link text-dark" >خبر های گروه سقف مردم</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12 sideBarBox">
-                <div class="row">
-                    <div class="col-1 " >
-                        <span class="linkT">&blacksquare;</span>
-
-                    </div>
-                    <div class="col-10 border-bottom sideBarLink">
-                        <a href="#" class="custom-link text-dark" >خبر های گروه سقف مردم </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12 sideBarBox">
-                <div class="row">
-                    <div class="col-1 " >
-                        <span class="linkT">&blacksquare;</span>
-
-                    </div>
-                    <div class="col-10  border-bottom sideBarLink">
-                        <a href="#" class="custom-link text-dark" >خبر های گروه سقف مردم</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12 sideBarBox">
-                <div class="row">
-                    <div class="col-1 " >
-                        <span class="linkT">&blacksquare;</span>
-
-                    </div>
-                    <div class="col-10 border-bottom sideBarLink">
-                        <a href="#" class="custom-link text-dark" >خبر های گروه سقف مردم </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12 sideBarBox">
-                <div class="row">
-                    <div class="col-1 " >
-                        <span class="linkT">&blacksquare;</span>
-
-                    </div>
-                    <div class="col-10  border-bottom sideBarLink">
-                        <a href="#" class="custom-link text-dark" >خبر های گروه سقف مردم</a>
-                    </div>
-                </div>
-            </div>
-
+            <% } %>
 
         </div>
     </div>

@@ -33,7 +33,7 @@ des:"کنترل پنل مدیریت" ,
                         </div>
                     <div class="x_panel">
                         <div class="x_title">
-                            <h2> ثبت خبر
+                            <h2> ثبت پرسشهای متداول
 
                             </h2>
 
@@ -43,13 +43,7 @@ des:"کنترل پنل مدیریت" ,
 
                             <form class="form-horizontal form-label-left">
                                 <div class="row">
-                                    <div class="col-md-6 form-group">
-                                        <label>دسته بندی خبر<span class="required">*</span></label>
-                                            <select id="gr_id" name="gr_id" class="form-control">
-                                                <option value="1">خبرهای خودرویی</option>
-                                                <option value="2">خبرهای سقف مردم</option>
-                                            </select>
-                                    </div>
+                                    
                                     <div class="col-md-6 form-group">
                                         <label>عنوان<span class="required">*</span></label>
                                         <input type="text" name="title" id="title"  class="form-control " >
@@ -58,18 +52,12 @@ des:"کنترل پنل مدیریت" ,
 
 
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-12 form-group">
-                                        <label>خلاصه<span class="required">*</span></label>
-                                        <textarea name="summary" id="summary"  class="form-control persian"></textarea>
-
-                                    </div>
-                                </div>
+                            
 
                                 <div class="row">
                                     <div class="col-md-12 form-group">
-                                        <label>متن خبر<span class="required">*</span></label>
-                                        <textarea id="text" rows="15"  class="form-control"></textarea>
+                                        <label>متن<span class="required">*</span></label>
+                                        <textarea id="description" rows="15"  class="form-control"></textarea>
 
 
                                     </div>
@@ -77,59 +65,11 @@ des:"کنترل پنل مدیریت" ,
 
 
                                 </div>
-                                <div class="row">
-
-
-                                    <div class="col-md-4 form-group">
-
-                                        <label   style="padding:2px">&nbsp;تصویر خبر</label>
-
-
-
-                                        <input type="file" name="image"  onchange="uploadFile('image','4')" id="image" accept=".jpeg,.jpg,.png" class="inputfile inputfile-6" data-multiple-caption="{count} files selected" multiple />
-                                        <label for="image"><span></span> <strong><i class="fa fa-cloud-upload" ></i> انتخاب فایل</strong></label>
-
-                                    </div>
-
-
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4 form-group">
-
-
-                                <span id="tagimage">
-<input id="imagePath" value="" type="hidden" class="form-control">
-</span>
-
-
-
-
-                                    </div>
-                                </div>
-                                <div class="row">
-
-
-                                    <div class="col-md-6 form-group">
-
-                                        <label   style="padding:2px">&nbsp; منبع خبر</label>
-                                        <input type="text" class="form-control" id="source" name="source">
-
-                                    </div>
-
-                                    <div class="col-md-6 form-group">
-
-                                        <label   style="padding:2px">&nbsp;لینک منبع خبر</label>
-                                        <input type="text" class="form-control" id="source_link" style="direction: ltr" name="source_link">
-
-                                    </div>
-
-                                </div>
-
-                                <div class="row">
+                               <div class="row">
                                     <div class="col-md-2  form-group">
                                         <label >&nbsp;</label>
 
-                                        <button data-pid="q" type="button" id="sendNews" class="form-control btn btn-success">ارسال</button>
+                                        <button data-pid="q" type="button" id="sendFaq" class="form-control btn btn-success">ارسال</button>
 
                                     </div>
                                 </div>
@@ -142,6 +82,7 @@ des:"کنترل پنل مدیریت" ,
             </div>
         </div>
     </div>
+</div>
 </div>
     <%- include ../../panel/layouts/footer.ejs %>
 <div id="lock_screen">
@@ -163,59 +104,9 @@ des:"کنترل پنل مدیریت" ,
 <%- include ../../panel/layouts/scripts.ejs %>
 <script src="admin/vendors/tinymce/tinymce.min.js"></script>
 <div id="reload" style="display:none;"></div>
-<div id="uploading" class="uploading"></div>
-<div class="uploadLoadingImg">
-    لطفا تا بارگذاری کامل فایل، منتظر بمانید
 
-</div>
-<div id="loading" style="display: none; position: fixed; top: 80px; left: 38%; width:19%; height: 40px; background: #fff0ff; padding: 6px; text-align: center">
-    <h4 class="modal-title">در حال دریافت اطلاعات</h4>
-</div>
 
 <script>
-    function uploadFile(inputId,mimeType) {
-        var file  = $('#'+inputId).prop('files')[0];
-        if (file){
-            var form_data = new FormData();
-            form_data.append('inputId', inputId);
-            form_data.append('file', file);
-            form_data.append('mimeType', mimeType);
-
-            $('.uploading').fadeIn(100);
-            $('.uploadLoadingImg').fadeIn(100);
-            $.ajax({
-                url: '/uploading',
-                data: form_data,
-                cache: false,
-                contentType: false,
-                processData: false,
-                method: 'POST',
-                type: 'POST',
-                success :function(data){
-                    $('.uploading').fadeOut(100);
-                    $('.uploadLoadingImg').fadeOut(100);
-                    $('#tag'+inputId).html(data);
-
-
-                    //$('#bg').fadeOut(100);
-
-                }});
-        }
-
-    }
-    function deleteUploadedFile(userfile,inputId) {
-
-        $.post('/deleteUploaded', {
-                fileName        : userfile,
-                inputId         : inputId,
-            },
-            function(data){
-
-                $('#tag'+inputId).html(data);
-                $('#'+inputId).html('');
-            });
-
-    }
     $(function () {
         //Initialize Select2 Elements
         setTimeout(function () { $('.page-loader-wrapper3').fadeOut(); }, 50);
@@ -223,33 +114,22 @@ des:"کنترل پنل مدیریت" ,
 
 
     })
-    $('#sendNews').click(function () {
-        $('#sendNews').prop('disabled', true);
-        text  = tinyMCE.editors[$('#text').attr('id')].getContent();
+    $('#sendFaq').click(function () {
+        $('#sendFaq').prop('disabled', true);
+        description  = tinyMCE.editors[$('#description').attr('id')].getContent();
         title = $('#title').val();
-        gr_id = $('#gr_id').val();
-        description  = $('#description').val();
-        summary  = $('#summary').val();
-        source   = $('#source').val();
-        source_link  = $('#source_link').val();
-        image  = $('#imagePath').val();
-        if (   text == ''   || title == '' ||  summary == '' ||  source == '' ||  source_link == ''  ){
+        if (   description == ''   || title == ''   ){
 
             $('#alertmsg').html('لطفا همه فیلد ها را پر کنید');
-            $('#sendNews').prop('disabled', false);
+            $('#sendFaq').prop('disabled', false);
             return false;
         }
         else {
             $.ajax({
                 url: 'create',
                 data: {
-                    text       : text,
-                    gr_id      : gr_id,
+                    description: description,
                     title      : title,
-                    summary    : summary,
-                    source     : source,
-                    image      : image,
-                    source_link: source_link,
 
                 },
                 method: 'POST',
@@ -259,7 +139,7 @@ des:"کنترل پنل مدیریت" ,
                         $('#loading').fadeOut(100);
                         new PNotify({
                             title: 'عملیات موفق',
-                            text: 'خبر، با موفقیت ایجاد شد' +
+                            text: 'پرسشهای متداول، با موفقیت ایجاد شد' +
                                 '<br>' +
                                 'شما به صفحه لیست هدایت خواهید شد',
                             type: 'success',
@@ -281,7 +161,7 @@ des:"کنترل پنل مدیریت" ,
     });
 
 
-tinymce.init({ selector:'#text',
+tinymce.init({ selector:'#description',
         language: 'fa_IR',
         theme: 'modern',
         plugins: [
