@@ -1,0 +1,106 @@
+<%
+if (cars.length != 0){
+for(i=0;i<cars.length;i++){
+images = cars[i].CarImages;
+    Brand2 = '';
+if (cars[i].Brand2 != null){
+    Brand2 = cars[i].Brand2.title
+}
+%>
+<div class="col-md-12 shadow-sm border pb-1 mt-2  bg-white text-dark">
+    <div class="p-2 row p-0">
+        <div class="col-12 m-0 p-0">
+            <h2  class="boxesWline linkColor"> <%- cars[i].model %> </h2>
+            <h2 ><%- cars[i].Brand1.title %><% if(cars[i].Brand1.title != Brand2 && Brand2 != ''){%> <%-' - ' + Brand2 %><% } %></h2>
+            <br>
+        </div>
+    </div>
+<div class="row">
+    <div class="col-12">
+
+
+        <div class="row  ">
+            <div class="col-md-12">
+                <div class="live__scroll ">
+                    <div class="row text-center">
+                        <% for (j=0;j<images.length;j++) {%>
+                        <div class=" live__scroll--box"><img  class="myImg" title="<%- cars[i].model %>" alt="<%- cars[i].model %>" src="<%- host+'/'+images[j].img_url %>" height="100"></div>
+                        <% } %>
+
+                    </div>
+                </div>
+            </div>
+            <% if(cars[i].show_price == 1){ %>
+            <div class="p-2 row p-0 m-0">
+                <div class="col-12 m-0 p-0 adv">
+                    <h3  >قیمت </h3>
+                    <div class="col-md-12 bg-light">
+                        <%- needFul.Commafy(cars[i].price) %>
+                    </div>
+
+
+
+                </div>
+            </div>
+                <% } %>
+            <div class="p-2 row p-0 m-0">
+                <div class="col-12 m-0 p-0 adv">
+                        <%- cars[i].description %>
+
+
+
+                </div>
+            </div>
+            <div class="p-2 row p-0 m-0">
+                <div class="col-12 m-0 p-0 adv">
+                    <h3  > مشخصات فنی</h3>
+                    <div class="col-md-12 bg-light">
+                        <%- cars[i].tech_spec %>
+                    </div>
+
+
+
+                </div>
+            </div>
+
+            <% if(cars[i].video.length > 10){%>
+            <div class="p-2 row p-0 m-0">
+                <div class="col-12 m-0 p-0 adv">
+                    <video  class="videoU" data-path="<%- host+'/'+cars[i].video %>" controls="" preload="auto">
+                        <source src="<%- host+'/'+cars[i].video %>" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+            <% } %>
+            <div class="col-12 m-0 p-0 adv">
+                <div class="p-2 row p-0 m-0">
+                    <div class="col-6 mt-1 p-2 adv">
+                        <a href="<%-host+'/bca/'+cars[i].id %>" id="loginBtn" class="btn mainBtn   btn-sm btn-block" > خرید نقدی</a>
+                    </div>
+                    <div class="col-6 mt-1  p-2 adv">
+                        <a href="<%-host+'/ica/'+cars[i].id %>" id="loginBtn" class="btn mainBtn   btn-sm btn-block" > خرید اقساطی</a>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+</div>
+<hr>
+<% }
+}
+else {
+  %>
+<div class="col-md-12 shadow-sm border pb-1 mt-2  bg-white text-dark">
+    <div class="row mt-md-3 mt-2">
+        <div class="col-12 p-0" align="center">
+            موری برای نمایش وجود ندارد
+        </div>
+    </div>
+</div>
+<%
+}
+%>

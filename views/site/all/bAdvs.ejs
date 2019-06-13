@@ -1,0 +1,123 @@
+<%
+if (bAdvs.length != 0){
+for(i=0;i<bAdvs.length;i++){
+images = bAdvs[i].AdvImages;
+%>
+<div class="col-md-12 shadow-sm border pb-1 mt-2  bg-white text-dark">
+    <div class="p-2 row p-0">
+        <div class="col-12 m-0 p-0">
+            <h2  class="boxesWline linkColor"> <%- bAdvs[i].title %> - <%- bAdvs[i].BusinessGr.title %> </h2>
+            <h2 ><%- bAdvs[i].pro_name + ' - '+ bAdvs[i].city_name %></h2>
+            <br>
+        </div>
+    </div>
+<div class="row">
+    <div class="col-12">
+
+
+        <div class="row  ">
+            <div class="col-md-12">
+                <div class="live__scroll ">
+                    <div class="row text-center">
+                        <% for (j=0;j<images.length;j++) {%>
+                        <div class=" live__scroll--box"><img  class="myImg" title="<%- bAdvs[i].title %>" alt="<%- bAdvs[i].title %>" src="<%- host+'/'+images[j].img_url %>" height="100"></div>
+                        <% } %>
+
+                    </div>
+                </div>
+            </div>
+            <div class="p-2 row p-0 m-0">
+                <div class="col-12 m-0 p-0 adv">
+                    <!--<h3  > توضیحات آگهی</h3>-->
+
+
+
+                    <%- bAdvs[i].description %>
+
+                    <div class="col-sm-12 mt-3 p-0">
+                        <h3  >راه های تماس</h3>
+                        <span class="fa fa-phone" ></span><%- bAdvs[i].person.phone%>
+                    </div>
+                    <div class="col-sm-12">
+                        <div align="left">
+                            <% if(bAdvs[i].person.telegram.length > 4){ %>
+                            <a href="<%- bAdvs[i].person.telegram %>" class="custom-link"><img src="<%- host%>/local/images/telegram.png" height="30"></a>
+                                <% } if(bAdvs[i].person.instagram.length > 4){ %>
+                            <a href="<%- bAdvs[i].person.instagram %>" class="custom-link pr-2"><img src="<%- host %>/local/images/instagram.png" height="30"></a>
+                                <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% if(bAdvs[i].video_url.length > 10){%>
+            <div class="p-2 row p-0 m-0">
+                <div class="col-12 m-0 p-0 adv">
+                    <video  class="videoU" data-path="<%- host+'/'+bAdvs[i].video_url %>" controls="" preload="auto">
+                        <source src="<%- host+'/'+bAdvs[i].video_url %>" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+            <% } %>
+
+
+        </div>
+    </div>
+</div>
+</div>
+<hr>
+<% }
+if(advCnt > 10){ %>
+<div class="col-md-12 shadow-sm border pb-1 mt-2  bg-white text-dark">
+<div class="row mt-md-3 mt-2">
+    <div class="col-12 p-0" align="center">
+
+            <div class="pagination">
+                <%
+                    next = page + 1;
+                    pre  = page - 1;
+                if (page < 4 ) {
+                    href = refU+'?page='+pre;
+                    if (pre < 2){
+                        href = refU;
+                    }
+                %>
+                <a href="<%- href %>" class="pl-2 pr-2" ><svg class="navBIcon"><use xlink:href="#left"></use></svg></a>
+                <a href="<%- refU %>" <% if(page == 1){ %>class="active"<% } %> >1</a>
+                <a href="<%- refU+'?page=2' %>" <% if(advCnt< 10){%> style="display: none" <%} %> <% if(page == 2){ %>class="active"<% } %> >2</a>
+                <a href="<%- refU+'?page=3' %>" <% if(advCnt< 20){%> style="display: none" <%} %><% if(page == 3){ %>class="active"<% } %> >3</a>
+                <a href="<%- refU+'?page=4' %>" <% if(advCnt< 30){%> style="display: none" <%} %><% if(page == 4){ %>class="active"<% } %> >4</a>
+                <a href="<%- refU+'?page=5' %>" <% if(advCnt< 40){%> style="display: none" <%} %><% if(page == 5){ %>class="active"<% } %> >5</a>
+                <a href="<%- refU+'?page='+next %>" <% if(page*10 > advCnt){%> style="display: none" <%} %> class="pl-2 pr-2" ><svg class="navBIcon"><use xlink:href="#right"></use></svg></a>
+
+                <% }
+                else { %>
+                    <a href="<%- refU+'?page='+ pre %>" class="pl-2 pr-2" ><svg class="navBIcon"><use xlink:href="#left"></use></svg></a>
+                    <a href="<%- refU+'?page='+(page-2) %>" <% if( page-2 < 1){%> style="display: none" <%} %>  ><%- page-2 %></a>
+                    <a href="<%- refU+'?page='+(page-1) %>" <% if( page-1 < 1){%> style="display: none" <%} %>  ><%- page-1 %></a>
+                    <a href="<%- refU+'?page='+ page %>" class="active" ><%- page %></a>
+                    <a href="<%- refU+'?page='+(page+1) %>" <% if(page*10 > advCnt){%> style="display: none" <%} %>  ><%- page+1 %></a>
+                    <a href="<%- refU+'?page='+(page+2) %>" <% if((page+1)*10 > advCnt){%> style="display: none" <%} %>  ><%- page+2 %></a>
+                    <a href="<%- refU+'?page='+next %>" <% if(page*10 > advCnt){%> style="display: none" <%} %> class="pl-2 pr-2" ><svg class="navBIcon"><use xlink:href="#right"></use></svg></a>
+                <% } %>
+
+
+
+            </div>
+
+    </div>
+</div>
+</div>
+<% }
+}
+else {
+  %>
+<div class="col-md-12 shadow-sm border pb-1 mt-2  bg-white text-dark">
+    <div class="row mt-md-3 mt-2">
+        <div class="col-12 p-0" align="center">
+            موری برای نمایش وجود ندارد
+        </div>
+    </div>
+</div>
+<%
+}
+%>

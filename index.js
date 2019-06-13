@@ -79,7 +79,7 @@ const siteLimiter = rateLimit({
     message:
         "Too many requests created from this IP, please try again after an 5Min"
 });
-app.use("/", siteLimiter); //برای محدود کردن تعداد درخواست ها
+//app.use("/", siteLimiter); //برای محدود کردن تعداد درخواست ها
 
 
 

@@ -1,9 +1,17 @@
 <select id="city" name="city" class="select2 form-control siteInputs">
 
     <%
+        if (cities.length == 1){
+            %>
+        <option value="999888777"><%- cities[0].name %></option>
+
+<%
+        }
+        else {
     for (i=0;i<cities.length;i++){%>
         <option value="<%-  i %>"><%- cities[i].name %></option>
-    <% }  %>
+    <% }
+        } %>
 </select>
     <script>
         $(function () {

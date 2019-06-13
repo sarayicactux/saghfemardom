@@ -47,7 +47,7 @@ pageUrl:"https://saghfemardom.ir"
                         <div class="col-md-12 ">
                             <div class="row">
                                 <div class="col-12 col-md-6  p-1" >
-                                    <input name="word" class="form-control border bg-light siteInputsFilter" placeholder="جستجوی ...">
+                                    <input name="word" value="<%- filterParams.word %>" class="form-control border bg-light siteInputsFilter" placeholder="جستجوی ...">
 
                                 </div>
                                 <div class="col-12 col-md-6 p-1" >
@@ -56,7 +56,7 @@ pageUrl:"https://saghfemardom.ir"
                                         <%
                                         bgr = bT.BusinessGrs;
                                         for (i=0;i<bgr.length;i++){%>
-                                            <option value="<%- bgr[i].id%>"><%- bgr[i].title%></option>
+                                            <option value="<%- bgr[i].id%>"<% if(bgr[i].id == parseInt(filterParams.bgr) ){%> selected<%} %>><%- bgr[i].title%></option>
                                         <% } %>
 
                                     </select>
@@ -67,7 +67,7 @@ pageUrl:"https://saghfemardom.ir"
                                         <option value="-1">همه ایران</option>
                                         <% pros = res.daily.proCity
                                         for (i=0;i<pros.length;i++){%>
-                                            <option value="<%- i %>"<% if( i == 6 ){  %> selected<% } %>><%- pros[i].name %></option>
+                                            <option value="<%- i %>"<% if( i == parseInt(filterParams.pro) ){%> selected<%} %>><%- pros[i].name %></option>
                                         <% }  %>
                                     </select>
 
@@ -76,10 +76,21 @@ pageUrl:"https://saghfemardom.ir"
                                     <span id="citiesListPlace">
                                         <select id="city" name="city" class="select2 form-control siteInputs">
 
-                                            <% cities = pros[6].cities;
+                                            <%
+                                            <%
+                                            if (filterParams.pro == '-1'){
+                                            %>
+                                                <option value="999888777"><%- cities[0].name %></option>
+
+                                            <%
+                                            }
+                                            else {
+                                            cities = pros[parseInt(filterParams.pro)].cities;
                                             for (i=0;i<cities.length;i++){%>
-                                                <option value="<%-  i %>"<% if( i == 15 ){  %> selected<% } %>><%- cities[i].name %></option>
-                                            <% }  %>
+                                                <option value="<%-  i %>"<% if( i == parseInt(filterParams.city) ){  %> selected<% } %>><%- cities[i].name %></option>
+                                            <% }
+                                            }
+                                            %>
                                         </select>
                                     </span>
 

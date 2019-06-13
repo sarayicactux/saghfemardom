@@ -49,53 +49,286 @@ module.exports = {
         });
     },
     index: function (req,res) {
-        Models.Adv.findAll({
-            where:{
-                status: 1
-            },
-            order:[
-                ['id','desc']
-            ],
-            offset:0,
-            limit:12
-        }).then(function (advs) {
-            res.render('site/index',{advs:advs,res:res,jDate:jDate,needFul:needFul});
+        page = 1;
+        if (req.query.page){
+            if (parseInt(req.query.page) < 2){
+                res.redirect(host)
+            }
+            page = req.query.page;
+            page = parseInt(prInj.PrInj(page));
 
-        })
-    },
-    advs: function (req,res) {
-        business_type_id = prInj.PrInj(req.params.id);
-        Models.Adv.findAll({
-            where:{
-                status: 1,
-                business_type : business_type_id
-            },
-            order:[
-                ['id','desc']
-            ],
-            offset:0,
-            limit:12
-        }).then(function (advs) {
-            Models.BusinessType.findOne({
+        }
+        Models.Adv.findAll({where:{status: 1}}).then(function (allAdv) {
+            Models.Adv.findAll({
                 where:{
-                    id : business_type_id
+                    status: 1
                 },
+                order:[
+                    ['id','desc']
+                ],
                 include:[
-                    Models.BusinessGr
-                ]
-            }).then(function (bT) {
-                if (bT.length != 0){
-                    res.render('site/pages/advs',{bT:bT,advs:advs,res:res,jDate:jDate,needFul:needFul});
+                    Models.BusinessGr,
+                    Models.AdvImage,
+                    Models.People,
+                    Models.Comment
+                ],
+                offset:(page-1)*10,
+                limit:10
+            }).then(function (bAdvs) {
+                advCnt = allAdv.length;
+                refU = host;
+                res.render('site/index',{refU:refU,page:page,advCnt:advCnt,bAdvs:bAdvs,res:res,jDate:jDate,needFul:needFul});
 
-                }
-                else {
+            })
+        });
+
+    },
+    bAdvs: function (req,res) {
+        page = 1;
+        if (req.query.page){
+            if (parseInt(req.query.page) < 2){
+                res.redirect(host)
+            }
+            page = req.query.page;
+            page = parseInt(prInj.PrInj(page));
+
+        }
+        business_type_id = prInj.PrInj(req.params.id);
+        Models.Adv.findAll({where:{status: 1,business_type : business_type_id}})
+            .then(function (allAdv) {
+                advCnt = allAdv.length;
+                Models.Adv.findAll({
+                    where:{
+                        status: 1,
+                        business_type : business_type_id
+                    },
+                    order:[
+                        ['id','desc']
+                    ],
+                    include:[
+                        Models.BusinessGr,
+                        Models.AdvImage,
+                        Models.People,
+                        Models.Comment
+                    ],
+                    offset:(page-1)*10,
+                    limit:10
+                }).then(function (bAdvs) {
+                    Models.BusinessType.findOne({
+                        where:{
+                            id : business_type_id
+                        },
+                        include:[
+                            Models.BusinessGr
+                        ]
+                    }).then(function (bT) {
+                        if (bT.length != 0){
+                            refU = host+'/a/'+business_type_id;
+                            res.render('site/pages/advs',{refU:refU,page:page,advCnt:advCnt,bT:bT,bAdvs:bAdvs,res:res,jDate:jDate,needFul:needFul});
+
+                        }
+                        else {
+                            res.render('errors/404');
+                        }
+                    })
+
+                }).catch(function (err) {
+                    console.log(err);
                     res.render('errors/404');
-                }
+                })
             })
 
-        }).catch(function (err) {
-            console.log(err);
-            res.render('errors/404');
+
+    },
+    filterAdvs: function (req,res) {
+        filterParams = req.query;
+        whereO = [];
+        daily = res.daily;
+        var form        = req.body;
+        proC = daily.proCity;
+        title = '';
+        if (filterParams.word){
+            title = prInj.PrInj(filterParams.word);
+
+            if (title.length > 4){
+
+                whereO.push({
+                    title : {
+                        $like : title
+                    }
+                });
+            }
+
+
+        }
+        if (filterParams.bgr){
+            bgr = prInj.PrInj(filterParams.bgr);
+            if (bgr != '0'){
+                whereO.push({
+                    business_gr :parseInt(bgr)
+                });
+            }
+
+
+        }
+        if (filterParams.bt){
+            bt = prInj.PrInj(filterParams.bt);
+                whereO.push({
+                    business_type :parseInt(bt)
+                });
+
+
+
+        }
+        if (filterParams.pro){
+
+            pro = prInj.PrInj(filterParams.pro);
+
+            if (pro != '-1'){
+                pro = proC[filterParams.pro];
+                whereO.push({
+                    pro_id :pro.id
+                });
+            }
+        }
+        if (filterParams.city){
+
+            city = prInj.PrInj(filterParams.city);
+
+            if (city != '0' && city != '999888777'){
+                city = pro.cities[city];
+                whereO.push({
+                    city_id :city.id
+                });
+            }
+        }
+
+        whereO.push({
+            status :1
+        });
+        page = 1;
+        if (req.query.page){
+            if (parseInt(req.query.page) < 2){
+                res.redirect(host)
+            }
+            page = req.query.page;
+            page = parseInt(prInj.PrInj(page));
+
+        }
+        Models.Adv.findAll({where:whereO})
+            .then(function (allAdv) {
+                advCnt = allAdv.length;
+                Models.Adv.findAll({
+                    where:whereO,
+                    order:[
+                        ['id','desc']
+                    ],
+                    include:[
+                        Models.BusinessGr,
+                        Models.AdvImage,
+                        Models.People,
+                        Models.Comment
+                    ],
+                    offset:(page-1)*10,
+                    limit:10
+                }).then(function (bAdvs) {
+                    Models.BusinessType.findOne({
+                        where:{
+                            id : bt
+                        },
+                        include:[
+                            Models.BusinessGr
+                        ]
+                    }).then(function (bT) {
+                        if (bT.length != 0){
+                            refU = host+'/fad?bt='+bt+'&word='+title+'&bgr='+bgr+'&pro='+filterParams.pro+'&city='+filterParams.city;
+                            res.render('site/pages/filterAdv',{filterParams:filterParams,refU:refU,page:page,advCnt:advCnt,bT:bT,bAdvs:bAdvs,res:res,jDate:jDate,needFul:needFul});
+
+                        }
+                        else {
+                            res.render('errors/404');
+                        }
+                    })
+
+                }).catch(function (err) {
+                    console.log(err);
+                    res.render('errors/404');
+                })
+            })
+
+
+    },
+    cars: function (req,res) {
+
+        Models.Car.findAll({
+
+            order:[
+                ['id','desc']
+            ],
+            include:[
+                Models.Brand1,
+                Models.Brand2,
+                Models.CarImage,
+            ],
+            offset:0,
+            limit:20
+        }).then(function (cars) {
+            res.render('site/pages/cars',{cars:cars,res:res,jDate:jDate,needFul:needFul});
+        })
+
+    },
+    byeCashCar:function(req,res){
+
+    },
+    byinstCar:function(req,res){
+
+    },
+    filterCars: function (req,res) {
+        filterParams = req.query;
+        whereO = [];
+        model = '';
+        if (filterParams.model){
+            model = prInj.PrInj(filterParams.model);
+
+            if (model.length > 2){
+
+                whereO.push({
+                    model : {
+                        $like : model
+                    }
+                });
+            }
+
+
+        }
+        if (filterParams.brand){
+            brand = prInj.PrInj(filterParams.brand);
+            if (brand != '0'){
+                whereO.push({
+                    $or : {
+                        brand1_id: brand,
+                        brand2_id: brand
+                    }
+                });
+            }
+
+
+        }
+
+        Models.Car.findAll({
+            where:whereO,
+            order:[
+                ['id','desc']
+            ],
+            include:[
+                Models.Brand1,
+                Models.Brand2,
+                Models.CarImage,
+            ],
+            offset:0,
+            limit:40
+        }).then(function (cars) {
+            res.render('site/pages/filterCars',{filterParams:filterParams,cars:cars,res:res,jDate:jDate,needFul:needFul});
         })
 
     },
@@ -118,9 +351,21 @@ module.exports = {
     },
 
     citiesList:function(req,res){
+
             pro_r = req.body.pro;
-            allPro = res.daily.proCity;
-            cities = allPro[pro_r].cities;
+            if (pro_r == '-1'){
+                cities = [
+                    {
+                        name : 'همه ایران'
+                    }
+
+                ];
+            }
+            else {
+                allPro = res.daily.proCity;
+                cities = allPro[pro_r].cities;
+            }
+
             res.render('site/all/citiesList',{cities:cities});
     },
     modelsList:function(req,res){
@@ -539,7 +784,6 @@ module.exports = {
 
             var stats = fs.statSync(tmp_path);
             var fileSize = Math.round(stats["size"]/1024/1024);
-            console.log(fileSize);
             if (fileSize > 10){
 
                 res.json('false');return;

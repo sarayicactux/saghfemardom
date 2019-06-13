@@ -34,17 +34,15 @@ pageUrl:"https://saghfemardom.ir"
         </div>
         <div class="col-md-6 mb-md-0 mb-1 ">
             <div class="row pl-md-2  ">
-                <div class="col-md-12 shadow-sm border pb-1  bg-white text-dark">
-                    <div class="p-2 row p-0">
-                        <div class="col-12 m-0 p-0">
-                            <h2  class="boxesWline linkColor">آگهی های ارسال شده </h2>
-                        </div>
-                    </div>
-                    <%- include('all/advs.ejs',{
-                      advs:advs
+
+                    <%- include('all/bAdvs.ejs',{
+                    bAdvs:bAdvs,
+                    refU:refU,
+                    page:page,
+                    advCnt:advCnt,
                     }) %>
 
-                </div>
+
             </div>
 
 

@@ -22,9 +22,13 @@ module.exports = {
 
 };
 function  PrInj(str) {
-    str = str.replace(/"/g,'');
-    str = str.replace(/'/g,'');
-    str = str.replace(/;/g,'');
-    str = str.replace(/`/g,'');
+    if (str){
+        str = str.replace(/"/g,'');
+        str = str.replace(/'/g,'');
+        str = str.replace(/;/g,'');
+        str = str.replace(/`/g,'');
+
+    }
     return str;
+
 }
