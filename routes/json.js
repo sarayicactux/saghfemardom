@@ -1,11 +1,11 @@
-var express       = require('express');
-const date        = require('date-and-time');
-var json   = require('../controllers/json');
-var jDate  = require('../helpers/jDate');
-var User            = require('../models/User');
-var ProCity         = require('../models/ProCity');
-var Models         = require('../models/Models');
-var router = express.Router();
+var express     = require('express');
+const date      = require('date-and-time');
+var json        = require('../controllers/json');
+var jDate       = require('../helpers/jDate');
+var User        = require('../models/User');
+var ProCity     = require('../models/ProCity');
+var Models      = require('../models/Models');
+var router      = express.Router();
 
 var user = new User();
 var proCity = new ProCity;
@@ -61,7 +61,12 @@ function daily(req,res,next){
       ]
      }).then(function (BusinessType) {
       res.BusinessType = BusinessType;
-      next();
+         Models.StaticContent.findAll().then(function (staticContent) {
+
+             res.staticContent = staticContent;
+             next();
+         });
+
      });
     });
    });

@@ -15,81 +15,86 @@ if (cars[i].Brand2 != null){
             <br>
         </div>
     </div>
-<div class="row">
-    <div class="col-12">
+    <div class="row">
+        <div class="col-12">
 
 
-        <div class="row  ">
-            <div class="col-md-12">
-                <div class="live__scroll ">
-                    <div class="row text-center">
-                        <% for (j=0;j<images.length;j++) {%>
-                        <div class=" live__scroll--box"><img  class="myImg" title="<%- cars[i].model %>" alt="<%- cars[i].model %>" src="<%- host+'/'+images[j].img_url %>" height="100"></div>
-                        <% } %>
+            <div class="row  ">
+                <div class="col-md-12">
+                    <div id="carouselExampleFade<%- cars[i].id %>" class="carousel slide carousel-fade" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <% for (j=0;j<images.length;j++) {%>
+                                <div class="carousel-item <% if(j==0){ %>active<% } %>  calSlide">
+                                    <img class="d-block w-100 myImg imgSlider"  src="<%- host+'/'+images[j].img_url %>" >
+                                </div>
+                                <% } %>
 
+
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleFade<%- cars[i].id %>" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">قبلی</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleFade<%- cars[i].id %>" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">بعدی</span>
+                        </a>
                     </div>
                 </div>
-            </div>
-            <% if(cars[i].show_price == 1){ %>
-            <div class="p-2 row p-0 m-0">
-                <div class="col-12 m-0 p-0 adv">
-                    <h3  >قیمت </h3>
-                    <div class="col-md-12 bg-light">
-                        <%- needFul.Commafy(cars[i].price) %>
-                    </div>
+                <% if(cars[i].show_price == 1){ %>
+                        <div class="col-12">
+                            <h3  >قیمت </h3>
+                        </div>
+                            <div class="col-12">
+                                <%- needFul.Commafy(cars[i].price) %>
+                            </div>
+                <hr>
 
 
 
-                </div>
-            </div>
                 <% } %>
-            <div class="p-2 row p-0 m-0">
-                <div class="col-12 m-0 p-0 adv">
+                    <div class="col-12 adv">
                         <%- cars[i].description %>
 
+<hr>
+
+                    </div>
+                    <div class="col-12  adv">
+                        <h3  > مشخصات فنی</h3>
+                        <div class="col-md-12">
+                            <%- cars[i].tech_spec %>
+                        </div>
 
 
-                </div>
-            </div>
-            <div class="p-2 row p-0 m-0">
+<hr>
+                    </div>
+
+                <% if(cars[i].video.length > 10){%>
+                    <div class="p-2 row p-0 m-0">
+                        <div class="col-12 m-0 p-0 adv">
+                            <video  class="videoU" data-path="<%- host+'/'+cars[i].video %>" controls="" preload="auto">
+                                <source src="<%- host+'/'+cars[i].video %>" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                <% } %>
                 <div class="col-12 m-0 p-0 adv">
-                    <h3  > مشخصات فنی</h3>
-                    <div class="col-md-12 bg-light">
-                        <%- cars[i].tech_spec %>
-                    </div>
-
-
-
-                </div>
-            </div>
-
-            <% if(cars[i].video.length > 10){%>
-            <div class="p-2 row p-0 m-0">
-                <div class="col-12 m-0 p-0 adv">
-                    <video  class="videoU" data-path="<%- host+'/'+cars[i].video %>" controls="" preload="auto">
-                        <source src="<%- host+'/'+cars[i].video %>" type="video/mp4">
-                    </video>
-                </div>
-            </div>
-            <% } %>
-            <div class="col-12 m-0 p-0 adv">
-                <div class="p-2 row p-0 m-0">
-                    <div class="col-6 mt-1 p-2 adv">
-                        <a href="<%-host+'/bca/'+cars[i].id %>" id="loginBtn" class="btn mainBtn   btn-sm btn-block" > خرید نقدی</a>
-                    </div>
-                    <div class="col-6 mt-1  p-2 adv">
-                        <a href="<%-host+'/ica/'+cars[i].id %>" id="loginBtn" class="btn mainBtn   btn-sm btn-block" > خرید اقساطی</a>
+                    <div class="p-2 row p-0 m-0">
+                        <div class="col-6 mt-1 p-2 adv">
+                            <a href="<%-host+'/bca/'+cars[i].id %>/1" id="loginBtn" class="btn mainBtn   btn-sm btn-block" > خرید نقدی</a>
+                        </div>
+                        <div class="col-6 mt-1  p-2 adv">
+                            <a href="<%-host+'/bca/'+cars[i].id %>/2" id="loginBtn" class="btn mainBtn   btn-sm btn-block" > خرید اقساطی</a>
+                        </div>
                     </div>
                 </div>
+
+
+
             </div>
-
-
-
         </div>
     </div>
 </div>
-</div>
-<hr>
 <% }
 }
 else {

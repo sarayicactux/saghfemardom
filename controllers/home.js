@@ -277,11 +277,99 @@ module.exports = {
         })
 
     },
-    byeCashCar:function(req,res){
+    byeSellingType:function(req,res){
+        model        = prInj.PrInj(req.params.model_id);
+        selling_type = prInj.PrInj(req.params.selling_type);
+            page = 1;
+            if (req.query.page){
+                if (parseInt(req.query.page) < 2){
+                    res.redirect(host)
+                }
+                page = req.query.page;
+                page = parseInt(prInj.PrInj(page));
 
-    },
-    byinstCar:function(req,res){
+            }
+            Models.CarAdv.findAll({where:{
+                    status       : 1,
+                    selling_type : selling_type,
+                    model        : model,
+                }}).then(function (allAdv) {
+                Models.CarAdv.findAll({
+                    where:{
+                        status       : 1,
+                        selling_type : selling_type,
+                        model        : model,
+                    },
+                    order:[
+                        ['id','desc']
+                    ],
+                    include:[
+                        Models.CarAdvImage,
+                        Models.Brand1,
+                        Models.Car,
+                        Models.People
+                    ],
+                    offset:(page-1)*10,
+                    limit:10
+                }).then(function (cAdvs) {
+                    advCnt = allAdv.length;
+                    refU = host+'/bca/'+model+'/'+selling_type;
+                    credit = 0;
+                    if (req.session.people){
+                        credit = req.session.people.credit;
+                    }
+                    filterParams = {};
+                    filterParams.model        = model;
+                    filterParams.selling_type = selling_type;
 
+                    res.render('site/pages/byeSellingType',{filterParams:filterParams,credit:credit,refU:refU,page:page,advCnt:advCnt,cAdvs:cAdvs,res:res,jDate:jDate,needFul:needFul});
+
+
+                })
+            });
+        } ,
+    bCar:function(req,res){
+        {
+            page = 1;
+            if (req.query.page){
+                if (parseInt(req.query.page) < 2){
+                    res.redirect(host)
+                }
+                page = req.query.page;
+                page = parseInt(prInj.PrInj(page));
+
+            }
+            Models.CarAdv.findAll({where:{
+                    status       : 1,
+                }}).then(function (allAdv) {
+                Models.CarAdv.findAll({
+                    where:{
+                        status       : 1,
+                    },
+                    order:[
+                        ['id','desc']
+                    ],
+                    include:[
+                        Models.CarAdvImage,
+                        Models.Brand1,
+                        Models.Car,
+                        Models.People
+                    ],
+                    offset:(page-1)*10,
+                    limit:10
+                }).then(function (cAdvs) {
+                    advCnt = allAdv.length;
+                    refU = host+'/bCar';
+                    credit = 0;
+                    if (req.session.people){
+                        credit = req.session.people.credit;
+                    }
+                    res.render('site/pages/byeCar',{credit:credit,refU:refU,page:page,advCnt:advCnt,cAdvs:cAdvs,res:res,jDate:jDate,needFul:needFul});
+
+
+                })
+            });
+        }
     },
     filterCars: function (req,res) {
         filterParams = req.query;
@@ -332,6 +420,121 @@ module.exports = {
         })
 
     },
+    filterCarsAdv: function (req,res) {
+        filterParams = req.query;
+        proC = res.daily.proCity;
+        whereO = [];
+        text = '';
+        if (filterParams.text){
+            text = prInj.PrInj(filterParams.text);
+
+            if (text.length > 2){
+
+                whereO.push({
+                    title : {
+                        $like : text
+                    }
+                });
+            }
+
+
+        }
+        if (filterParams.model){
+            model = prInj.PrInj(filterParams.model);
+
+            whereO.push({
+                model :model
+            });
+
+
+        }
+        if (filterParams.selling_type){
+            selling_type = prInj.PrInj(filterParams.selling_type);
+            if(selling_type != '0'){
+                whereO.push({
+                    selling_type :selling_type
+                });
+            }
+
+
+
+        }
+        if (filterParams.brand){
+            brand = prInj.PrInj(filterParams.brand);
+            if (brand != '0'){
+                whereO.push({
+                    brand :brand
+                });
+            }
+
+
+        }
+        if (filterParams.pro){
+
+            pro = prInj.PrInj(filterParams.pro);
+
+            if (pro != '-1'){
+                pro = proC[filterParams.pro];
+                whereO.push({
+                    pro_id :pro.id
+                });
+            }
+        }
+        if (filterParams.city){
+
+            city = prInj.PrInj(filterParams.city);
+
+            if (city != '0' && city != '999888777'){
+                city = pro.cities[city];
+                whereO.push({
+                    city_id :city.id
+                });
+            }
+        }
+
+        whereO.push({
+            status :1
+        });
+        page = 1;
+        if (req.query.page){
+            if (parseInt(req.query.page) < 2){
+                res.redirect(host)
+            }
+            page = req.query.page;
+            page = parseInt(prInj.PrInj(page));
+
+        }
+        Models.CarAdv.findAll({where:whereO})
+            .then(function (allAdv) {
+                advCnt = allAdv.length;
+                Models.CarAdv.findAll({
+                    where:whereO,
+                    order:[
+                        ['id','desc']
+                    ],
+                    include:[
+                        Models.CarAdvImage,
+                        Models.Brand1,
+                        Models.Car,
+                        Models.People
+                    ],
+                    offset:(page-1)*10,
+                    limit:10
+                }).then(function (cAdvs) {
+                    credit = 0;
+                    if (req.session.people){
+                        credit = req.session.people.credit;
+                    }
+                    refU = host+'/fad?text='+filterParams.text+'&model='+filterParams.model+'&brand='+filterParams.brand+'&pro='+filterParams.pro+'&city='+filterParams.city+'&selling_type='+filterParams.selling_type;
+                    res.render('site/pages/filterCarAdv',{credit:credit,filterParams:filterParams,refU:refU,page:page,advCnt:advCnt,cAdvs:cAdvs,res:res,jDate:jDate,needFul:needFul});
+
+                }).catch(function (err) {
+                    console.log(err);
+                    res.render('errors/404');
+                })
+            })
+
+    },
     cities:function (req,res) {
         pro_id = req.params.id;
         proCity.find('all',{where:'pro_id = '+ pro_id},function (err,cities) {
@@ -373,11 +576,9 @@ module.exports = {
         Models.Car.findAll({
             where:{
                 $or : {
-                     brand1_id: br
-                },
-                $or : {
-                    brand2_id: br
-               },
+                     brand1_id: br,
+                     brand2_id: br
+                }
                
             }
         }).then(function(cars){
@@ -566,6 +767,7 @@ module.exports = {
                 res.json( {status: false});return;
             });
     },
+
     updateProfile:function(req,res){
 
         var form        = req.body;

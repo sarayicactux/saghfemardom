@@ -1,0 +1,212 @@
+<%
+if (cAdvs.length != 0){
+    cars = res.daily.cars;
+    brands = res.daily.brands;
+for(i=0;i<cAdvs.length;i++){
+images = cAdvs[i].CarAdvImages;
+
+    modelName = '';
+    for (j=0;j<cars.length;j++){
+        if(cAdvs[i].model == cars[j].id){
+            modelName =  cars[j].model;
+            break;
+        }
+    }
+
+    for (j=0;j<brands.length;j++){
+        if(cAdvs[i].brand == brands[j].id){
+            brandName =  brands[j].title;
+            break;
+        }
+    }
+%>
+<div class="col-md-12 shadow-sm border pb-1 mt-2 bg-white text-dark">
+    <div class="row">
+        <div class="col-12">
+            <div class="p-2 row p-0 m-0">
+                <div class="col-12 m-0 p-0 adv">
+                    <h2  ><%- cAdvs[i].title %></h2>
+                    <h2 class="carSideBarTitle"  ><%- brandName + ' - ' + modelName %></h2>
+                </div>
+            </div>
+
+
+            <div class="row  ">
+                <div class="col-md-12">
+                    <div id="carouselExampleFade<%- cAdvs[i].id %>" class="carousel slide carousel-fade" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <% for (j=0;j<images.length;j++) {%>
+                                <div class="carousel-item <% if(j==0){ %>active<% } %>  calSlide">
+                                    <img class="d-block w-100 myImg imgSlider" title="<%- cAdvs[i].title+'-'+j %>"  alt="<%- cAdvs[i].title+'-'+j %>"  src="<%- host+'/'+images[j].img_url %>" >
+                                </div>
+                            <% } %>
+
+
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleFade<%- cAdvs[i].id %>" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">قبلی</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleFade<%- cAdvs[i].id %>" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">بعدی</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-12 mt-2">
+                    <div class="col-12 mt-3 p-0 adv">
+                        <h2 ><%- cAdvs[i].pro_name + ' - '+ cAdvs[i].city_name %></h2>
+                        <hr>
+                    </div>
+                    <div class="row p-3">
+                        <%- credit%>
+                        <hr>
+                        <% if(cAdvs[i].selling_type == 1){ %>
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-6 border bg-primary pt-2 pb-2 pl-0 pr-0 text-white text-center carCel">قیمت خودرو</div>
+                                    <div class="col-6 border bg-primary pt-2 pb-2 pl-0 pr-0 text-white text-center carCel">زمان تحویل</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 border pt-2 pb-2 pl-0 pr-0 text-center  carCel"><%- needFul.Commafy(cAdvs[i].price) %></div>
+                                    <div class="col-6 border pt-2 pb-2 pl-0 pr-0 text-center  carCel"><%- cAdvs[i].delivery_time %></div>
+                                </div>
+                            </div>
+                       <% }
+                       else {
+                           if(credit != 0){%>
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-12 border bg-primary pt-2 pb-2 pl-0 pr-0 text-white text-center carCel">قیمت خودرو</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 border pt-2 pb-2 pl-0 pr-0 text-center  carCel"><%- needFul.Commafy(cAdvs[i].price) %></div>
+                                </div>
+                                <hr>
+                            </div>
+
+                                    <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-4 border bg-primary pt-2 pb-2 pl-0 pr-0 text-white text-center carCel">پیش پرداخت</div>
+                                        <div class="col-4 border bg-primary pt-2 pb-2 pl-0 pr-0 text-white text-center carCel">مبلغ وام</div>
+                                        <div class="col-4 border bg-primary pt-2 pb-2 pl-0 pr-0 text-white text-center carCel">سر رسید اقساط</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-4 border pt-2 pb-2 pl-0 pr-0 text-center  carCel"><%- needFul.Commafy(cAdvs[i].pre_payment) %></div>
+                                        <div class="col-4 border pt-2 pb-2 pl-0 pr-0 text-center  carCel"><%- needFul.Commafy(cAdvs[i].loan_amount) %></div>
+                                        <div class="col-4 border pt-2 pb-2 pl-0 pr-0 text-center  carCel"><%- cAdvs[i].payment_pr %></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-4 border bg-primary pt-2 pb-2 pl-0 pr-0 text-white text-center carCel">تعداد اقساط</div>
+                                        <div class="col-4 border bg-primary pt-2 pb-2 pl-0 pr-0 text-white text-center carCel">مبلغ قسط</div>
+                                        <div class="col-4 border bg-primary pt-2 pb-2 pl-0 pr-0 text-white text-center carCel">موعد تحویل</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-4 border pt-2 pb-2 pl-0 pr-0 text-center  carCel"><%- cAdvs[i].payment_count %></div>
+                                        <div class="col-4 border pt-2 pb-2 pl-0 pr-0 text-center  carCel"><%- needFul.Commafy(cAdvs[i].payment_amount) %></div>
+                                        <div class="col-4 border pt-2 pb-2 pl-0 pr-0 text-center  carCel"><%- cAdvs[i].delivery_time %></div>
+                                    </div>
+                                </div>
+                          <% }
+                           else {%>
+                                <div class="col-12 p-0 " >
+                                    <a href="<%- host+'/my'%>"  class="btn mainBtn   btn-sm btn-block" > اعتبار شما کافی نیست، برای مشاهده کلیک کنید</a>
+                                </div>
+                            <%
+                           }
+                       }
+                       %>
+                            <% if(cAdvs[i].selling_type == 2){ %>
+                        <div class="col-12 mt-3 p-0 adv">
+                            <h3  >شرایط خرید اقساطی</h3>
+                           <%- res.daily.staticContent[2].description %>
+                            <hr>
+                        </div>
+                        <% } %>
+                        <div class="col-12 mt-1 p-0 adv">
+                            <h3  > توضیحات آگهی</h3>
+                            <p>
+                                <%- cAdvs[i].description %>
+                            </p>
+
+                        </div>
+                            <div class="col-sm-12 mt-3 p-0  adv">
+                                <h3  >راه های تماس</h3>
+                                <span class="fa fa-phone" ></span><%- cAdvs[i].person.phone%>
+                            </div>
+                            <div class="col-sm-12  adv">
+                                <div align="left">
+                                    <% if(cAdvs[i].person.telegram.length > 4){ %>
+                                        <a href="<%- cAdvs[i].person.telegram %>" class="custom-link"><img src="<%- host%>/local/images/telegram.png" height="30"></a>
+                                    <% } if(cAdvs[i].person.instagram.length > 4){ %>
+                                        <a href="<%- cAdvs[i].person.instagram %>" class="custom-link pr-2"><img src="<%- host %>/local/images/instagram.png" height="30"></a>
+                                    <% } %>
+                                </div>
+                            </div>
+
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<% }
+if(advCnt > 10){ %>
+<div class="col-md-12 shadow-sm border pb-1 mt-2  bg-white text-dark">
+<div class="row mt-md-3 mt-2">
+    <div class="col-12 p-0" align="center">
+
+            <div class="pagination">
+                <%
+                    next = page + 1;
+                    pre  = page - 1;
+                if (page < 4 ) {
+                    href = refU+'?page='+pre;
+                    if (pre < 2){
+                        href = refU;
+                    }
+                %>
+                <a href="<%- href %>" class="pl-2 pr-2" ><svg class="navBIcon"><use xlink:href="#left"></use></svg></a>
+                <a href="<%- refU %>" <% if(page == 1){ %>class="active"<% } %> >1</a>
+                <a href="<%- refU+'?page=2' %>" <% if(advCnt< 10){%> style="display: none" <%} %> <% if(page == 2){ %>class="active"<% } %> >2</a>
+                <a href="<%- refU+'?page=3' %>" <% if(advCnt< 20){%> style="display: none" <%} %><% if(page == 3){ %>class="active"<% } %> >3</a>
+                <a href="<%- refU+'?page=4' %>" <% if(advCnt< 30){%> style="display: none" <%} %><% if(page == 4){ %>class="active"<% } %> >4</a>
+                <a href="<%- refU+'?page=5' %>" <% if(advCnt< 40){%> style="display: none" <%} %><% if(page == 5){ %>class="active"<% } %> >5</a>
+                <a href="<%- refU+'?page='+next %>" <% if(page*10 > advCnt){%> style="display: none" <%} %> class="pl-2 pr-2" ><svg class="navBIcon"><use xlink:href="#right"></use></svg></a>
+
+                <% }
+                else { %>
+                    <a href="<%- refU+'?page='+ pre %>" class="pl-2 pr-2" ><svg class="navBIcon"><use xlink:href="#left"></use></svg></a>
+                    <a href="<%- refU+'?page='+(page-2) %>" <% if( page-2 < 1){%> style="display: none" <%} %>  ><%- page-2 %></a>
+                    <a href="<%- refU+'?page='+(page-1) %>" <% if( page-1 < 1){%> style="display: none" <%} %>  ><%- page-1 %></a>
+                    <a href="<%- refU+'?page='+ page %>" class="active" ><%- page %></a>
+                    <a href="<%- refU+'?page='+(page+1) %>" <% if(page*10 > advCnt){%> style="display: none" <%} %>  ><%- page+1 %></a>
+                    <a href="<%- refU+'?page='+(page+2) %>" <% if((page+1)*10 > advCnt){%> style="display: none" <%} %>  ><%- page+2 %></a>
+                    <a href="<%- refU+'?page='+next %>" <% if(page*10 > advCnt){%> style="display: none" <%} %> class="pl-2 pr-2" ><svg class="navBIcon"><use xlink:href="#right"></use></svg></a>
+                <% } %>
+
+
+
+            </div>
+
+    </div>
+</div>
+</div>
+<% }
+}
+else {
+  %>
+<div class="col-md-12 shadow-sm border pb-1 mt-2  bg-white text-dark">
+    <div class="row mt-md-3 mt-2">
+        <div class="col-12 p-0" align="center">
+            موری برای نمایش وجود ندارد
+        </div>
+    </div>
+</div>
+<%
+}
+%>

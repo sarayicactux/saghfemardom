@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html   dir=rtl lang=fa>
+<%- include("../layouts/head.ejs",{
+title:"سقف مردم" ,
+des:"" ,
+pageUrl:"https://saghfemardom.ir"
+}) %>
+<body   >
+
+<% include ../layouts/svg.ejs %>
+
+<%- include ../layouts/header.ejs%>
+
+
+
+<div class="container" style="margin-top:10px">
+
+
+    <div class="row">
+        <div class="col-12 shadow-sm bg-white mt-1 pt-1 pb-1">
+            <div align="right">
+                <h1 class="mainHeader text-dark">سقف مردم ..... سقف مردم</h1>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="row"  style="margin-top:10px">
+
+        <div class="col-md-3 mb-md-0  mb-1 newsBar">
+            <%- include("../layouts/news.ejs",{
+            res:res
+            }) %>
+        </div>
+        <div class="col-md-6 mb-md-0 mb-1 ">
+            <div class="row pl-md-2  ">
+                <div class="col-md-12 shadow-sm border pb-1  bg-white text-dark">
+                    <div class="p-2 row p-0">
+                        <div class="col-12 m-0 p-0">
+                            <h2  class="boxesWline linkColor"> خودروها </h2>
+                        </div>
+                    </div>
+                    <div class="row  mt-1">
+                        <form  method="get" action="<%-host+'/fbca'%>">
+
+                            <div class="col-md-12 ">
+                                <div class="row">
+                                    <div class="col-12 col-md-6  p-1" >
+                                        <input name="text" class="form-control border bg-light siteInputsFilter" placeholder="جستجوی ...">
+
+                                    </div>
+                                    <div class="col-12 col-md-6  p-1" >
+                                        <select id="selling_type" name="selling_type" class="select2 form-control siteInputs" >
+                                            <option value="0">همه آگهی ها</option>
+                                            <option value="1">خرید نقدی</option>
+                                            <option value="2">خرید اقساطی</option>
+
+                                        </select>
+
+                                    </div>
+                                    <div class="col-12 col-md-6 p-1" >
+                                        <select id="brand" name="brand" class="select2 form-control siteInputs"  onchange="modelsList(this.value);">
+                                            <option value="0">برند را انتخاب کنید</option>
+                                            <% brands = res.daily.brands
+                                            for (i=0;i<brands.length;i++){%>
+                                                <option value="<%- brands[i].id %>"><%- brands[i].title %> (<%- brands[i].en_title %>)</option>
+                                            <% }  %>
+                                        </select>
+
+                                    </div>
+
+                                    <div  class="col-md-6 p-1  "><span id="carsListPlace">
+        <select id="model1" name="model1" class="select2 form-control siteInputs">
+            <option>مدل خودرو</option>
+        </select>
+    </span>
+                                    </div>
+                                    <div class="col-12 col-md-6  p-1" >
+                                        <select id="pro" name="pro" class="select2 form-control siteInputs" onchange="citiesList(this.value);">
+                                            <option value="-1">همه ایران</option>
+                                            <% pros = res.daily.proCity
+                                            for (i=0;i<pros.length;i++){%>
+                                                <option value="<%- i %>"<% if( i == 6 ){%> selected<%} %>><%- pros[i].name %></option>
+                                            <% }  %>
+                                        </select>
+
+                                    </div>
+                                    <div class="col-12 col-md-6  p-1" >
+                                    <span id="citiesListPlace">
+                                        <select id="city" name="city" class="select2 form-control siteInputs">
+
+                                            <% cities = pros[6].cities;
+                                            for (i=0;i<cities.length;i++){%>
+                                                <option value="<%-  i %>"<% if( i == 15 ){  %> selected<% } %>><%- cities[i].name %></option>
+                                            <% }  %>
+                                        </select>
+                                    </span>
+
+                                    </div>
+                                    <div class="col-12  p-1" >
+                                        <button class="btn btn-info btn-lg btn-block" > جستجو</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+                <%- include ../all/cAdvs.ejs %>
+
+
+
+
+            </div>
+
+
+        </div>
+        <div class="col-md-3 mb-md-0  mb-1  ">
+            <%- include("../layouts/sidebar.ejs",{
+            res:res
+            }) %>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="col-12 bg-dark mt-3 text-white">
+    <%- include("../layouts/footer.ejs",{
+    res:res
+    }) %>
+</div>
+
+<div id="myModal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="img01">
+    <div id="caption"></div>
+</div>
+</body>
+<link rel="stylesheet" href="<%- host%>/local/css/select2.css">
+<script src="<%- host%>/admin/vendors/select2/dist/js/select2.full.min.js"></script>
+<%- include ../layouts/scripts.ejs%>
+<script>
+    function citiesList(pro) {
+        $('#citiesListPlace').html('در حال دریافت لیست <span class="spinner-border spinner-border-sm mb-1"></span>');
+        $.post('/citiesList', {
+                pro        : pro,
+            },
+            function(data){
+                $('#citiesListPlace').html(data);
+
+            });
+    }
+    function modelsList(br) {
+        if (br != '0'){
+            $('#carsListPlace').html('در حال دریافت لیست <span class="spinner-border spinner-border-sm mb-1"></span>');
+            $.post('/modelsList', {
+                    br        : br,
+                },
+                function(data){
+                    $('#carsListPlace').html(data);
+
+                });
+        }
+        else {
+            htm = '<select id="model" name="model" class="select2 form-control siteInputs"><option value="0">برند را انتخاب کنید</option></select>';
+            $('#carsListPlace').html(htm);
+        }
+
+    }
+    $(function () {
+        //Initialize Select2 Elements
+        $('.select2').select2();
+
+
+    })
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the image and insert it inside the modal - use its "alt" text as a caption
+    var modalImg = document.getElementById("img01");
+    var captionText = document.getElementById("caption");
+    $('.myImg').click(function(){
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    })
+
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+</script>
+</html>

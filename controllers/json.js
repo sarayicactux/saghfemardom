@@ -12,10 +12,11 @@ module.exports = {
         const file = path.resolve()+'/public/daily.json';
 
         var Myjson = {
-            'proCity'      : res.pros,
-            'brands'       : res.brands,
-            'cars'         : res.cars,
-            'BusinessType' : res.BusinessType,
+            'staticContent' : res.staticContent,
+            'proCity'       : res.pros,
+            'brands'        : res.brands,
+            'cars'          : res.cars,
+            'BusinessType'  : res.BusinessType,
 
         };
         jsonfile.writeFile(file, Myjson,{ spaces: 2, EOL: '\r\n' });

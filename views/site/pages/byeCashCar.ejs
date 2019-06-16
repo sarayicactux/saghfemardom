@@ -37,62 +37,26 @@ pageUrl:"https://saghfemardom.ir"
                 <div class="col-md-12 shadow-sm border pb-1  bg-white text-dark">
                     <div class="p-2 row p-0">
                         <div class="col-12 m-0 p-0">
-                            <h2  class="boxesWline linkColor"> آگهی های <%- bT.title%> </h2>
+                            <h2  class="boxesWline linkColor"> خودروها </h2>
                         </div>
                     </div>
                     <div class="row  mt-1">
-                        <form  method="get" action="<%-host+'/fad'%>">
-<input type="hidden" value="<%- bT.id %>" id="bt" name="bt" >
+                        <form  method="get" action="<%-host+'/fca'%>">
 
                         <div class="col-md-12 ">
                             <div class="row">
                                 <div class="col-12 col-md-6  p-1" >
-                                    <input name="word" value="<%- filterParams.word %>" class="form-control border bg-light siteInputsFilter" placeholder="جستجوی ...">
+                                    <input name="model" value="<%- car.model %>" class="form-control border bg-light siteInputsFilter" placeholder="  نام خودرو ...">
 
                                 </div>
                                 <div class="col-12 col-md-6 p-1" >
-                                    <select name="bgr" class="select2 form-control siteInputs">
-                                        <option value="0">همه گروه ها</option>
-                                        <%
-                                        bgr = bT.BusinessGrs;
-                                        for (i=0;i<bgr.length;i++){%>
-                                            <option value="<%- bgr[i].id%>"<% if(bgr[i].id == parseInt(filterParams.bgr) ){%> selected<%} %>><%- bgr[i].title%></option>
-                                        <% } %>
-
-                                    </select>
-
-                                </div>
-                                <div class="col-12 col-md-6  p-1" >
-                                    <select id="pro" name="pro" class="select2 form-control siteInputs" onchange="citiesList(this.value);">
-                                        <option value="-1">همه ایران</option>
-                                        <% pros = res.daily.proCity
-                                        for (i=0;i<pros.length;i++){%>
-                                            <option value="<%- i %>"<% if( i == parseInt(filterParams.pro) ){%> selected<%} %>><%- pros[i].name %></option>
+                                    <select id="brand" name="brand" class="select2 form-control siteInputs" >
+                                        <option value="0">برند را انتخاب کنید</option>
+                                        <% brands = res.daily.brands
+                                        for (i=0;i<brands.length;i++){%>
+                                            <option <% if((parseInt(car.brand1_id) == brands[i].id) || (parseInt(car.brand2_id) == brands[i].id) ){ %> selected <%}%> value="<%- brands[i].id %>"><%- brands[i].title %> (<%- brands[i].en_title %>)</option>
                                         <% }  %>
                                     </select>
-
-                                </div>
-                                <div class="col-12 col-md-6  p-1" >
-                                    <span id="citiesListPlace">
-                                        <select id="city" name="city" class="select2 form-control siteInputs">
-
-                                            <%
-
-                                            if (filterParams.pro == '-1'){
-                                            %>
-                                                <option value="999888777">همه شهرها</option>
-
-                                            <%
-                                            }
-                                            else {
-                                                cities = pros[parseInt(filterParams.pro)].cities;
-                                            for (i=0;i<cities.length;i++){%>
-                                                <option value="<%-  i %>"<% if( i == parseInt(filterParams.city) ){  %> selected<% } %>><%- cities[i].name %></option>
-                                            <% }
-                                            }
-                                            %>
-                                        </select>
-                                    </span>
 
                                 </div>
                                 <div class="col-12  p-1" >
@@ -105,7 +69,7 @@ pageUrl:"https://saghfemardom.ir"
                     </div>
                 </div>
 
-                    <%- include('../all/bAdvs.ejs') %>
+                <%- include ../all/cAdvs.ejs %>
 
 
             </div>
