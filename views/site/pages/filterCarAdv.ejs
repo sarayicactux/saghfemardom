@@ -108,7 +108,11 @@ pageUrl:"https://saghfemardom.ir"
                                             <%
                                             }
                                             else {
-                                                cities = pros[parseInt(filterParams.pro)].cities;
+                                                cities = [];
+                                                if (filterParams.pro >= 0 ){
+                                                    cities = pros[parseInt(filterParams.pro)].cities;
+                                                }
+
                                             for (i=0;i<cities.length;i++){%>
                                                 <option value="<%-  i %>"<% if( i == parseInt(filterParams.city) ){  %> selected<% } %>><%- cities[i].name %></option>
                                             <% }

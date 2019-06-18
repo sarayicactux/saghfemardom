@@ -19,6 +19,7 @@ var home            = require('../controllers/home');
 router.route('/').get(preCond,dailyJson,hourlyJson,home.index);
 router.route('/sitemap.xml').get(sitemap,home.sitemap);
 router.route('/a/:id').get(preCond,dailyJson,hourlyJson,home.bAdvs);
+router.route('/cd/:id').get(preCond,dailyJson,hourlyJson,home.carAdvDetail);
 router.route('/bca/:model_id/:selling_type').get(preCond,dailyJson,hourlyJson,home.byeSellingType);
 router.route('/bCar').get(preCond,dailyJson,hourlyJson,home.bCar);
 router.route('/fad').get(preCond,dailyJson,hourlyJson,home.filterAdvs);

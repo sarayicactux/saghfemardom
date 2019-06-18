@@ -328,6 +328,55 @@ module.exports = {
                 })
             });
         } ,
+    carAdvDetail:function(req,res){
+        id        = prInj.PrInj(req.params.id);
+
+            Models.CarAdv.findAll({where:{
+                    status   : 1,
+                    id       : id
+                }, include:[
+                    Models.CarAdvImage,
+                    Models.Brand1,
+                    Models.Car,
+                    Models.People
+                ]
+            }).then(function (cAdvs) {
+                    if (cAdvs.length == 1){
+                        Models.CarAdv.findAll({
+                            where:{
+                                status       : 1,
+                                model        : cAdvs.model,
+                            },
+                            order:[
+                                ['id','desc']
+                            ],
+                            include:[
+                                Models.CarAdvImage,
+                                Models.Brand1,
+                                Models.Car,
+                                Models.People
+                            ],
+                            offset:0,
+                            limit:10
+                        }).then(function (relative) {
+                            credit = 0;
+                            if (req.session.people){
+                                credit = req.session.people.credit;
+                            }
+                            advCnt = 1;
+                            refU = host+'/cd/'+id;
+                            page = 1;
+                           res.render('site/pages/carAdvDetail',{credit:credit,refU:refU,page:page,advCnt:advCnt,relative:relative,cAdvs:cAdvs,res:res,jDate:jDate,needFul:needFul});
+
+
+                        })
+                    }
+                    else {
+                        res.render('errors/404');
+                    }
+
+            });
+        } ,
     bCar:function(req,res){
         {
             page = 1;
