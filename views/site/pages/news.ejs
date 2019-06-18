@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html   dir=rtl lang=fa>
+<%- include("../layouts/head.ejs",{
+title:"سقف مردم" ,
+des:"" ,
+pageUrl:"https://saghfemardom.ir"
+}) %>
+<body   >
+
+<% include ../layouts/svg.ejs %>
+
+<%- include ../layouts/header.ejs%>
+
+
+
+<div class="container" style="margin-top:10px">
+
+
+    <div class="row">
+        <div class="col-12 shadow-sm bg-white mt-1 pt-1 pb-1">
+            <div align="right">
+                <h1 class="mainHeader text-dark">سقف مردم ..... سقف مردم</h1>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="row"  style="margin-top:10px">
+
+        <div class="col-md-3 mb-md-0  mb-1 newsBar">
+            <%- include("../layouts/news.ejs",{
+            res:res
+            }) %>
+        </div>
+        <div class="col-md-6 mb-md-0 mb-1 ">
+            <div class="row pl-md-2  ">
+                <div class="col-md-12 shadow-sm border pb-1  bg-white text-dark">
+                    <div class="p-2 row p-0">
+                        <div class="col-12 m-0 p-0">
+                            <h2  class="boxesWline linkColor">اخبار</h2>
+                        </div>
+                    </div>
+                    <div class="row  mt-1">
+                        <% for(i=0;i<news.length;i++) {%>
+                            <div class="col-12">
+
+                                <a class="custom-link" href="<%- host+"/news/"+news[i].id%>">
+                                    <div class="row ">
+
+
+                                        <div class="col-7">
+                                            <span class="carSideBarsType"><%if (news[i].gr_id == 2){%>اخبار سقف مردم<% } else { %>اخبار خودرویی<% } %></span><br>
+                                            <span class="carSideBarTitle"> <%- news[i].title %>   </span><br>
+                                            <span class="carSideBarCity"><%- news[i].source %></span><br>
+                                            <span class="carSideBarTime"><%- jDate.jDate( news[i].created_at) %></span>
+                                        </div>
+
+                                        <div class="col-5">
+                                            <div align="left">
+                                                <img class="sideBarImage" src="<%- host + '/' +news[i].thumb %>">
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </a>
+                                <hr>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+
+<%
+if(newsCnt > 10){ %>
+                    <div class="col-md-12 shadow-sm border pb-1 mt-2  bg-white text-dark">
+                        <div class="row mt-md-3 mt-2">
+                            <div class="col-12 p-0" align="center">
+
+                                <div class="pagination">
+                                    <%
+                                        next = page + 1;
+                                        pre  = page - 1;
+                                    if (page < 4 ) {
+                                        href = refU+'?page='+pre;
+                                        if (pre < 2){
+                                            href = refU;
+                                        }
+                                    %>
+                                    <a href="<%- href %>" class="pl-2 pr-2" ><svg class="navBIcon"><use xlink:href="#left"></use></svg></a>
+                                    <a href="<%- refU %>" <% if(page == 1){ %>class="active"<% } %> >1</a>
+                                    <a href="<%- refU+'?page=2' %>" <% if(newsCnt< 10){%> style="display: none" <%} %> <% if(page == 2){ %>class="active"<% } %> >2</a>
+                                    <a href="<%- refU+'?page=3' %>" <% if(newsCnt< 20){%> style="display: none" <%} %><% if(page == 3){ %>class="active"<% } %> >3</a>
+                                    <a href="<%- refU+'?page=4' %>" <% if(newsCnt< 30){%> style="display: none" <%} %><% if(page == 4){ %>class="active"<% } %> >4</a>
+                                    <a href="<%- refU+'?page=5' %>" <% if(newsCnt< 40){%> style="display: none" <%} %><% if(page == 5){ %>class="active"<% } %> >5</a>
+                                    <a href="<%- refU+'?page='+next %>" <% if(page*10 > newsCnt){%> style="display: none" <%} %> class="pl-2 pr-2" ><svg class="navBIcon"><use xlink:href="#right"></use></svg></a>
+
+                                    <% }
+                                    else { %>
+                                        <a href="<%- refU+'?page='+ pre %>" class="pl-2 pr-2" ><svg class="navBIcon"><use xlink:href="#left"></use></svg></a>
+                                        <a href="<%- refU+'?page='+(page-2) %>" <% if( page-2 < 1){%> style="display: none" <%} %>  ><%- page-2 %></a>
+                                        <a href="<%- refU+'?page='+(page-1) %>" <% if( page-1 < 1){%> style="display: none" <%} %>  ><%- page-1 %></a>
+                                        <a href="<%- refU+'?page='+ page %>" class="active" ><%- page %></a>
+                                        <a href="<%- refU+'?page='+(page+1) %>" <% if(page*10 > newsCnt){%> style="display: none" <%} %>  ><%- page+1 %></a>
+                                        <a href="<%- refU+'?page='+(page+2) %>" <% if((page+1)*10 > newsCnt){%> style="display: none" <%} %>  ><%- page+2 %></a>
+                                        <a href="<%- refU+'?page='+next %>" <% if(page*10 > newsCnt){%> style="display: none" <%} %> class="pl-2 pr-2" ><svg class="navBIcon"><use xlink:href="#right"></use></svg></a>
+                                    <% } %>
+
+
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                <% }
+ %>
+
+            </div>
+
+
+        </div>
+        <div class="col-md-3 mb-md-0  mb-1  ">
+            <%- include("../layouts/sidebar.ejs",{
+            res:res
+            }) %>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="col-12 bg-dark mt-3 text-white">
+    <%- include("../layouts/footer.ejs",{
+    res:res
+    }) %>
+</div>
+
+<div id="myModal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="img01">
+    <div id="caption"></div>
+</div>
+</body>
+<link rel="stylesheet" href="<%- host%>/local/css/select2.css">
+<script src="<%- host%>/admin/vendors/select2/dist/js/select2.full.min.js"></script>
+<%- include ../layouts/scripts.ejs%>
+<script>
+    function citiesList(pro) {
+        $('#citiesListPlace').html('در حال دریافت لیست <span class="spinner-border spinner-border-sm mb-1"></span>');
+        $.post('/citiesList', {
+                pro        : pro,
+            },
+            function(data){
+                $('#citiesListPlace').html(data);
+
+            });
+    }
+    $(function () {
+        //Initialize Select2 Elements
+        $('.select2').select2();
+
+
+    })
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the image and insert it inside the modal - use its "alt" text as a caption
+    var modalImg = document.getElementById("img01");
+    var captionText = document.getElementById("caption");
+    $('.myImg').click(function(){
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    })
+
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+</script>
+</html>

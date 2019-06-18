@@ -18,6 +18,8 @@ var home            = require('../controllers/home');
 
 router.route('/').get(preCond,dailyJson,hourlyJson,home.index);
 router.route('/sitemap.xml').get(sitemap,home.sitemap);
+router.route('/news/:slug').get(preCond,dailyJson,hourlyJson,home.newsDetail);
+router.route('/news').get(preCond,dailyJson,hourlyJson,home.news);
 router.route('/a/:id').get(preCond,dailyJson,hourlyJson,home.bAdvs);
 router.route('/cd/:id').get(preCond,dailyJson,hourlyJson,home.carAdvDetail);
 router.route('/bca/:model_id/:selling_type').get(preCond,dailyJson,hourlyJson,home.byeSellingType);
@@ -61,10 +63,6 @@ function peopleInf(req,res,next) {
         people_id = req.session.people.id;
         Models.People.findOne(
             { where:{ id : people_id},
-            include:[
-                Models.Comment
-
-            ]
         }).then(function (peopleInf) {
             res.peopleInf = peopleInf;
             Models.Adv.findAll({
@@ -89,7 +87,18 @@ function peopleInf(req,res,next) {
                     ]
                 }).then(function (carAdvs) {
                     res.peopleCarAdvs = carAdvs;
-                    next();
+                    Models.Comment.findAll({
+                        where:{
+                            people_id : people_id
+                        },
+                        include:[
+                            Models.Adv
+                        ]
+                    }).then(function (comments) {
+                        res.comments = comments;
+                        next();
+                    })
+
                 });
             });
 

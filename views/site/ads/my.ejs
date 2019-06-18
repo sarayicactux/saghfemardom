@@ -40,9 +40,37 @@ pageUrl:"https://saghfemardom.ir"
                             <h2  class="boxesWline linkColor"> سقف من </h2>
                         </div>
                     </div>
-                    <div class="row  mt-1">
+                    <div class="row  mt-1 mb-2">
                         <div class="col-md-12">
 
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-4 border bg-primary pt-2 pb-2 pl-0 pr-0 text-white text-center carCel">نام و نام خانوادگی</div>
+                                    <div class="col-4 border bg-primary pt-2 pb-2 pl-0 pr-0 text-white text-center carCel">کد کاربری</div>
+                                    <div class="col-4 border bg-primary pt-2 pb-2 pl-0 pr-0 text-white text-center carCel">شماره تلفن همراه</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4 border pt-2 pb-2 pl-0 pr-0 text-center  carCel"><%- peopleInf.name+' '+peopleInf.family %></div>
+                                    <div class="col-4 border pt-2 pb-2 pl-0 pr-0 text-center  carCel"><%- peopleInf.mobile %></div>
+                                    <div class="col-4 border pt-2 pb-2 pl-0 pr-0 text-center  carCel"><%- peopleInf.mobile %></div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-4 border bg-primary pt-2 pb-2 pl-0 pr-0 text-white text-center carCel">تلگرام</div>
+                                    <div class="col-4 border bg-primary pt-2 pb-2 pl-0 pr-0 text-white text-center carCel">اینستاگرام</div>
+                                    <div class="col-4 border bg-primary pt-2 pb-2 pl-0 pr-0 text-white text-center carCel">شماره های تماس</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4 border pt-2 pb-2 pl-0 pr-0 text-center  carCel"><% if (peopleInf.telegram.length > 5){%><%- peopleInf.telegram %><%} else { %>وارد نشده<%} %></div>
+                                    <div class="col-4 border pt-2 pb-2 pl-0 pr-0 text-center  carCel"><% if (peopleInf.instagram.length > 5){%><%- peopleInf.instagram %><%} else { %>وارد نشده<%} %></div>
+                                    <div class="col-4 border pt-2 pb-2 pl-0 pr-0 text-center  carCel"><% if (peopleInf.phone.length > 5){%><%- peopleInf.phone %><%} else { %>وارد نشده<%} %></div>
+                                </div>
+                            </div>
+                            <div class="col-12 formTxt mt-2 mb-1">
+
+                                <span class="">برای به روز رسانی اطلاعات تماس اینجا <a href="<%- host %>/send" class="custom-link">اینجا</a> کنید</span>
+                            </div>
 
                         </div>
 
@@ -51,6 +79,99 @@ pageUrl:"https://saghfemardom.ir"
 
                     </div>
                 </div>
+
+                <div class="col-md-12 shadow-sm border p-0  bg-white text-dark mt-2 mb-1">
+
+                    <div id="accordion"  role="tablist">
+                        <div class="card-collapse border-0">
+                            <div class="card-header p-0 col-12 border-top-0 border-light-0 border-left-0 border-bottom-1" id="headingOne">
+                                    <button class="btn btn-link custom-link border-0" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                        <h2  class="boxesWline linkColor"> آگهی های تایید شده </h2>
+                                    </button>
+                            </div>
+
+                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                                <div class="card-body">
+                                    <div class="row  mt-1 mb-2">
+                                        <% for (i=0;i<accAdv.length; i++){
+                                            images = accAdv[i].AdvImages;
+                                        %>
+                                            <div class="col-md-12">
+                                                <div class="row ">
+
+
+                                                    <div class="col-7">
+                                                        <a href="<%- host+'/editA/'+accAdv[i].id %>" class="carSideBarsType custom-link"><%- accAdv[i].title %> - <%- accAdv[i].BusinessGr.title %> </a><br>
+                                                        <span class="carSideBarTitle"> <%- accAdv[i].pro_name + ' - '+ accAdv[i].city_name %>  </span><br>
+                                                        <span class="carSideBarTime"><%- jDate.jDate( accAdv[i].created_at) %></span>
+                                                    </div>
+
+                                                    <div class="col-5">
+                                                        <div align="left">
+                                                            <img class="sideBarImage" src="<%- host+'/'+images[0].img_url %>">
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+<hr>
+                                            </div>
+                                        <% } %>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-collapse border-0">
+                            <div role="tab" class="card-header p-0 col-12 border-top-0 border-light-0 border-left-0 border-bottom-1" id="headingTwo">
+                                <button class="btn btn-link custom-link border-0" data-toggle="collapse" data-target="#collapseOne" aria-controls="collapseTwo">
+                                    <h2  class="boxesWline linkColor"> آگهی های تایید نشده </h2>
+                                </button>
+                            </div>
+
+                            <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                <div class="card-body">
+                                    <div class="row  mt-1 mb-2">
+                                        <% for (i=0;i<nAccAdv.length; i++){
+                                            images = nAccAdv[i].AdvImages;
+                                        %>
+                                        <div class="col-md-12">
+                                            <div class="row ">
+
+
+                                                <div class="col-7">
+                                                    <a href="<%- host+'/editA/'+nAccAdv[i].id %>" class="carSideBarsType custom-link"><%- nAccAdv[i].title %> - <%- nAccAdv[i].BusinessGr.title %> </a><br>
+                                                    <span class="carSideBarCity">
+                                                        <% if (nAccAdv[i].checked == 0 ){%>در دست بررسی<%} else {%>
+                                                        <%- nAccAdv[i].reason  %>  <% } %></span><br>
+                                                    <span class="carSideBarTime"><%- jDate.jDate( nAccAdv[i].created_at) %></span>
+                                                </div>
+
+                                                <div class="col-5">
+                                                    <div align="left">
+                                                        <img class="sideBarImage" src="<%- host+'/'+images[0].img_url %>">
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <hr>
+                                        </div>
+                                        <% } %>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
 
             </div>
 

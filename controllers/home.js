@@ -345,7 +345,10 @@ module.exports = {
                         Models.CarAdv.findAll({
                             where:{
                                 status       : 1,
-                                model        : cAdvs.model,
+                                model        : cAdvs[0].model,
+                                id           : {
+                                    $ne : cAdvs[0].id
+                                }
                             },
                             order:[
                                 ['id','desc']
@@ -594,6 +597,61 @@ module.exports = {
                 res.render('site/all/cities',{cities:cities});
             }
         });
+
+    },
+    newsDetail:function(req,res){
+        slug = prInj.PrInj(req.params.slug);
+        Models.News.findOne({
+            where:{
+                slug    : slug,
+                active  : 1
+            }
+        }).then(function (newD) {
+            if(newD){
+                res.render('site/pages/newsDetail',{newD:newD,res:res,jDate:jDate,needFul:needFul});
+            }
+            else {
+                res.status(404);
+                res.render('errors/404');
+            }
+
+        })
+
+
+    },
+    news: function (req,res) {
+        page = 1;
+        if (req.query.page){
+            if (parseInt(req.query.page) < 2){
+                res.redirect(host)
+            }
+            page = req.query.page;
+            page = parseInt(prInj.PrInj(page));
+
+        }
+        Models.News.findAll({where:{active: 1}})
+            .then(function (allNews) {
+                newsCnt = allNews.length;
+                Models.News.findAll({
+                    where:{
+                        active: 1,
+                    },
+                    order:[
+                        ['id','desc']
+                    ],
+                    offset:(page-1)*10,
+                    limit:10
+                }).then(function (news) {
+                    refU = host+'/news';
+                    res.render('site/pages/news',{refU:refU,page:page,newsCnt:newsCnt,news:news,res:res,jDate:jDate,needFul:needFul});
+
+
+                }).catch(function (err) {
+                    console.log(err);
+                    res.render('errors/404');
+                })
+            })
+
 
     },
     send:function(req,res){
@@ -959,12 +1017,14 @@ module.exports = {
 
         peopleInf = res.peopleInf;
         advs      = res.peopleAdvs;
+
         carAdvs   = res.peopleCarAdvs;
+        comments  = res.comments;
         accAdv  = [];
         nAccAdv = [];
         accCar  = [];
         nAccCar = [];
-        for (i=0;i<advs;i++){
+        for (i=0;i<advs.length;i++){
             if (advs[i].status == 1){
                 accAdv.push(advs[i]);
             }
@@ -972,7 +1032,8 @@ module.exports = {
                 nAccAdv.push(advs[i]);
             }
         }
-        for (i=0;i<carAdvs;i++){
+
+        for (i=0;i<carAdvs.length;i++){
             if (carAdvs[i].status == 1){
                 accCar.push(carAdvs[i]);
             }
@@ -981,13 +1042,15 @@ module.exports = {
             }
         }
             res.render('site/ads/my',{
-                res:res,
+                res     :res,
+                peopleInf:peopleInf,
                 accAdv  :accAdv,
                 nAccAdv :nAccAdv,
                 accCar  :accCar,
                 nAccCar :nAccCar,
-                jDate:jDate,
-                needFul:needFul
+                comments:comments,
+                jDate   :jDate,
+                needFul :needFul
 
             });
 

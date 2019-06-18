@@ -33,55 +33,44 @@ pageUrl:"https://saghfemardom.ir"
             }) %>
         </div>
         <div class="col-md-6 mb-md-0 mb-1 ">
-            <div class="row pl-md-2  " style="margin-top: -8px !important;">
-
-                <%- include ../all/cAdvs.ejs %>
-                <div class="col-md-12 shadow-sm border pb-1 mt-2 bg-white text-dark">
-                    <div class="row">
+            <div class="row pl-md-2  ">
+                <div class="col-md-12 shadow-sm border pb-1  bg-white text-dark">
+                    <div class="p-2 row p-0">
+                        <div class="col-12 m-0 p-0">
+                            <h2  class="boxesWline linkColor"> <%- newD.title %> </h2>
+                        </div>
+                    </div>
+                    <div class="row  mt-1">
                         <div class="col-12">
-                            <div class="p-2 row p-0">
-                                <div class="col-12 m-0 p-0">
-                                    <h2  class="boxesWline linkColor">آگهی های مشابه </h2>
-                                </div>
-                            </div>
-                            <div class="row  mt-1">
-                                <% for(i=0;i<relative.length;i++){
-                                    imageA = relative[i].CarAdvImages[0];
-                                %>
-                                <div class="col-12">
-
-                                <a class="custom-link" href="<%- host+"/cd/"+relative[i].id%>">
-                                    <div class="row ">
-
-
-                                            <div class="col-7">
-                                                <span class="carSideBarsType"><%if (relative[i].selling_type == 2){%>فروش اقساطی<% } else { %>فروش نقدی<% } %></span><br>
-                                                <span class="carSideBarTitle"> <%- relative[i].title %>   </span><br>
-                                                <span class="carSideBarCity"><%- relative[i].pro_name %></span><br>
-                                                <span class="carSideBarTime"><%- jDate.jDate( relative[i].actived_at) %></span>
-                                            </div>
-
-                                            <div class="col-5">
-                                                <div align="left">
-                                                    <img class="sideBarImage" src="<%- host + '/' +imageA.img_url %>">
-
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                </a>
-                                    <hr>
+                            <div class="row ">
+                                <div class="col-7">
+                                    <%- newD.summary %>
                                 </div>
 
+                                <div class="col-5">
+                                    <div align="left">
+                                        <img class="sideBarImage" src="<%- host + '/' +newD.thumb %>">
 
-                                <% } %>
-
-
+                                    </div>
+                                </div>
                             </div>
+                        </div>
+                        <div class="col-12">
+                                    <%- newD.text %>
+
+                        </div>
+                        <div class="col-12">
+                            منبع: <a class="custom-link" href="<%- newD.source_link %>" target="_blank"><%- newD.source %></a>
+
+
+                        </div>
+                        <div class="col-12">
+                            <span class="carSideBarTime"><%- jDate.jDate( newD.created_at) %></span>
+
                         </div>
                     </div>
                 </div>
+
 
             </div>
 
@@ -122,6 +111,23 @@ pageUrl:"https://saghfemardom.ir"
                 $('#citiesListPlace').html(data);
 
             });
+    }
+    function modelsList(br) {
+        if (br != '0'){
+            $('#carsListPlace').html('در حال دریافت لیست <span class="spinner-border spinner-border-sm mb-1"></span>');
+            $.post('/modelsList', {
+                    br        : br,
+                },
+                function(data){
+                    $('#carsListPlace').html(data);
+
+                });
+        }
+        else {
+            htm = '<select id="model" name="model" class="select2 form-control siteInputs"><option value="0">برند را انتخاب کنید</option></select>';
+            $('#carsListPlace').html(htm);
+        }
+
     }
     $(function () {
         //Initialize Select2 Elements
