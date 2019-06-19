@@ -58,8 +58,98 @@ images = bAdvs[i].AdvImages;
                 </div>
             </div>
             <% } %>
+        <%if ( peopleGinf.length != 0 ){
+        comments = bAdvs[i].Comments;
+        %>
+                <div class="col-md-12">
+                    <div class="row">
+
+                    <h2  class="text-dark  p-3"> پیام ها </h2>
+                </div>
+            </div>
+            <div class="col-md-12 ">
+            <%
+            for (k=0;k<comments.length; k++){
+                    if(comments[k].people_id == peopleGinf.id){%>
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <div class="card  text-dark">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12"> <h6><%- comments[k].name %>&nbsp;-&nbsp; <span class="text-danger"><%-  jDate.jDate(comments[k].updated_at) %></span></h6> </div>
 
 
+                                </div>
+                                <div class="row">
+                                    <div class="comment col-12">
+                                        <%- comments[k].text %>
+                                    </div>
+                                </div>
+
+                                <%
+
+                                for(j=0;j<comments; j++){
+                                if(comments[j].parent_id == comments[k].id){
+                                %>
+                                    <div class="row p-1 m-1">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-11">
+                                            <div class="row">
+
+                                                <div class="col-md-12">
+                                                    <div class="card bg-light text-dark">
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-12"> <%- comments[j].name %>&nbsp;-&nbsp; <span class="text-danger"><%-  jDate.jDate(comments[j].updated_at) %></span> </div>
+
+
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="comment col-12">
+                                                                    <%- comments[j].text %>                                                                                </div>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <br>
+                                                            </div>
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% }
+                                } %>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <%        }
+            %>
+
+
+            <% }%>
+            </div>
+            <div class="col-12" id="sendMsgFrm<%- bAdvs[i].id %>">
+                <div class="col-12 p-2 ">
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <textarea class="form-control" name="text" id="text<%- bAdvs[i].id %>" placeholder="لطفا پیام خود را وارد کنید"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12  p-1" >
+
+                            <button id="sendBtn<%- bAdvs[i].id %>"  onclick="sendMsg('<%- bAdvs[i].id %>')"  class="btn mainBtn   btn-sm btn-block" > ارسال</button>
+
+                    </div>
+            </div>
+
+            <% } %>
         </div>
     </div>
 </div>
@@ -120,3 +210,50 @@ else {
 <%
 }
 %>
+<script>
+    function  sendMsg(advId) {
+        // vars
+        var text = $("#text"+advId).val();
+        // validate
+        $('#sendBtn'+advId).prop('disabled', true);
+        if (text.length < 20) {
+            $('#sendBtn'+advId).text('متن  پیام را کامل کنید');
+            setTimeout(function () {
+                $('#sendBtn'+advId).text('ارسال');
+                $('#sendBtn'+advId).prop('disabled', false);
+            }, 1300);
+            return false;
+        }
+
+
+
+        $('#comment-error').slideUp(100);
+        // show pre rendring msg
+        $('#sendBtn'+advId).text('در حال ارسال ...');
+        $('#sendBtn'+advId).prop('disabled', true);
+
+        // send request
+        $.ajax({
+            type: "POST",
+            url: "/advComment" ,
+            data: {
+                text    : text,
+                adv_id  : advId,
+            },
+            success: function() {
+                $('#comment-success').slideDown(100);
+                // empty inputs
+                var text = $("#text"+advId).val('');
+                $('#sendBtn'+advId).text('با تشکر، پیام شما ارسال شد');
+                setTimeout(function () {
+
+                    $('#sendMsgFrm'+advId).slideUp(300);
+                }, 2000);
+
+
+
+            }
+        });
+        // end ajax
+    }
+</script>

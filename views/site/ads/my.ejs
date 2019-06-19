@@ -81,60 +81,147 @@ pageUrl:"https://saghfemardom.ir"
                 </div>
 
                 <div class="col-md-12 shadow-sm border p-0  bg-white text-dark mt-2 mb-1">
-
-                    <div id="accordion"  role="tablist">
-                        <div class="card-collapse border-0">
-                            <div class="card-header p-0 col-12 border-top-0 border-light-0 border-left-0 border-bottom-1" id="headingOne">
-                                    <button class="btn btn-link custom-link border-0" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                        <h2  class="boxesWline linkColor"> آگهی های تایید شده </h2>
-                                    </button>
+                    <div class="accordion" id="accordionExample">
+                        <div class="card">
+                            <div class="card-header" id="headingOne">
+                                <h2 class="mb-0 custom-link">
+                                    <a  class="custom-link " data-toggle="collapse" data-target="#collapseOne"><i class="fa fa-plus text-info"></i> <span  class="linkColor"> آگهی های تایید شده </span></a>
+                                </h2>
                             </div>
-
-                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                                 <div class="card-body">
                                     <div class="row  mt-1 mb-2">
-                                        <% for (i=0;i<accAdv.length; i++){
+
+                                        <% if(accAdv.length > 0){ for (i=0;i<accAdv.length; i++){
                                             images = accAdv[i].AdvImages;
                                         %>
-                                            <div class="col-md-12">
-                                                <div class="row ">
+                                        <div class="col-md-12">
+                                            <div class="row ">
 
 
-                                                    <div class="col-7">
-                                                        <a href="<%- host+'/editA/'+accAdv[i].id %>" class="carSideBarsType custom-link"><%- accAdv[i].title %> - <%- accAdv[i].BusinessGr.title %> </a><br>
-                                                        <span class="carSideBarTitle"> <%- accAdv[i].pro_name + ' - '+ accAdv[i].city_name %>  </span><br>
-                                                        <span class="carSideBarTime"><%- jDate.jDate( accAdv[i].created_at) %></span>
+                                                <div class="col-7">
+                                                    <a href="<%- host+'/editA/'+accAdv[i].id %>" class="carSideBarsType custom-link"><%- accAdv[i].title %> - <%- accAdv[i].BusinessGr.title %> </a><br>
+                                                    <span class="carSideBarTitle"> <%- accAdv[i].pro_name + ' - '+ accAdv[i].city_name %>  </span><br>
+                                                    <span class="carSideBarTime"><%- jDate.jDate( accAdv[i].created_at) %></span>
+                                                    <br><span class="carSideBarCity">برای به روز رسانی آگهی  <a href="<%- host+'/editA/'+accAdv[i].id %>" class="custom-link">اینجا </a> کلیک کنید</span>
+                                                </div>
+
+                                                <div class="col-5">
+                                                    <div align="left">
+                                                        <img class="sideBarImage" src="<%- host+'/'+images[0].img_url %>">
+
                                                     </div>
+                                                </div>
 
-                                                    <div class="col-5">
-                                                        <div align="left">
-                                                            <img class="sideBarImage" src="<%- host+'/'+images[0].img_url %>">
+                                            </div>
+                                            <% comments = accAdv[i].Comments
+                                            if(comments.length != 0){
+                                            %>
+                                            <h2  class="boxesWline linkColor"> پیام ها </h2>
+                                            <%
+                                            for (i=0;i<comments.length; i++){%>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="card  text-dark">
+                                                            <div class="card-body">
+                                                                <div class="row">
+                                                                    <div class="col-12"> <h6><%- comments[i].name %>&nbsp;-&nbsp; <span class="text-danger"><%-  jDate.jDate(comments[i].updated_at) %></span></h6> </div>
 
+
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="comment col-12">
+                                                                        <%- comments[i].text %>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <br>
+                                                                    <div class="row">
+                                                                        <div class="col-md-3 ">
+                                                                            <button class="reply-btn comment-replay-btn form-control btn-outline-secondary  " data-commentid="<%- comments[i].id %>" data-commentername="<%- comments[i].name %>">
+                                                                                <i class="fa fa-reply"></i>
+                                                                                پاسخ به دیدگاه
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <%
+
+                                                                for(j=0;j<comments; j++){
+                                                                if(comments[j].parent_id == comments[i].id){
+                                                                %>
+                                                                    <div class="row p-1 m-1">
+                                                                        <div class="col-md-1"></div>
+                                                                        <div class="col-md-11">
+                                                                            <div class="row">
+
+                                                                                <div class="col-md-12">
+                                                                                    <div class="card bg-light text-dark">
+                                                                                        <div class="card-body">
+                                                                                            <div class="row">
+                                                                                                <div class="col-12"> <%- comments[j].name %>&nbsp;-&nbsp; <span class="text-danger"><%-  jDate.jDate(comments[j].updated_at) %></span> </div>
+
+
+                                                                                            </div>
+                                                                                            <div class="row">
+                                                                                                <div class="comment col-12">
+                                                                                                    <%- comments[j].text %>                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="col-12">
+                                                                                                <br>
+                                                                                            </div>
+
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                <% }
+                                                                } %>
+
+
+
+                                                            </div>
                                                         </div>
                                                     </div>
-
                                                 </div>
-<hr>
+
+                                            <% }%>
+
+
+                                            <hr>
+                                        </div>
+                                        <% }
+                                            } } else {%>
+                                        <div class="row ">
+
+
+                                            <div class="col-12">
+                                            <span class="carSideBarTime">موردی برای نمایش وجود ندارد</span>
+                                            <br><span class="carSideBarCity">برای ارسال آگهی  <a href="<%- host+'/send' %>" class="custom-link">اینجا </a> کلیک کنید</span>
                                             </div>
+                                        </div>
+
                                         <% } %>
 
 
 
-                                    </div>
-                                </div>
+                                    </div>                                </div>
                             </div>
                         </div>
-                        <div class="card-collapse border-0">
-                            <div role="tab" class="card-header p-0 col-12 border-top-0 border-light-0 border-left-0 border-bottom-1" id="headingTwo">
-                                <button class="btn btn-link custom-link border-0" data-toggle="collapse" data-target="#collapseOne" aria-controls="collapseTwo">
-                                    <h2  class="boxesWline linkColor"> آگهی های تایید نشده </h2>
-                                </button>
+                        <% if(nAccAdv.length > 0){%>
+                        <div class="card">
+                            <div class="card-header" id="headingTwo">
+                                <h2 class="mb-0">
+                                    <a  class="custom-link collapsed" data-toggle="collapse" data-target="#collapseTwo"><i class="fa fa-plus text-info"></i><span  class="linkColor"> آگهی های تایید نشده</span></a>
+                                </h2>
                             </div>
-
-                            <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
                                 <div class="card-body">
                                     <div class="row  mt-1 mb-2">
-                                        <% for (i=0;i<nAccAdv.length; i++){
+                                        <%  for (i=0;i<nAccAdv.length; i++){
                                             images = nAccAdv[i].AdvImages;
                                         %>
                                         <div class="col-md-12">
@@ -145,8 +232,9 @@ pageUrl:"https://saghfemardom.ir"
                                                     <a href="<%- host+'/editA/'+nAccAdv[i].id %>" class="carSideBarsType custom-link"><%- nAccAdv[i].title %> - <%- nAccAdv[i].BusinessGr.title %> </a><br>
                                                     <span class="carSideBarCity">
                                                         <% if (nAccAdv[i].checked == 0 ){%>در دست بررسی<%} else {%>
-                                                        <%- nAccAdv[i].reason  %>  <% } %></span><br>
+                                                            <%- nAccAdv[i].reason  %>  <% } %></span><br>
                                                     <span class="carSideBarTime"><%- jDate.jDate( nAccAdv[i].created_at) %></span>
+                                                    <br><span class="carSideBarCity">برای اصلاح آگهی  <a href="<%- host+'/editA/'+nAccAdv[i].id %>" class="custom-link">اینجا </a> کلیک کنید</span>
                                                 </div>
 
                                                 <div class="col-5">
@@ -167,8 +255,101 @@ pageUrl:"https://saghfemardom.ir"
                                 </div>
                             </div>
                         </div>
+                            <% } %>
+                        <div class="card">
+                            <div class="card-header" id="headingThree">
+                                <h2 class="mb-0">
+                                    <a  class="custom-link collapsed" data-toggle="collapse" data-target="#collapseThree"><i class="fa fa-plus text-info"></i><span  class="linkColor"> خودروهای فروشی تایید شده</span></a>
+                                </h2>
+                            </div>
+                            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                                <div class="card-body">
+                                    <div class="row  mt-1 mb-2">
+                                        <% if(accCar.length > 0){ for (i=0;i<accCar.length; i++){
+                                            images = accCar[i].CarAdvImages;
+                                        %>
+                                        <div class="col-md-12">
+                                            <div class="row ">
 
 
+                                                <div class="col-7">
+                                                    <a href="<%- host+'/editC/'+accCar[i].id %>" class="carSideBarsType custom-link"><%- accCar[i].title %> - <%- accCar[i].Car.model %> </a><br>
+                                                    <span class="carSideBarCity"><%- accCar[i].pro_name + ' - '+ accCar[i].city_name %></span><br>
+                                                    <span class="carSideBarTime"><%- jDate.jDate( accCar[i].created_at) %></span>
+                                                    <br><span class="carSideBarCity">برای به روز رسانی آگهی  <a href="<%- host+'/editC/'+accCar[i].id %>" class="custom-link">اینجا </a> کلیک کنید</span>
+                                                </div>
+
+                                                <div class="col-5">
+                                                    <div align="left">
+                                                        <img class="sideBarImage" src="<%- host+'/'+images[0].img_url %>">
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <hr>
+                                        </div>
+                                        <% } } else {%>
+                                            <div class="row ">
+
+
+                                                <div class="col-12">
+                                                    <span class="carSideBarTime">موردی برای نمایش وجود ندارد</span>
+                                                    <br><span class="carSideBarCity">برای ارسال آگهی  <a href="<%- host+'/send' %>" class="custom-link">اینجا </a> کلیک کنید</span>
+                                                </div>
+                                            </div>
+                                        <% } %>
+
+
+
+
+                                    </div>                                 </div>
+                            </div>
+                        </div>
+                        <% if(nAccCar.length > 0){%>
+                        <div class="card">
+                            <div class="card-header" id="headingFour">
+                                <h2 class="mb-0">
+                                    <a  class="custom-link collapsed" data-toggle="collapse" data-target="#collapseFour"><i class="fa fa-plus text-info"></i><span  class="linkColor"> خودروهای فروشی تایید نشده</span></a>
+                                </h2>
+                            </div>
+                            <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+                                <div class="card-body">
+                                    <div class="row  mt-1 mb-2">
+                                        <% for (i=0;i<nAccCar.length; i++){
+                                            images = nAccCar[i].CarAdvImages;
+                                        %>
+                                        <div class="col-md-12">
+                                            <div class="row ">
+
+
+                                                <div class="col-7">
+                                                    <a href="<%- host+'/editC/'+nAccCar[i].id %>" class="carSideBarsType custom-link"><%- nAccCar[i].title %> - <%- nAccCar[i].Car.model %> </a><br>
+                                                    <span class="carSideBarCity">
+                                                        <% if (nAccCar[i].checked == 0 ){%>در دست بررسی<%} else {%>
+                                                            <%- nAccCar[i].reason  %>  <% } %></span><br>
+                                                    <span class="carSideBarTime"><%- jDate.jDate( nAccCar[i].created_at) %></span>
+                                                    <br><span class="carSideBarCity">برای اصلاح آگهی  <a href="<%- host+'/editC/'+nAccCar[i].id %>" class="custom-link">اینجا </a> کلیک کنید</span>
+                                                </div>
+
+                                                <div class="col-5">
+                                                    <div align="left">
+                                                        <img class="sideBarImage" src="<%- host+'/'+images[0].img_url %>">
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <hr>
+                                        </div>
+                                        <% } %>
+
+
+
+                                    </div>                                 </div>
+                            </div>
+                        </div>
+                        <% } %>
                     </div>
                 </div>
 
@@ -221,5 +402,19 @@ pageUrl:"https://saghfemardom.ir"
     span.onclick = function() {
         modal.style.display = "none";
     }
+
+    $(document).ready(function(){
+        // Add minus icon for collapse element which is open by default
+        $(".collapse.show").each(function(){
+            $(this).prev(".card-header").find(".fa").addClass("fa-minus").removeClass("fa-plus");
+        });
+
+        // Toggle plus minus icon on show hide of collapse element
+        $(".collapse").on('show.bs.collapse', function(){
+            $(this).prev(".card-header").find(".fa").removeClass("fa-plus").addClass("fa-minus");
+        }).on('hide.bs.collapse', function(){
+            $(this).prev(".card-header").find(".fa").removeClass("fa-minus").addClass("fa-plus");
+        });
+    });
 </script>
 </html>

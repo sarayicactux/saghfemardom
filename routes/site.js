@@ -29,6 +29,7 @@ router.route('/fca').get(preCond,dailyJson,hourlyJson,home.filterCars);
 router.route('/fbca').get(preCond,dailyJson,hourlyJson,home.filterCarsAdv);
 router.route('/cars').get(preCond,dailyJson,hourlyJson,home.cars);
 router.route('/send').get(checkPeople,preCond,dailyJson,hourlyJson,home.send);
+router.route('/advComment').post(dailyJson,checkPeopleAjax,home.advComment);
 router.route('/registeAdv').post(dailyJson,checkPeopleAjax,home.registeAdv);
 router.route('/registeCashCar').post(dailyJson,checkPeopleAjax,home.registeCashCar);
 router.route('/registeinstCar').post(dailyJson,checkPeopleAjax,home.registeinstCar);
@@ -194,6 +195,13 @@ function checkPeople(req,res,next) {
 }
 function pageLog(req,res,next){}
 function dailyJson(req,res,next){
+    if(!req.session.people) {
+        peopleGinf = [];
+    }
+    else {
+        peopleGinf = req.session.people;
+    }
+    res.peopleGinf = peopleGinf;
     const daily  = path.resolve()+'/public/daily.json';
     jsonfile.readFile(daily, function (err, obj) {
         if (err) console.error(err);

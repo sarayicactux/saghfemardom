@@ -178,7 +178,7 @@ pageUrl:"https://saghfemardom.ir"
         else {
             $('#wait').fadeIn(100);
             $('#regBtn').html('در حال ارسال <span class="spinner-border spinner-border-sm mb-1"></span>');
-            $('#cCodeBtn').prop('disabled', true);
+            $('#regBtn').prop('disabled', true);
 
             $.ajax({
                 url: 'sendRcode',

@@ -654,6 +654,23 @@ module.exports = {
 
 
     },
+    advComment:function(req,res){
+        var form        = prInj.PrAll(req.body);
+        people_id = peopleGinf.id;
+        now = new Date();
+        var created_at = date.format(now, 'YYYY-MM-DD HH:mm:ss');
+        Models.Comment.create({
+            people_id : people_id,
+            adv_id : form.adv_id,
+            text   : form.text,
+            name   : peopleGinf.name+' '+peopleGinf.family,
+            created_at : created_at,
+            updated_at : created_at,
+        }).then(function (row) {
+            res.json({status:true});return
+        });
+
+    },
     send:function(req,res){
 
             res.render('site/ads/chooseType',{res:res,jDate:jDate,needFul:needFul});
