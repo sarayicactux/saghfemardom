@@ -676,6 +676,20 @@ module.exports = {
             res.render('site/ads/chooseType',{res:res,jDate:jDate,needFul:needFul});
 
     },
+    editA:function(req,res){
+            id = prInj.PrInj(req.params.id);
+            Models.Adv.findOne({
+                where:{
+                    id:id
+                },
+                include:[
+                    Models.AdvImage
+
+                ]
+            }).then(function (adv) {
+                res.render('site/ads/editBusiness',{adv:adv,res:res,jDate:jDate,needFul:needFul});
+            })
+    },
 
     citiesList:function(req,res){
 
@@ -781,6 +795,69 @@ module.exports = {
                                 };
                                 Models.AdvImage.create(newImg);
                                 
+                    }
+
+        }).catch(function (err) {
+            console.log(err);
+                res.json( {status: false});return;
+            });
+    },
+    updateAdv:function(req,res){
+        daily = res.daily;
+        var form        = req.body;
+        advImgs = form.advImgs;
+        now = new Date();
+        var created_at = date.format(now, 'YYYY-MM-DD HH:mm:ss');
+        proC = daily.proCity;
+        businesses = daily.BusinessType;
+        pro = proC[form.pro];
+        bus = businesses[form.businessType];
+        business_type = bus.id;
+        bisGr         = bus.BusinessGrs;
+        business_gr   = bisGr[form.businessGr].id;
+        newAdvInf = {
+            user_id        : req.session.people.id,
+            title          : prInj.PrInj( form.title),
+            description    : prInj.PrInj( form.description),
+            pro_id         : pro.id,
+            pro_name       : pro.name,
+            status         : 0,
+            checked        : 0,
+            city_id        : pro.cities[form.city].id,
+            city_name      : pro.cities[form.city].name,
+            business_type  : business_type,
+            business_gr    : business_gr,
+            video_url      : prInj.PrInj( form.videoPath),
+            created_at     : created_at,
+            updated_at     : created_at
+        }
+        Models.Adv.update(newAdvInf,{
+            where: {
+                id: prInj.PrInj( form.id)
+            }
+            }).then(function(nRecord){
+                Models.AdvImage.destroy({
+                    where:{
+                        adv_id: form.id
+                    }
+                }).then(function (r) {
+                    for(i = 0;i<advImgs.length;i++){
+
+                        newAdvImage(form.id,advImgs[i]);
+
+                    }
+
+                });
+                    res.json({status:true});
+                    function newAdvImage(adv_id,imgPath){
+                                newImg = {
+                                    adv_id : adv_id,
+                                    img_url: imgPath,
+                                    created_at     : created_at,
+                                    updated_at     : created_at
+                                };
+                                Models.AdvImage.create(newImg);
+
                     }
 
         }).catch(function (err) {

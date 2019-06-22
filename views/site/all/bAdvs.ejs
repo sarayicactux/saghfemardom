@@ -34,21 +34,23 @@ images = bAdvs[i].AdvImages;
 
                     <%- bAdvs[i].description %>
 
-                    <div class="col-sm-12 mt-3 p-0">
-                        <h3  >راه های تماس</h3>
-                        <span class="fa fa-phone" ></span><%- bAdvs[i].person.phone%>
-                    </div>
-                    <div class="col-sm-12">
-                        <div align="left">
-                            <% if(bAdvs[i].person.telegram.length > 4){ %>
+
+                </div>
+                <div class="col-sm-12 mt-3 p-0">
+                    <h3  >راه های تماس</h3>
+                    <span class="fa fa-phone" ></span><%- bAdvs[i].person.phone%>
+                </div>
+                <div class="col-sm-12">
+                    <div align="left">
+                        <% if(bAdvs[i].person.telegram.length > 4){ %>
                             <a href="<%- bAdvs[i].person.telegram %>" class="custom-link"><img src="<%- host%>/local/images/telegram.png" height="30"></a>
-                                <% } if(bAdvs[i].person.instagram.length > 4){ %>
+                        <% } if(bAdvs[i].person.instagram.length > 4){ %>
                             <a href="<%- bAdvs[i].person.instagram %>" class="custom-link pr-2"><img src="<%- host %>/local/images/instagram.png" height="30"></a>
-                                <% } %>
-                        </div>
+                        <% } %>
                     </div>
                 </div>
             </div>
+
             <% if(bAdvs[i].video_url.length > 10){%>
             <div class="p-2 row p-0 m-0">
                 <div class="col-12 m-0 p-0 adv">
@@ -126,6 +128,7 @@ images = bAdvs[i].AdvImages;
 
                             </div>
                         </div>
+                        <hr>
                     </div>
                 </div>
             <%        }
@@ -134,21 +137,24 @@ images = bAdvs[i].AdvImages;
 
             <% }%>
             </div>
-            <div class="col-12" id="sendMsgFrm<%- bAdvs[i].id %>">
-                <div class="col-12 p-2 ">
-                    <div class="row">
-                        <div class="col-md-12 form-group">
+            <div class="col-md-12 " id="sendMsgFrm<%- bAdvs[i].id %>">
+                <div class="col-md-12 p-0   ">
+
                             <textarea class="form-control" name="text" id="text<%- bAdvs[i].id %>" placeholder="لطفا پیام خود را وارد کنید"></textarea>
-                        </div>
-                    </div>
+
                 </div>
-                <div class="col-12  p-1" >
+                <div class="col-12  p-0 mb-1 mt-2" >
 
                             <button id="sendBtn<%- bAdvs[i].id %>"  onclick="sendMsg('<%- bAdvs[i].id %>')"  class="btn mainBtn   btn-sm btn-block" > ارسال</button>
 
                     </div>
             </div>
 
+            <% }
+            else { %>
+                <div class="col-12 m-0 p-2 ">
+                <a href="<% host%>/my"  class="btn mainBtn   btn-sm btn-block" > برای ارسال پیام، کلیک کنید</a>
+                </div>
             <% } %>
         </div>
     </div>
