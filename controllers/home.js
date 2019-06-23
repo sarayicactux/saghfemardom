@@ -671,6 +671,39 @@ module.exports = {
         });
 
     },
+    replyMsg:function(req,res){
+
+        parent_id  = prInj.PrInj(req.body.id);
+
+        reply_text = prInj.PrInj(req.body.reply_text);
+        Models.Comment.findOne({
+            where:{
+                id : parseInt(parent_id)
+            }
+        }).then(function (parent) {
+
+            if(parent){
+                now = new Date();
+                var created_at = date.format(now, 'YYYY-MM-DD HH:mm:ss');
+                Models.Comment.create({
+                    people_id   : parent.people_id,
+                    adv_id      : parent.adv_id,
+                    parent_id   : parent.id,
+                    name        : peopleGinf.name+' '+peopleGinf.family,
+                    text        : reply_text,
+                    created_at  : created_at,
+                    updated_at  : created_at,
+                })
+                res.json({status:true});return
+            }
+            else {
+                res.json({status:false});return
+            }
+
+        }).catch(function (err) {
+            res.json({status:false});return
+        })
+    },
     send:function(req,res){
 
             res.render('site/ads/chooseType',{res:res,jDate:jDate,needFul:needFul});
@@ -687,8 +720,49 @@ module.exports = {
 
                 ]
             }).then(function (adv) {
-                res.render('site/ads/editBusiness',{adv:adv,res:res,jDate:jDate,needFul:needFul});
+                if (adv){
+                    res.render('site/ads/editBusiness',{adv:adv,res:res,jDate:jDate,needFul:needFul});
+                }
+                else {
+                    res.status(404);
+                    res.render('errors/404');
+                }
+
             })
+    },
+    editC:function(req,res){
+        id = prInj.PrInj(req.params.id);
+        Models.CarAdv.findOne({
+            where:{
+                id:id
+            },
+            include:[
+                Models.CarAdvImage
+
+            ]
+        }).then(function (adv) {
+            if (adv){
+                Models.Car.findAll({
+                    where:{
+                        $or:{
+                            brand1_id: adv.brand,
+                            brand2_id: adv.brand
+                        }
+                    }
+                }).then(function (cars) {
+                    if (adv.selling_type == 1 ){
+                        res.render('site/ads/editCashCar',{cars:cars,adv:adv,res:res,jDate:jDate,needFul:needFul});
+                    }
+                    else {
+                        res.render('site/ads/editInstCar',{cars:cars,adv:adv,res:res,jDate:jDate,needFul:needFul});
+                    }
+                })
+
+            }
+            else {
+                res.status(404);
+                res.render('errors/404');
+            }        })
     },
 
     citiesList:function(req,res){
@@ -828,7 +902,6 @@ module.exports = {
             business_type  : business_type,
             business_gr    : business_gr,
             video_url      : prInj.PrInj( form.videoPath),
-            created_at     : created_at,
             updated_at     : created_at
         }
         Models.Adv.update(newAdvInf,{
@@ -914,6 +987,66 @@ module.exports = {
                 res.json( {status: false});return;
             });
     },
+    updateCashCar:function(req,res){
+        daily = res.daily;
+        var form        = req.body;
+        advImgs = form.advImgs;
+        now = new Date();
+        var created_at = date.format(now, 'YYYY-MM-DD HH:mm:ss');
+        proC = daily.proCity;
+        businesses = daily.BusinessType;
+        pro = proC[form.pro];
+        newAdvInf = {
+            title          : prInj.PrInj( form.title),
+            description    : prInj.PrInj( form.description),
+            brand          : prInj.PrInj( form.brand),
+            model          : prInj.PrInj( form.model),
+            price          : prInj.PrInj( form.price),
+            pro_id         : pro.id,
+            pro_name       : pro.name,
+            status         : 0,
+            checked        : 0,
+            city_id        : pro.cities[form.city].id,
+            city_name      : pro.cities[form.city].name,
+            delivery_time  : prInj.PrInj( form.delivery_time),
+            video_url      : prInj.PrInj( form.videoPath),
+            updated_at     : created_at
+        }
+        Models.CarAdv.update(newAdvInf,{
+            where: {
+                id: prInj.PrInj( form.id)
+            }
+        }).then(function(nRecord){
+            Models.CarAdvImage.destroy({
+                where:{
+                    adv_id: form.id
+                }
+            }).then(function (r) {
+                for(i = 0;i<advImgs.length;i++){
+
+                    newCarAdvImage(form.id,advImgs[i]);
+
+                }
+
+            });
+
+            res.json({status:true});
+            function newCarAdvImage(adv_id,imgPath){
+                newImg = {
+                    adv_id : adv_id,
+                    img_url: imgPath,
+                    created_at     : created_at,
+                    updated_at     : created_at
+                };
+                Models.CarAdvImage.create(newImg);
+
+            }
+
+        }).catch(function (err) {
+            console.log(err);
+            res.json( {status: false});return;
+        });
+    },
     registeinstCar:function(req,res){
         daily = res.daily;
         var form        = req.body;
@@ -967,6 +1100,71 @@ module.exports = {
             console.log(err);
                 res.json( {status: false});return;
             });
+    },
+    updateInstCar:function(req,res){
+        daily = res.daily;
+        var form        = req.body;
+        advImgs = form.advImgs;
+        now = new Date();
+        var created_at = date.format(now, 'YYYY-MM-DD HH:mm:ss');
+        proC = daily.proCity;
+        businesses = daily.BusinessType;
+        pro = proC[form.pro];
+        newAdvInf = {
+            price          : prInj.PrInj( form.price),
+            pre_payment    : prInj.PrInj( form.pre_payment),
+            payment_amount : prInj.PrInj( form.payment_amount),
+            payment_pr     : prInj.PrInj( form.payment_pr),
+            payment_count  : prInj.PrInj( form.payment_count),
+            loan_amount    : prInj.PrInj( form.loan_amount),
+            delivery_time  : prInj.PrInj( form.delivery_time),
+            title          : prInj.PrInj( form.title),
+            description    : prInj.PrInj( form.description),
+            brand          : prInj.PrInj( form.brand),
+            model          : prInj.PrInj( form.model),
+            pro_id         : pro.id,
+            pro_name       : pro.name,
+            status         : 0,
+            checked        : 0,
+            city_id        : pro.cities[form.city].id,
+            city_name      : pro.cities[form.city].name,
+            video_url      : prInj.PrInj( form.videoPath),
+            updated_at     : created_at
+        }
+        Models.CarAdv.update(newAdvInf,{
+            where: {
+                id: prInj.PrInj( form.id)
+            }
+        }).then(function(nRecord){
+
+            Models.CarAdvImage.destroy({
+                where:{
+                    adv_id: form.id
+                }
+            }).then(function (r) {
+                for(i = 0;i<advImgs.length;i++){
+
+                    newCarAdvImage(form.id,advImgs[i]);
+
+                }
+
+            });
+            res.json({status:true});
+            function newCarAdvImage(adv_id,imgPath){
+                newImg = {
+                    adv_id : adv_id,
+                    img_url: imgPath,
+                    created_at     : created_at,
+                    updated_at     : created_at
+                };
+                Models.CarAdvImage.create(newImg);
+
+            }
+
+        }).catch(function (err) {
+            console.log(err);
+            res.json( {status: false});return;
+        });
     },
 
     updateProfile:function(req,res){

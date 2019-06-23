@@ -120,7 +120,9 @@ pageUrl:"https://saghfemardom.ir"
                                             %>
                                             <h2  class="boxesWline linkColor"> پیام ها </h2>
                                             <%
-                                            for (i=0;i<comments.length; i++){%>
+                                            for (i=0;i<comments.length; i++){
+                                            if (comments[i].parent_id == 0){
+                                            %>
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="card  text-dark">
@@ -138,8 +140,8 @@ pageUrl:"https://saghfemardom.ir"
                                                                 <div class="col-12">
                                                                     <br>
                                                                     <div class="row">
-                                                                        <div class="col-md-3 ">
-                                                                            <button class="reply-btn comment-replay-btn form-control btn-outline-secondary  " data-commentid="<%- comments[i].id %>" data-commentername="<%- comments[i].name %>">
+                                                                        <div class="col-md-12 ">
+                                                                            <button class="reply-btn comment-replay-btn form-control btn-outline-secondary pb-4 pt-0" data-toggle="modal" data-target="#modal-reply"    onclick="$('#reply_item').data( 'id', '<%= comments[i].id %>' );$('#rep_name').text('ارسال پاسخ پیام <%- comments[i].name%>')" >
                                                                                 <i class="fa fa-reply"></i>
                                                                                 پاسخ به دیدگاه
                                                                             </button>
@@ -148,12 +150,13 @@ pageUrl:"https://saghfemardom.ir"
                                                                 </div>
                                                                 <%
 
-                                                                for(j=0;j<comments; j++){
+                                                                for(j=0;j<comments.length; j++){
+
                                                                 if(comments[j].parent_id == comments[i].id){
                                                                 %>
                                                                     <div class="row p-1 m-1">
-                                                                        <div class="col-md-1"></div>
-                                                                        <div class="col-md-11">
+
+                                                                        <div class="col-md-12">
                                                                             <div class="row">
 
                                                                                 <div class="col-md-12">
@@ -189,7 +192,9 @@ pageUrl:"https://saghfemardom.ir"
                                                     </div>
                                                 </div>
 
-                                            <% }%>
+                                            <%
+                                            }
+                                                }%>
 
 
                                             <hr>
@@ -276,6 +281,7 @@ pageUrl:"https://saghfemardom.ir"
 
                                                 <div class="col-7">
                                                     <a href="<%- host+'/editC/'+accCar[i].id %>" class="carSideBarsType custom-link"><%- accCar[i].title %> - <%- accCar[i].Car.model %> </a><br>
+                                                    <span class="carSideBarTitle"><%if (accCar[i].selling_type == 2){%>فروش اقساطی<% } else { %>فروش نقدی<% } %></span><br>
                                                     <span class="carSideBarCity"><%- accCar[i].pro_name + ' - '+ accCar[i].city_name %></span><br>
                                                     <span class="carSideBarTime"><%- jDate.jDate( accCar[i].created_at) %></span>
                                                     <br><span class="carSideBarCity">برای به روز رسانی آگهی  <a href="<%- host+'/editC/'+accCar[i].id %>" class="custom-link">اینجا </a> کلیک کنید</span>
@@ -327,6 +333,7 @@ pageUrl:"https://saghfemardom.ir"
 
                                                 <div class="col-7">
                                                     <a href="<%- host+'/editC/'+nAccCar[i].id %>" class="carSideBarsType custom-link"><%- nAccCar[i].title %> - <%- nAccCar[i].Car.model %> </a><br>
+                                                    <span class="carSideBarTitle"><%if (nAccCar[i].selling_type == 2){%>فروش اقساطی<% } else { %>فروش نقدی<% } %></span><br>
                                                     <span class="carSideBarCity">
                                                         <% if (nAccCar[i].checked == 0 ){%>در دست بررسی<%} else {%>
                                                             <%- nAccCar[i].reason  %>  <% } %></span><br>
@@ -381,6 +388,27 @@ pageUrl:"https://saghfemardom.ir"
     <img class="modal-content" id="img01">
     <div id="caption"></div>
 </div>
+<div class="modal fade" id="modal-reply">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="rep_name"></h4>
+            </div>
+            <div class="modal-body p-0" >
+                <div class="col-12">
+                    <textarea class="form-control" rows="5" id="reply_text" placeholder="متن پاسخ خود را وارد کنید"></textarea>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info btn-sm pull-right" data-dismiss="modal">بستن</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" class="btn btn-success pull-left  btn-sm" data-id="q" id="reply_item" onclick="sendReply()" >ارسال</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
 </body>
 <%- include ../layouts/scripts.ejs%>
 <script>
@@ -418,5 +446,51 @@ pageUrl:"https://saghfemardom.ir"
             $(this).prev(".card-header").find(".fa").removeClass("fa-minus").addClass("fa-plus");
         });
     });
+    function sendReply() {
+        $('#reply_item').prop('disabled', true);
+        id = $('#reply_item').data( "id");
+        reply_text = $('#reply_text').val();
+        if (reply_text == ''){
+
+            $('#reply_item').html('متن پیام وارد نشده');
+            setTimeout(function () {
+                $('#reply_item').html('ارسال');
+            }, 1500);
+            $('#reply_item').prop('disabled', false);
+            return false;
+        }
+        else if (reply_text.length < 10){
+
+            $('#reply_item').html('متن پیام کوتاه است');
+            setTimeout(function () {
+                $('#reply_item').html('ارسال');
+            }, 1500);
+            $('#reply_item').prop('disabled', false);
+            return false;
+        }
+        else {
+            $('#reply_item').html('در حال ارسال <span class="spinner-border spinner-border-sm mb-1"></span>');
+            $('#reply_item').prop('disabled', true);
+
+
+            $.ajax({
+                url: 'replyMsg',
+                data: {
+                    id            : id,
+                    reply_text    : reply_text
+
+                },
+                method: 'POST',
+                success :function(data){
+
+                        $('#reply_item').html('پاسخ ارسال شد');
+                        setTimeout(function () {
+                            window.location.href = "<% host%>/my";
+                        }, 700);
+
+
+                }});
+        }
+    }
 </script>
 </html>
