@@ -60,7 +60,6 @@ images = cAdvs[i].CarAdvImages;
                         <hr>
                     </div>
                     <div class="row p-3">
-                        <%- credit%>
                         <hr>
                         <% if(cAdvs[i].selling_type == 1){ %>
                             <div class="col-12">
@@ -75,6 +74,12 @@ images = cAdvs[i].CarAdvImages;
                             </div>
                        <% }
                        else {
+                           redirectUrl = host+'/login';
+                           redirectMsg = 'برای مشاهده باید وارد شوید، اینجا کلیک کنید';
+                           if (loginStat){
+                               redirectUrl = host+'/pay';
+                               redirectMsg = 'اعتبار شما کافی نیست، برای مشاهده کلیک کنید';
+                           }
                            if(credit != 0){%>
                             <div class="col-12">
                                 <div class="row">
@@ -111,7 +116,7 @@ images = cAdvs[i].CarAdvImages;
                           <% }
                            else {%>
                                 <div class="col-12 p-0 " >
-                                    <a href="<%- host+'/my'%>"  class="btn mainBtn   btn-sm btn-block" > اعتبار شما کافی نیست، برای مشاهده کلیک کنید</a>
+                                    <a href="<%- redirectUrl %>"  class="btn mainBtn   btn-sm btn-block" ><%- redirectMsg %></a>
                                 </div>
                             <%
                            }

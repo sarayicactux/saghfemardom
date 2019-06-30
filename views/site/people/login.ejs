@@ -17,14 +17,9 @@ pageUrl:"https://saghfemardom.ir"
 
 
     <div class="row">
-        <div class="col-12 shadow-sm bg-white mt-1 pt-1 pb-1">
-            <div align="right">
-                <h1 class="mainHeader text-dark">سقف مردم ..... سقف مردم</h1>
-
-            </div>
+                <h1 class="audioContent border rounded"><span class="spinner-grow text-danger"></span> سقف مردم، ارتباط کسب و کار شماست با میلیون ها نفر = ثروت، آرامش، قدرت (خرید بهترین خودرو) <span class="spinner-grow text-danger"></span></h1>
 
         </div>
-    </div>
     <div class="row"  style="margin-top:10px">
 
         <div class="col-md-3 mb-md-0  mb-1 newsBar">
@@ -149,9 +144,9 @@ pageUrl:"https://saghfemardom.ir"
                 method: 'POST',
                 success :function(data){
                     if (data.status){
-                        $('#loginBtn').html('ورود موفق، شما به "سقف من" هدایت خواهید شد');
+                        $('#loginBtn').html('ورود موفق، شما به "صفحه اصلی" هدایت خواهید شد');
                         setTimeout(function () {
-                            window.location.href = "<% host%>/my";
+                            window.location.href = "<% host%>/";
                         }, 1500);
 
                     }

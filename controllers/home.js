@@ -1,4 +1,5 @@
 const request       = require('../configs/mod-config');
+const payRequest    = require('request');
 const jsonfile      = require('jsonfile');
 const url           = require('url');
 const mime          = require('mime');
@@ -58,10 +59,11 @@ module.exports = {
             page = parseInt(prInj.PrInj(page));
 
         }
-        Models.Adv.findAll({where:{status: 1}}).then(function (allAdv) {
+        Models.Adv.findAll({where:{status: 1,dis_status   : 1}}).then(function (allAdv) {
             Models.Adv.findAll({
                 where:{
-                    status: 1
+                    status: 1,
+                    dis_status   : 1
                 },
                 order:[
                     ['id','desc']
@@ -94,11 +96,12 @@ module.exports = {
 
         }
         business_type_id = prInj.PrInj(req.params.id);
-        Models.Adv.findAll({where:{status: 1,business_type : business_type_id}})
+        Models.Adv.findAll({where:{status: 1,dis_status   : 1,business_type : business_type_id}})
             .then(function (allAdv) {
                 advCnt = allAdv.length;
                 Models.Adv.findAll({
                     where:{
+                        dis_status   : 1,
                         status: 1,
                         business_type : business_type_id
                     },
@@ -291,11 +294,13 @@ module.exports = {
             }
             Models.CarAdv.findAll({where:{
                     status       : 1,
+                    dis_status   : 1,
                     selling_type : selling_type,
                     model        : model,
                 }}).then(function (allAdv) {
                 Models.CarAdv.findAll({
                     where:{
+                        dis_status   : 1,
                         status       : 1,
                         selling_type : selling_type,
                         model        : model,
@@ -315,14 +320,16 @@ module.exports = {
                     advCnt = allAdv.length;
                     refU = host+'/bca/'+model+'/'+selling_type;
                     credit = 0;
+                    loginStat = false;
                     if (req.session.people){
                         credit = req.session.people.credit;
+                        loginStat = true;
                     }
                     filterParams = {};
                     filterParams.model        = model;
                     filterParams.selling_type = selling_type;
 
-                    res.render('site/pages/byeSellingType',{filterParams:filterParams,credit:credit,refU:refU,page:page,advCnt:advCnt,cAdvs:cAdvs,res:res,jDate:jDate,needFul:needFul});
+                    res.render('site/pages/byeSellingType',{loginStat:loginStat,filterParams:filterParams,credit:credit,refU:refU,page:page,advCnt:advCnt,cAdvs:cAdvs,res:res,jDate:jDate,needFul:needFul});
 
 
                 })
@@ -333,6 +340,7 @@ module.exports = {
 
             Models.CarAdv.findAll({where:{
                     status   : 1,
+                    dis_status   : 1,
                     id       : id
                 }, include:[
                     Models.CarAdvImage,
@@ -345,6 +353,7 @@ module.exports = {
                         Models.CarAdv.findAll({
                             where:{
                                 status       : 1,
+                                dis_status   : 1,
                                 model        : cAdvs[0].model,
                                 id           : {
                                     $ne : cAdvs[0].id
@@ -363,13 +372,15 @@ module.exports = {
                             limit:10
                         }).then(function (relative) {
                             credit = 0;
+                            loginStat = false;
                             if (req.session.people){
                                 credit = req.session.people.credit;
+                                loginStat = true;
                             }
                             advCnt = 1;
                             refU = host+'/cd/'+id;
                             page = 1;
-                           res.render('site/pages/carAdvDetail',{credit:credit,refU:refU,page:page,advCnt:advCnt,relative:relative,cAdvs:cAdvs,res:res,jDate:jDate,needFul:needFul});
+                           res.render('site/pages/carAdvDetail',{loginStat:loginStat,credit:credit,refU:refU,page:page,advCnt:advCnt,relative:relative,cAdvs:cAdvs,res:res,jDate:jDate,needFul:needFul});
 
 
                         })
@@ -393,10 +404,12 @@ module.exports = {
             }
             Models.CarAdv.findAll({where:{
                     status       : 1,
+                    dis_status   : 1,
                 }}).then(function (allAdv) {
                 Models.CarAdv.findAll({
                     where:{
                         status       : 1,
+                        dis_status   : 1,
                     },
                     order:[
                         ['id','desc']
@@ -413,10 +426,12 @@ module.exports = {
                     advCnt = allAdv.length;
                     refU = host+'/bCar';
                     credit = 0;
+                    loginStat = false;
                     if (req.session.people){
                         credit = req.session.people.credit;
+                        loginStat = true;
                     }
-                    res.render('site/pages/byeCar',{credit:credit,refU:refU,page:page,advCnt:advCnt,cAdvs:cAdvs,res:res,jDate:jDate,needFul:needFul});
+                    res.render('site/pages/byeCar',{loginStat:loginStat,credit:credit,refU:refU,page:page,advCnt:advCnt,cAdvs:cAdvs,res:res,jDate:jDate,needFul:needFul});
 
 
                 })
@@ -574,11 +589,13 @@ module.exports = {
                     limit:10
                 }).then(function (cAdvs) {
                     credit = 0;
+                    loginStat = false;
                     if (req.session.people){
                         credit = req.session.people.credit;
+                        loginStat = true;
                     }
                     refU = host+'/fad?text='+filterParams.text+'&model='+filterParams.model+'&brand='+filterParams.brand+'&pro='+filterParams.pro+'&city='+filterParams.city+'&selling_type='+filterParams.selling_type;
-                    res.render('site/pages/filterCarAdv',{credit:credit,filterParams:filterParams,refU:refU,page:page,advCnt:advCnt,cAdvs:cAdvs,res:res,jDate:jDate,needFul:needFul});
+                    res.render('site/pages/filterCarAdv',{loginStat:loginStat,credit:credit,filterParams:filterParams,refU:refU,page:page,advCnt:advCnt,cAdvs:cAdvs,res:res,jDate:jDate,needFul:needFul});
 
                 }).catch(function (err) {
                     console.log(err);
@@ -654,6 +671,15 @@ module.exports = {
 
 
     },
+    faq: function (req,res) {
+
+        Models.Faq.findAll({where:{active: 1}})
+            .then(function (faqs){
+                res.render('site/pages/faq',{faqs:faqs,res:res,jDate:jDate,needFul:needFul});
+            })
+
+
+    },
     advComment:function(req,res){
         var form        = prInj.PrAll(req.body);
         people_id = peopleGinf.id;
@@ -707,6 +733,103 @@ module.exports = {
     send:function(req,res){
 
             res.render('site/ads/chooseType',{res:res,jDate:jDate,needFul:needFul});
+
+    },
+    pay:function(req,res){
+
+        var Amount       = 50000;
+        var callbackURL  = 'https://saghfemardom.ir/pay/ch';
+        var invoiceID    = res.peopleGinf.id;
+        var terminalID   = 69003298;
+        var payload      = {};
+        var options = {
+            url: 'https://mabna.shaparak.ir:8081/V1/PeymentApi/GetToken',
+            method: 'POST',
+            form: {
+                Amount: Amount,
+                callbackURL: callbackURL,
+                invoiceID:invoiceID,
+                terminalID:terminalID,
+                payload:payload,
+            }
+        };
+
+        function callback(error, response, body) {
+
+            if (error){
+                res.redirect(host);return
+            }
+            if (!error && response.statusCode == 200) {
+                gRes = JSON.parse(body);
+                if ( gRes.Status == 0) {
+
+                    token = gRes.AccessToken;
+                    res.render('site/pages/pay', {token: token, res: res, jDate: jDate, needFul: needFul});
+                }
+            }
+        }
+       // payRequest(options, callback);
+        token = 's';
+        res.render('site/pages/pay', {token: token, res: res, jDate: jDate, needFul: needFul});
+
+
+    },
+    payCheck:function(req,res){
+        payResult = req.body;
+        if (payResult.amount == 100){
+            var digitalreceipt   = payResult.digitalreceipt;
+            var Tid              = 69003298;
+            var options = {
+                url: 'https://mabna.shaparak.ir:8081/V1/PeymentApi/Advice',
+                method: 'POST',
+                form: {
+                    digitalreceipt  : digitalreceipt,
+                    Tid             : Tid
+                }
+            };
+
+            function callback(error, response, body) {
+
+                if (error){
+                    res.redirect(host);return
+                }
+                if (!error && response.statusCode == 200) {
+                    gRes = JSON.parse(body);
+                    if ( gRes.Status == 'OK') {
+                        now = new Date();
+                        var created_at = date.format(now, 'YYYY-MM-DD HH:mm:ss');
+                        Models.Payment.create({
+                            people_id       : res.peopleGinf.id,
+                            tracenumber     : payResult.tracenumber,
+                            rrn             : payResult.rrn,
+                            datePaid        : payResult.datePaid,
+                            digitalreceipt  : payResult.digitalreceipt,
+                            issuerbank      : payResult.issuerbank,
+                            created_at      : created_at,
+                            updated_at      : created_at,
+                        }).then(function (row) {
+                            req.session.people.credit = 100;
+                            Models.User.update({
+                                credit : 100
+                            },{
+                                where:{
+                                    id : res.peopleGinf.id
+                                }
+                            });
+                            res.render('site/pages/payCheck', {digitalreceipt: payResult.digitalreceipt, res: res, jDate: jDate, needFul: needFul});
+                        })
+
+                    }
+                }
+            }
+            payRequest(options, callback);
+        }
+        else {
+            res.render('errors/404')
+        }
+
+
+
 
     },
     editA:function(req,res){
@@ -764,7 +887,47 @@ module.exports = {
                 res.render('errors/404');
             }        })
     },
+    changeAdvStat:function(req,res){
+       inf = prInj.PrAll(req.params);
+        dis_status = inf.status;
+        id         = inf.id;
 
+        now = new Date();
+        var updated_at = date.format(now, 'YYYY-MM-DD HH:mm:ss');
+
+        Models.Adv.update({
+            dis_status : dis_status,
+            updated_at : updated_at
+        },{
+            where:{
+                id : id
+            }
+        }).then(function (r) {
+            res.redirect(host+'/my');
+        });
+
+    },
+    changeCarStat:function(req,res){
+
+        inf = prInj.PrAll(req.params);
+        dis_status = inf.status;
+        id         = inf.id;
+
+        now = new Date();
+        var updated_at = date.format(now, 'YYYY-MM-DD HH:mm:ss');
+
+        Models.CarAdv.update({
+            dis_status : dis_status,
+            updated_at : updated_at
+        },{
+            where:{
+                id : id
+            }
+        }).then(function (r) {
+            res.redirect(host+'/my');
+        });
+
+    },
     citiesList:function(req,res){
 
             pro_r = req.body.pro;

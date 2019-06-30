@@ -21,6 +21,7 @@ const CarAdv = sequelize.define('CarAdv', {
         payment_pr: Sequelize.STRING,
         payment_count: Sequelize.INTEGER,
         payment_amount: Sequelize.INTEGER,
+        dis_status : Sequelize.INTEGER,
         delivery_time: Sequelize.STRING,
         terms: Sequelize.STRING,
         status: Sequelize.INTEGER,

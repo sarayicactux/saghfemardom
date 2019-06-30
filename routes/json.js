@@ -14,7 +14,28 @@ var proCity = new ProCity;
 
 //export this router to use in our index.js
 function daily(req,res,next){
-
+    now = new Date();
+    var oneM = date.format(date.addDays(now, - (31)), 'YYYY-MM-DD HH:mm:ss');
+    Models.Payment.findAll({
+        where:{
+            created_at :{
+                $lte : oneM
+            }
+        }
+    }).then(function (payments) {
+        for(i=0;i<payments.length;i++){
+            updateCredit(payments[i].people_id);
+        }
+    })
+    function updateCredit(people_id){
+            Models.People.update({
+                credit : 0
+            },{
+                where: {
+                    id : people_id
+                }
+            });
+    }
   Models.ProCity.findAll().then(function (cities) {
           pros = [];
           prB = []

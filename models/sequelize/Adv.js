@@ -18,6 +18,7 @@ const Adv = sequelize.define('Adv', {
         checked: Sequelize.INTEGER,
         visitcnt: Sequelize.INTEGER,
         reason: Sequelize.STRING,
+        dis_status : Sequelize.INTEGER,
         created_at: Sequelize.DATE,
         updated_at: Sequelize.DATE,
         actived_at: Sequelize.DATE,

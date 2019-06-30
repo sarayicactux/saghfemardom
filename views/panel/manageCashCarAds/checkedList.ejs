@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html class="no-js">
+<%- include("../../panel/layouts/head.ejs",{
+title:"کنترل پنل مدیریت" ,
+des:"کنترل پنل مدیریت" ,
+}) %>
+
+<body class="nav-md">
+<div class="container body">
+    <div class="main_container">
+
+        <%- include ../../panel/layouts/menu.ejs  %>
+        <!-- top navigation -->
+        <%- include ../../panel/layouts/topNav.ejs  %>
+        <!-- /top navigation -->
+        <!-- /header content -->
+
+        <!-- page content -->
+        <div id="panelContent" class="right_col" role="main">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="box-header table-title">
+
+                            <h3 class="box-title">لیست آگهی های <%- lsTy %> خودروی نقدی ، تعداد <%- advs.length %></h3>
+                        </div>
+                        <div id="menus">
+                            <table id="list" class="table table-striped table-bordered datatable dt-responsive">
+                                <thead>
+                                <tr>
+                                    <th>عنوان</th>
+                                    <th>برند</th>
+                                    <th>مدل</th>
+                                    <th>استان/شهرستان</th>
+                                    <th>وضعیت</th>
+                                    <th>تاریخ ارسال</th>
+                                    <th>عملیات</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <% for(i=0 ; i<advs.length;i++) { %>
+                                    <tr>
+                                        <td><%- advs[i].title%></td>
+                                        <td><%- advs[i].Brand1.title%>   </td>
+                                        <td><%- advs[i].Car.model%>   </td>
+                                        <td><%- advs[i].pro_name +' | '+advs[i].city_name %>   </td>
+                                        <td><%- lsTy %></td>
+                                        <td><%- jDate.jDate(advs[i].created_at) %></td>
+                                        <td><div class="btn-group">
+
+                                                <a   title="مشاهده"  href="<%- host+'/panel/admin/manageCarAdvs/cash/det/'+advs[i].id %>" class="btn btn-info"><i class="fa fa-eye"></i></a>
+
+                                            </div></td>
+                                    </tr>
+
+
+                                <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <%- include ../../panel/layouts/footer.ejs %>
+    </div>
+</div>
+<div id="lock_screen">
+    <table>
+        <tr>
+            <td>
+                <div class="clock"></div>
+                <span class="unlock">
+                    <span class="fa-stack fa-5x">
+                      <i class="fa fa-square-o fa-stack-2x fa-inverse"></i>
+                      <i id="icon_lock" class="fa fa-lock fa-stack-1x fa-inverse"></i>
+                    </span>
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<%- include ../../panel/layouts/scripts.ejs %>
+<script>
+    $('#list').dataTable({
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Persian.json"},
+        "pageLength": 50,
+        "fixedHeader": {
+            header: true,
+        },
+        "lengthMenu": [[10, 25, 50, 100,200,300,500,5000], [10, 25, 50, 100, 200, 300, 500, 5000]],
+        "order": [[ 0, 'asc' ]]
+
+    });
+</script>
+
+</body>
+</html>

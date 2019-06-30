@@ -8,6 +8,9 @@ var faq            = require('../controllers/faq');
 var staticC        = require('../controllers/static');
 var cars           = require('../controllers/cars');
 var business       = require('../controllers/business');
+var manageAdv      = require('../controllers/manageAdv');
+var manageCashCarAds   = require('../controllers/manageCashCarAds');
+var manageInsCarAds    = require('../controllers/manageInsCarAds');
 
 const router        = express.Router();
 const jsonfile      = require('jsonfile');
@@ -56,6 +59,31 @@ router.route('/cars/createUpdateCar').post(checkAccess(3),cars.createUpdateCar);
 //Business
 router.route('/business/:typeId').get(checkAccess(4),business.business);
 router.route('/business/createUpdateBgr').post(checkAccess(4),business.createUpdateBgr);
+
+//manage Advs
+router.route('/manageAdvs/new').get(checkAccess(7),manageAdv.newList);
+router.route('/manageAdvs/acc').get(checkAccess(7),manageAdv.accList);
+router.route('/manageAdvs/nacc').get(checkAccess(7),manageAdv.nAccList);
+router.route('/manageAdvs/det/:id').get(checkAccess(7),manageAdv.det);
+router.route('/manageAdvs/det/accAdv').post(checkAccess(7),manageAdv.accAdv);
+router.route('/manageAdvs/det/nAccAdv').post(checkAccess(7),manageAdv.nAccAdv);
+
+//manage Cash Car Advs
+router.route('/manageCarAdvs/cash/new').get(checkAccess(8),manageCashCarAds.newList);
+router.route('/manageCarAdvs/cash/acc').get(checkAccess(8),manageCashCarAds.accList);
+router.route('/manageCarAdvs/cash/nacc').get(checkAccess(8),manageCashCarAds.nAccList);
+router.route('/manageCarAdvs/cash/det/:id').get(checkAccess(8),manageCashCarAds.det);
+router.route('/manageCarAdvs/cash/det/accAdv').post(checkAccess(8),manageCashCarAds.accAdv);
+router.route('/manageCarAdvs/cash/det/nAccAdv').post(checkAccess(8),manageCashCarAds.nAccAdv);
+
+//manage Ins Car Advs
+router.route('/manageCarAdvs/ins/new').get(checkAccess(9),manageInsCarAds.newList);
+router.route('/manageCarAdvs/ins/acc').get(checkAccess(9),manageInsCarAds.accList);
+router.route('/manageCarAdvs/ins/nacc').get(checkAccess(9),manageInsCarAds.nAccList);
+router.route('/manageCarAdvs/ins/det/:id').get(checkAccess(9),manageInsCarAds.det);
+router.route('/manageCarAdvs/ins/det/accAdv').post(checkAccess(9),manageInsCarAds.accAdv);
+router.route('/manageCarAdvs/ins/det/nAccAdv').post(checkAccess(9),manageInsCarAds.nAccAdv);
+
 
 
 

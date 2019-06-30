@@ -57,7 +57,7 @@ des:"کنترل پنل مدیریت" ,
                                %>
                                 <tr>
                                     <td><%= item.title %></td>
-                                    <th>
+                                    <td>
                                         <div id="status<%- item.id %>">
                                             <% if(item.active == 1) { %>
                                             <button onclick="changeStatus('<%- item.id %>','0')" class="btn btn-info btn-xs"><i class="fa fa-unlock"></i></button>
@@ -66,7 +66,7 @@ des:"کنترل پنل مدیریت" ,
                                             <% } %>
                                         </div>
 
-                                    </th>
+                                    </td>
                                     <td class="fa-num"><%- jDate.jDate(item.created_at) %></td>
                                     <td class="fa-num"><%- jDate.jDate(item.updated_at) %></td>
                                     <td><div class="btn-group">

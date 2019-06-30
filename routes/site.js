@@ -20,17 +20,22 @@ router.route('/').get(preCond,dailyJson,hourlyJson,home.index);
 router.route('/sitemap.xml').get(sitemap,home.sitemap);
 router.route('/news/:slug').get(preCond,dailyJson,hourlyJson,home.newsDetail);
 router.route('/news').get(preCond,dailyJson,hourlyJson,home.news);
+router.route('/faq').get(preCond,dailyJson,hourlyJson,home.faq);
 router.route('/a/:id').get(preCond,dailyJson,hourlyJson,home.bAdvs);
 router.route('/cd/:id').get(preCond,dailyJson,hourlyJson,home.carAdvDetail);
 router.route('/bca/:model_id/:selling_type').get(preCond,dailyJson,hourlyJson,home.byeSellingType);
 router.route('/editA/:id').get(checkPeople,preCond,dailyJson,hourlyJson,home.editA);
 router.route('/editC/:id').get(checkPeople,preCond,dailyJson,hourlyJson,home.editC);
+router.route('/changeAdvStat/:status/:id').get(checkPeople,preCond,dailyJson,hourlyJson,home.changeAdvStat);
+router.route('/changeCarStat/:status/:id').get(checkPeople,preCond,dailyJson,hourlyJson,home.changeCarStat);
 router.route('/bCar').get(preCond,dailyJson,hourlyJson,home.bCar);
 router.route('/fad').get(preCond,dailyJson,hourlyJson,home.filterAdvs);
 router.route('/fca').get(preCond,dailyJson,hourlyJson,home.filterCars);
 router.route('/fbca').get(preCond,dailyJson,hourlyJson,home.filterCarsAdv);
 router.route('/cars').get(preCond,dailyJson,hourlyJson,home.cars);
 router.route('/send').get(checkPeople,preCond,dailyJson,hourlyJson,home.send);
+router.route('/pay').get(checkPeople,preCond,dailyJson,hourlyJson,home.pay);
+router.route('/pay/ch').get(checkPeople,preCond,dailyJson,hourlyJson,home.payCheck);
 router.route('/advComment').post(dailyJson,checkPeopleAjax,home.advComment);
 router.route('/registeAdv').post(dailyJson,checkPeopleAjax,home.registeAdv);
 router.route('/editA/updateAdv').post(dailyJson,checkPeopleAjax,home.updateAdv);
@@ -149,6 +154,7 @@ function preCond(req,res,next) {
             Models.CarAdv.findAll({
                 where:{
                     status : 1,
+                    dis_status   : 1,
                 },
                 order:[
                     ['id','desc']

@@ -17,14 +17,9 @@ pageUrl:"https://saghfemardom.ir"
 
 
     <div class="row">
-        <div class="col-12 shadow-sm bg-white mt-1 pt-1 pb-1">
-            <div align="right">
-                <h1 class="mainHeader text-dark">سقف مردم ..... سقف مردم</h1>
-
-            </div>
+                <h1 class="audioContent border rounded"><span class="spinner-grow text-danger"></span> سقف مردم، ارتباط کسب و کار شماست با میلیون ها نفر = ثروت، آرامش، قدرت (خرید بهترین خودرو) <span class="spinner-grow text-danger"></span></h1>
 
         </div>
-    </div>
     <div class="row"  style="margin-top:10px">
 
         <div class="col-md-3 mb-md-0  mb-1 newsBar">
@@ -105,6 +100,7 @@ pageUrl:"https://saghfemardom.ir"
                                                     <span class="carSideBarTitle"> <%- accAdv[i].pro_name + ' - '+ accAdv[i].city_name %>  </span><br>
                                                     <span class="carSideBarTime"><%- jDate.jDate( accAdv[i].created_at) %></span>
                                                     <br><span class="carSideBarCity">برای به روز رسانی آگهی  <a href="<%- host+'/editA/'+accAdv[i].id %>" class="custom-link">اینجا </a> کلیک کنید</span>
+
                                                 </div>
 
                                                 <div class="col-5">
@@ -113,6 +109,15 @@ pageUrl:"https://saghfemardom.ir"
 
                                                     </div>
                                                 </div>
+                                                <div class="col-12 mt-2">
+                                                    <% if (accAdv[i].dis_status == 1){%>
+                                                        <a  href="<%- host+'/changeAdvStat/0/'+accAdv[i].id %>" class="custom-link btn btn-sm btn-success form-control text-white">آگهی در سایت منتشر شده، برای عدم انتشار کلیک کنید</a>
+                                                    <% } else  {%>
+                                                            <a  href="<%- host+'/changeAdvStat/1/'+accAdv[i].id %>" class="custom-link btn btn-sm btn-warning form-control text-white">آگهی در سایت منتشر نشده، برای انتشار کلیک کنید</a>
+
+                                                    <% } %>
+                                                </div>
+
 
                                             </div>
                                             <% comments = accAdv[i].Comments
@@ -292,6 +297,14 @@ pageUrl:"https://saghfemardom.ir"
                                                         <img class="sideBarImage" src="<%- host+'/'+images[0].img_url %>">
 
                                                     </div>
+                                                </div>
+                                                <div class="col-12 mt-2">
+                                                    <% if (accCar[i].dis_status == 1){%>
+                                                        <a  href="<%- host+'/changeCarStat/0/'+accCar[i].id %>" class="custom-link btn btn-sm btn-success form-control text-white">آگهی در سایت منتشر شده، برای عدم انتشار کلیک کنید</a>
+                                                    <% } else  {%>
+                                                        <a  href="<%- host+'/changeCarStat/1/'+accCar[i].id %>" class="custom-link btn btn-sm btn-warning form-control text-white">آگهی در سایت منتشر نشده، برای انتشار کلیک کنید</a>
+
+                                                    <% } %>
                                                 </div>
 
                                             </div>

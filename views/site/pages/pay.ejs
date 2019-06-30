@@ -32,39 +32,28 @@ pageUrl:"https://saghfemardom.ir"
                 <div class="col-md-12 shadow-sm border pb-1  bg-white text-dark">
                     <div class="p-2 row p-0">
                         <div class="col-12 m-0 p-0">
-                            <h2  class="boxesWline linkColor"> خودروها </h2>
+                            <h2  class="boxesWline linkColor"> افزایش اعتبار </h2>
                         </div>
                     </div>
+                    <p class="content">
+                        برای مشاهده جدول خودروهای اقساطی باید اعتبار خود را شارژ کنید، با پرداخت 5000 تومان، اعتبار خود را برای یک ماه شارژ کنید
+                    </p>
+
                     <div class="row  mt-1">
-                        <form  method="get" action="<%-host+'/fca'%>">
+                    <div class="col-md-12 ">
+                        <form method="post" action=" https://mabna.shaparak.ir:8080/Pay ">
+                            <input type="hidden" readonly name="TerminalID" value="69003298" />
+                            <input type="hidden" readonly name="Amount" value="1000" />
+                            <input type="hidden" readonly name="callbackURL" value="https://saghfemardom.ir/pay/ch" />
+                            <input type="hidden" readonly name="InvoiceID" value="<%- res.peopleGinf.id %>" />
+                            <input type="hidden" readonly name="Payload" value="{}" />
 
-                        <div class="col-md-12 ">
-                            <div class="row">
-                                <div class="col-12 col-md-6  p-1" >
-                                    <input name="model" value="<%- car.model %>" class="form-control border bg-light siteInputsFilter" placeholder="  نام خودرو ...">
 
-                                </div>
-                                <div class="col-12 col-md-6 p-1" >
-                                    <select id="brand" name="brand" class="select2 form-control siteInputs" >
-                                        <option value="0">برند را انتخاب کنید</option>
-                                        <% brands = res.daily.brands
-                                        for (i=0;i<brands.length;i++){%>
-                                            <option <% if((parseInt(car.brand1_id) == brands[i].id) || (parseInt(car.brand2_id) == brands[i].id) ){ %> selected <%}%> value="<%- brands[i].id %>"><%- brands[i].title %> (<%- brands[i].en_title %>)</option>
-                                        <% }  %>
-                                    </select>
-
-                                </div>
-                                <div class="col-12  p-1" >
-                                    <button class="btn btn-info btn-lg btn-block" > جستجو</button>
-                                </div>
-                            </div>
-                        </div>
-
+                        <input class="btn btn-info btn-lg btn-block" type="submit" value="پرداخت "class="submit" />
                         </form>
                     </div>
+                    </div>
                 </div>
-
-                <%- include ../all/cAdvs.ejs %>
 
 
             </div>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html class="no-js">
+<%- include("../../panel/layouts/head.ejs",{
+title:"کنترل پنل مدیریت" ,
+des:"کنترل پنل مدیریت" ,
+}) %>
+
+<body class="nav-md">
+<div class="container body">
+    <div class="main_container">
+
+        <%- include ../../panel/layouts/menu.ejs  %>
+        <!-- top navigation -->
+        <%- include ../../panel/layouts/topNav.ejs  %>
+        <!-- /top navigation -->
+        <!-- /header content -->
+
+        <!-- page content -->
+        <div id="panelContent" class="right_col" role="main">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="box-header table-title">
+                            <h3 class="box-title">مشاهده جزئیات آگهی  <%- adv.title %></h3>
+                        </div>
+                    </div>
+                    <div class="x_panel">
+                        <div class="box-header table-title">
+                            <h3 class="box-title"> مشخصات آگهی دهنده </h3>
+                        </div>
+                        <div id="menus">
+                           <p> <%-  adv.person.name +' '+adv.person.family %></p>
+                            <p>       کد کاربری: <%-  adv.person.mobile %></p>
+                            <p>       شماره های تماس: <%-  adv.person.phone %></p>
+                        </div>
+                    </div>
+                    <div class="x_panel">
+                        <div class="box-header table-title">
+                            <h3 class="box-title"> مشخصات آگهی </h3>
+                        </div>
+                        <div id="menus">
+                            <%-  adv.Brand1.title+' | '+adv.Car.model +' | '+ adv.title %>
+                        </div>
+                    </div>
+                    <div class="x_panel">
+                        <div class="box-header table-title">
+                            <h3 class="box-title"> موقعیت آگهی </h3>
+                        </div>
+                        <div id="menus">
+                            <%- adv.pro_name +' | '+adv.city_name %>
+                        </div>
+                    </div>
+                    <div class="x_panel">
+                        <div class="box-header table-title">
+                            <h3 class="box-title"> توضیحات آگهی </h3>
+                        </div>
+                        <div id="menus">
+                           <p><%- adv.description  %></p>
+                            <p>قیمت : <%- adv.price  %></p>
+                            <p>زمان تحویل : <%- adv.delivery_time  %></p>
+
+                        </div>
+                    </div>
+                    <div class="x_panel">
+                        <div class="box-header table-title">
+                            <h3 class="box-title"> ویدئوی آگهی </h3>
+                        </div>
+                        <div id="menus">
+                            <% if(adv.video_url ){ %>
+                                <div class="p-2 row p-0 m-0">
+                                <div class="col-12 m-0 p-0 adv">
+                                    <video  class="videoU" data-path="<%- host+'/'+adv.video_url %>" controls="" preload="auto">
+                                        <source src="<%- host+'/'+adv.video_url %>" type="video/mp4">
+                                    </video>
+                                </div>
+                        </div>
+                            <% } else { %>
+                                <p>ویدئویی برای آگهی ارسال نشده</p>
+                            <% } %>
+                        </div>
+                    </div>
+                <div class="x_panel">
+                    <div class="box-header table-title">
+                        <h3 class="box-title"> تصاویر آگهی </h3>
+                    </div>
+                    <div id="menus">
+                        <% images = adv.CarAdvImages; %>
+                        <% for (i=0;i<images.length;i++){ %>
+                            <div class="col-md-6">
+                                <img src="<%- host+'/'+images[i].img_url %>" width="80%">
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+                    <div class="x_panel">
+
+                        <div class="box-header table-title">
+                            <h3 class="box-title"> وضعیت آگهی </h3>
+                    </div>
+                        <div id="menus">
+                            <%if(adv.status == 0 && adv.checked == 1){%> رد شده <% } else if(adv.status == 0 && adv.checked == 0){ %> در انتظار بررسی <% } else if(adv.status == 1){ %> تایید شده <% } %>
+                        </div>
+                    </div>
+                    <% if(adv.status != 1){ %>
+                    <div class="x_panel">
+
+                        <div id="menus">
+                            <div class="col-md-6 ">
+                                <button data-pid="q" type="button" id="accAdv" class="form-control btn btn-success">تایید آگهی</button>
+                            </div>
+                        </div>
+                    </div>
+                        <% } %>
+                    <div class="x_panel">
+
+                        <div id="menus">
+                            <div class="col-md-6">
+                                        <textarea class="form-control" id="reason" placeholder="دلایل رد آگهی را وارد کنید"><%- adv.reason %></textarea><br>
+                                        <button data-pid="q" type="button" id="nAccAdv" class="form-control btn btn-danger">رد آگهی</button>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ln_solid"></div>
+                    <div class="row"  align="center" id="alertmsg" style="color: red; height: 40px" ></div>
+                </div>
+            </div>
+
+        </div>
+        <%- include ../../panel/layouts/footer.ejs %>
+    </div>
+</div>
+<div id="lock_screen">
+    <table>
+        <tr>
+            <td>
+                <div class="clock"></div>
+                <span class="unlock">
+                    <span class="fa-stack fa-5x">
+                      <i class="fa fa-square-o fa-stack-2x fa-inverse"></i>
+                      <i id="icon_lock" class="fa fa-lock fa-stack-1x fa-inverse"></i>
+                    </span>
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<%- include ../../panel/layouts/scripts.ejs %>
+<script>
+    $('#accAdv').click(function () {
+        $('#accAdv').prop('disabled', true);
+            $.ajax({
+                url: 'accAdv',
+                data: {
+                    id      : '<%- adv.id %>',
+
+                },
+                method: 'POST',
+                success :function(data){
+
+                    if(data.status == true){
+                        $('#loading').fadeOut(100);
+                        new PNotify({
+                            title: 'عملیات موفق',
+                            text: 'آگهی فعال شد' +
+                                '<br>' +
+                                'شما به صفحه لیست هدایت خواهید شد',
+                            type: 'success',
+                            styling: 'bootstrap3'
+                        });
+                        setTimeout(function () {
+                            window.location = "../new";
+                        }, 1000);
+                        $('html, body').animate({ scrollTop: 0 }, 'slow');
+
+
+
+
+                    }
+
+
+                }});
+
+    });
+    $('#nAccAdv').click(function () {
+        $('#nAccAdv').prop('disabled', true);
+        reason = $('#reason').val();
+        if (   reason == ''  ){
+
+            $('#alertmsg').html('دلایل عدم تایید آگهی را وارد کنید');
+            $('#nAccAdv').prop('disabled', false);
+            return false;
+        }
+        else {
+            $.ajax({
+                url: 'nAccAdv',
+                data: {
+                    id: '<%- adv.id %>',
+                    reason  : reason
+                },
+                method: 'POST',
+                success: function (data) {
+
+                    if (data.status == true) {
+                        $('#loading').fadeOut(100);
+                        new PNotify({
+                            title: 'عملیات موفق',
+                            text: 'آگهی رد شد' +
+                                '<br>' +
+                                'شما به صفحه لیست هدایت خواهید شد',
+                            type: 'danger',
+                            styling: 'bootstrap3'
+                        });
+                        setTimeout(function () {
+                            window.location = "../new";
+                        }, 1000);
+                        $('html, body').animate({scrollTop: 0}, 'slow');
+
+
+                    }
+
+
+                }
+            });
+        }
+
+    });
+</script>
+</body>
+</html>

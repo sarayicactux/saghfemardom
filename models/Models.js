@@ -25,6 +25,7 @@ const StaticContent         = require('../models/sequelize/StaticContent');
 const Modules               = require('../models/sequelize/Module');
 const Role                  = require('../models/sequelize/Role');
 const Permission            = require('../models/sequelize/Permission');
+const Payment               = require('../models/sequelize/Payment');
 
 
 
@@ -73,6 +74,9 @@ People.belongsTo(BusinessGr,{foreignKey:'business_gr'});
 BusinessGr.hasMany(Adv,{foreignKey:'business_gr'});
 Adv.belongsTo(BusinessGr,{foreignKey:'business_gr'});
 
+BusinessType.hasMany(Adv,{foreignKey:'business_type'});
+Adv.belongsTo(BusinessType,{foreignKey:'business_type'});
+
 ProCity.hasMany(Adv,{foreignKey:'pro_id'});
 Adv.belongsTo(ProCity,{foreignKey:'pro_id'});
 
@@ -84,6 +88,9 @@ Adv.belongsTo(People,{foreignKey:'user_id'});
 
 People.hasMany(Comment,{foreignKey:'people_id'});
 Comment.belongsTo(People,{foreignKey:'people_id'});
+
+People.hasMany(Payment,{foreignKey:'people_id'});
+Payment.belongsTo(People,{foreignKey:'people_id'});
 
 Adv.hasMany(Comment,{foreignKey:'adv_id'});
 Comment.belongsTo(Adv,{foreignKey:'adv_id'});
@@ -127,6 +134,7 @@ Models.StaticContent= StaticContent;
 Models.Modules      = Modules;
 Models.Role         = Role;
 Models.Permission   = Permission;
+Models.Payment      = Payment;
 Models.CommentLikeDislike     = CommentLikeDislike;
 
 
