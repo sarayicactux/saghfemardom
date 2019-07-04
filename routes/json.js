@@ -100,7 +100,7 @@ function daily(req,res,next){
 }
 function hourly(req,res,next){
 
-
+next();
 
 
 

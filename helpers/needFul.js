@@ -1,4 +1,4 @@
-
+const smsRequest    = require('request');
 
 
 module.exports = {
@@ -25,8 +25,34 @@ module.exports = {
     sendSmsCode:function (mobile) {
 
         var val = Math.floor(1000 + Math.random() * 9000);
-        console.log(val);
+        var method       = 'sendsms';
+        var from         = 50004007;
+        var to           = mobile;
+        var text         = 'کد احراز هویت شما : '+val;
+        var type         = 0;
+        var username     = 'saghfemardom';
+        var password     = 'e455933ffefad1a167466726fe3a42e0';
+        var options = {
+            url: 'http://185.112.33.60/webservice/url/send.php',
+            method: 'POST',
+            form: {
+                method: method,
+                from: from,
+                to:to,
+                text:text,
+                type:type,
+                username:username,
+                password:password,
+            }
+        };
+
+        function callback(error, response, body) {
+
+
+        }
+        smsRequest(options, callback);
         return val;
+
     },
     checkMime(filename,type){
         check = true;
