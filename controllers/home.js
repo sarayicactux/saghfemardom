@@ -1015,6 +1015,7 @@ module.exports = {
             city_name      : pro.cities[form.city].name,
             business_type  : business_type,
             business_gr    : business_gr,
+            bgRN           : prInj.PrInj( form.bgRN),
             video_url      : prInj.PrInj( form.videoPath),
             created_at     : created_at,
             updated_at     : created_at

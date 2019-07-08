@@ -26,7 +26,7 @@ module.exports = {
 
         var val = Math.floor(1000 + Math.random() * 9000);
         var method       = 'sendsms';
-        var from         = 5000400765;
+        var from         = 50004007;
         var to           = mobile;
         var text         = 'کد احراز هویت شما : '+val;
         var type         = 0;
@@ -58,7 +58,7 @@ module.exports = {
 
         var val = Math.floor(100000 + Math.random() * 900000);
         var method       = 'sendsms';
-        var from         = 5000400765;
+        var from         = 50004007;
         var to           = mobile;
         var text         = 'کد مورد نیاز برای بازیابی رمز ورود در سقف مردم : '+val;
         var type         = 0;

@@ -38,8 +38,10 @@ des:"کنترل پنل مدیریت" ,
                         <div class="box-header table-title">
                             <h3 class="box-title"> مشخصات آگهی </h3>
                         </div>
+                        <% BusinessGr = adv.BusinessGr.title;
+                        if (adv.bgRN.length >8) BusinessGr = adv.bgRN %>
                         <div id="menus">
-                            <%-  adv.BusinessType.title+' | '+adv.BusinessGr.title +' | '+ adv.title %>
+                            <%-  adv.BusinessType.title+' | '+ BusinessGr +' | '+ adv.title %>
                         </div>
                     </div>
                     <div class="x_panel">

@@ -13,6 +13,7 @@ const Adv = sequelize.define('Adv', {
         description: Sequelize.STRING,
         business_type: Sequelize.INTEGER,
         business_gr: Sequelize.INTEGER,
+        bgRN: Sequelize.STRING,
         video_url: Sequelize.STRING,
         status: Sequelize.INTEGER,
         checked: Sequelize.INTEGER,

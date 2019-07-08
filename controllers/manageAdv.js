@@ -100,6 +100,50 @@ module.exports = {
             id = prInj.PrInj(req.body.id);
             now = new Date();
             var actived_at = date.format(now, 'YYYY-MM-DD HH:mm:ss');
+            Models.Adv.findOne({
+                where:{
+                    id : id
+                }
+            }).then(function (ad) {
+                    if(ad.bgRN.length > 8){
+                            Models.BusinessGr.findOne({
+                                where:{
+                                    title:ad.bgRN
+                                }
+                            })
+                                .then(function (bgr) {
+                                    if(!bgr){
+                                        title        = ad.bgRN;
+                                        type_id      = ad.business_type;
+                                        description  = ad.bgRN;
+                                        slug         = title;
+                                        slug         = slug.replace(/ /g,'-');
+                                        slug         = slug.replace(/--/g,'-');
+                                        Models.BusinessGr.create({
+                                            title           :title,
+                                            business_type_id:type_id,
+                                            slug            :slug,
+                                            description     :description,
+                                            created_at      : actived_at,
+                                            updated_at      : actived_at,
+                                        }).then(function (nbg) {
+                                            business_gr = nbg.id;
+                                            Models.Adv.update({
+                                                business_gr : business_gr,
+                                                bgRN        : '',
+                                                actived_at  : actived_at
+                                            },{
+                                                where:{
+                                                    id : id
+                                                }
+                                            })
+
+                                        })
+                                    }
+                                })
+                    }
+            })
+
             Models.Adv.update({
                 status      : 1,
                 checked     : 1,

@@ -45,6 +45,10 @@
         </select>
     </span>
     </div>
+    <div class="col-12 col-md-12 p-1 formPlaceHolder mt-4 " >
+        <input type="text" class="form-control border bg-light siteInputs"  name="bgRN" id="bgRN" placeholder="  " required>
+        <label for="title">اگر کسب و کار شما در لیست نیست، اینجا وارد کنید</label>
+    </div>
 
 
 
@@ -249,6 +253,7 @@
         city = $('#city').val();
         businessType = $('#businessType').val();
         businessGr = $('#businessGr').val();
+        bgRN = $('#bgRN').val();
         videoPath = $("#videoPath").data('path');
         if (title == ''){
 
@@ -296,9 +301,10 @@
                     pro    : pro,
                     city    : city,
                     businessType    : businessType,
-                    businessGr    : businessGr,
-                    advImgs    : images,
-                    videoPath  : videoPath,
+                    businessGr      : businessGr,
+                    bgRN            : bgRN,
+                    advImgs         : images,
+                    videoPath       : videoPath,
 
                 },
                 method: 'POST',
