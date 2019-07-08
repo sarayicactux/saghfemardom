@@ -776,7 +776,7 @@ module.exports = {
     },
     payCheck:function(req,res){
         payResult = req.body;
-        if (payResult.amount == 100){
+        if (payResult.amount == 50000){
             var digitalreceipt   = payResult.digitalreceipt;
             var Tid              = 69003298;
             var options = {
@@ -795,7 +795,7 @@ module.exports = {
                 }
                 if (!error && response.statusCode == 200) {
                     gRes = JSON.parse(body);
-                    if ( gRes.Status == 'OK') {
+                    if ( gRes.Status == 'Ok') {
                         now = new Date();
                         var created_at = date.format(now, 'YYYY-MM-DD HH:mm:ss');
                         Models.Payment.create({
@@ -808,17 +808,20 @@ module.exports = {
                             created_at      : created_at,
                             updated_at      : created_at,
                         }).then(function (row) {
-                            req.session.people.credit = 100;
+                            req.session.people.credit = 50000;
                             Models.User.update({
-                                credit : 100
+                                credit : 50000
                             },{
                                 where:{
                                     id : res.peopleGinf.id
                                 }
                             });
-                            res.render('site/pages/payCheck', {digitalreceipt: payResult.digitalreceipt, res: res, jDate: jDate, needFul: needFul});
+                            res.render('site/pages/payCheck', {rrn: payResult.rrn, res: res, jDate: jDate, needFul: needFul});
                         })
 
+                    }
+                    else {
+                        res.render('errors/500')
                     }
                 }
             }
@@ -1632,6 +1635,89 @@ module.exports = {
     logOut:function(req,res){
         req.session.destroy();
         res.redirect(host);
+    },
+    forgetPass:function (req,res) {
+        if (!req.session.people){
+
+            now = new Date();
+            req.session.regRq = Password.hash(now+'k');
+            res.render('site/people/forgetPass',{res:res,jDate:jDate,needFul:needFul});
+        }
+        else {
+            res.render('site/ads/chooseType',{res:res,jDate:jDate,needFul:needFul});
+        }
+    },
+    sendPcode:function(req,res){
+        var form        = prInj.PrAll(req.body);
+        Models.People.findOne({where:{mobile:form.mobile}})
+            .then(function (people) {
+                if(people){
+                    if (!req.session.regRq){
+                        res.json( {status:true});return
+                    }
+
+                    else {
+                        if (!req.session.count){
+                            req.session.count = 1;
+                            req.session.fBody = form;
+                            rq = needFul.sendPassSmsCode(form.mobile);
+
+                            req.session.rCode = rq;
+                            res.json( {status:true});return
+
+
+                        }
+                        else {
+                            if (req.session.count < 4){
+                                req.session.count += 1;
+                                rq = needFul.sendPassSmsCode(form.mobile);
+                                req.session.fBody = form;
+                                req.session.rCode = rq;
+                                res.json( {status:true});return
+                            }
+                            res.json( {status:true});return
+                        }
+                    }
+                }
+                else {
+                    res.json( {status:false});return
+                }
+            })
+
+    },
+    updatePass:function(req,res){
+        var code        = prInj.PrInj(req.body.rCode);
+        var password    = prInj.PrInj(req.body.password);
+        if (!req.session.regRq){
+            res.json( {status: false});return;
+        }
+        if (!req.session.fBody){
+            res.json( {status: false});return;
+        }
+        if (req.session.rCode != code) {
+            res.json( {status: false});return;
+        }
+        else {
+            form = req.session.fBody;
+
+            now = new Date();
+            var updated_at = date.format(now, 'YYYY-MM-DD HH:mm:ss');
+            upPass = {
+                password       : Password.hash(password),
+                updated_at     : updated_at,
+            }
+            Models.People.update(upPass,
+                {
+                where:{
+                    mobile : form.mobile
+                }
+            }).then(function (p) {
+                res.json( {status: true});return;
+            }).catch(function () {
+                res.json( {status: false});return;
+            });
+            req.session.destroy();
+        }
     },
 
 

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html   dir=rtl lang=fa>
+<%- include("../layouts/head.ejs",{
+title:"سقف مردم" ,
+des:"" ,
+pageUrl:"https://saghfemardom.ir"
+}) %>
+<body   >
+
+<% include ../layouts/svg.ejs %>
+
+<%- include ../layouts/header.ejs%>
+
+
+
+<div class="container" style="margin-top:10px">
+
+
+    <div class="row">
+                <h1 class="audioContent border rounded"><span class="spinner-grow text-danger"></span> سقف مردم، ارتباط کسب و کار شماست با میلیون ها نفر = ثروت، آرامش، قدرت (خرید بهترین خودرو) <span class="spinner-grow text-danger"></span></h1>
+
+        </div>
+    <div class="row"  style="margin-top:10px">
+
+        <div class="col-md-3 mb-md-0  mb-1 newsBar">
+            <%- include("../layouts/news.ejs",{
+            res:res
+            }) %>
+        </div>
+        <div class="col-md-6 mb-md-0 mb-1 ">
+            <div class="row pl-md-2  ">
+                <div class="col-md-12 shadow-sm border pb-1  bg-white text-dark">
+                    <div class="p-2 row p-0">
+                        <div class="col-12 m-0 p-0">
+                            <h2  class="boxesWline linkColor"> بازیابی رمز ورود </h2>
+                        </div>
+                    </div>
+                    <div class="row  mt-1">
+                        <div class="col-md-12" id="registerForm">
+                            <div class="row ">
+
+                                <div class="col-12 col-md-12 p-1 formPlaceHolder" >
+                                    <input type="text" maxlength="11" class="form-control border bg-light num siteInputs" name="mobile" id="mobile" placeholder="  " required>
+                                    <label for="name">شماره تلفن همراه</label>
+                                </div>
+
+                                <div class="col-12  p-1" id="regBtnDiv" >
+                                    <button type="submit" class="btn mainBtn  btn-sm btn-block" id="regBtn" > بازیابی </button>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="col-md-12" id="rCode" style="display: none">
+                            <div class="row ">
+                                <div class="col-12 col-md-12 p-1 formPlaceHolder" >
+                                    <div class="rCode rounded" >برای تکمیل فرایند به بازیابی، لطفا کد ارسال به موبایل خود را همراه با رمز جدید وارد کنید</div>
+                                </div>
+                                <div class="col-12 col-md-12 p-1 formPlaceHolder" >
+                                    <input type="text" maxlength="6" class="form-control border bg-light num siteInputs" name="msgCode" id="msgCode" placeholder="  " required>
+                                    <label for="name">کد بازیابی رمز عبور</label>
+                                </div>
+                                <div class="col-12 col-md-12 p-1 formPlaceHolder" >
+                                    <input type="password" class="form-control border bg-light siteInputs" name="password" id="password" placeholder="  " required>
+                                    <label for="name">رمز عبور جدید</label>
+                                </div>
+                                <div class="col-12  p-1" >
+                                    <button class="btn mainBtn  btn-sm btn-block" id="cCodeBtn" > تایید </button>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+        <div class="col-md-3 mb-md-0  mb-1  ">
+            <%- include("../layouts/sidebar.ejs",{
+            res:res
+            }) %>
+        </div>
+
+    </div>
+
+</div>
+<div class="col-12 bg-dark mt-3 text-white">
+    <%- include("../layouts/footer.ejs",{
+    res:res
+    }) %>
+</div>
+
+<div id="myModal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="img01">
+    <div id="caption"></div>
+</div>
+</body>
+<%- include ../layouts/scripts.ejs%>
+<script>
+    $('#regBtn').click(function () {
+        $('#regBtn').prop('disabled', true);
+        mobile  = $('#mobile').val();
+        if (mobile == ''){
+
+            $('#regBtn').html('وارد کردن "شماره تلفن همراه" اجباری است');
+            setTimeout(function () {
+                $('#regBtn').html('بازیابی');
+            }, 2000);
+            $('#regBtn').prop('disabled', false);
+            return false;
+        }
+        else if ( mobile.length != 11){
+
+            $('#regBtn').html('"شماره تلفن همراه" وارد شده، نامعتبر است');
+            setTimeout(function () {
+                $('#regBtn').html('بازیابی');
+            }, 2000);
+            $('#regBtn').prop('disabled', false);
+            return false;
+        }
+
+
+
+        else {
+            $('#wait').fadeIn(100);
+            $('#regBtn').html('در حال ارسال <span class="spinner-border spinner-border-sm mb-1"></span>');
+            $('#regBtn').prop('disabled', true);
+
+            $.ajax({
+                url: '/sendPcode',
+                data: {
+                    mobile    : mobile,
+                },
+                method: 'POST',
+                success :function(data){
+                    if(data.status == false){
+                        $('#regBtn').html('"شماره تلفن همراه" وارد شده موجود نیست، لطفا ثبت نام کنید');
+                        setTimeout(function () {
+                            $('#regBtn').html('بازیابی');
+                        }, 2000);
+                        $('#regBtn').prop('disabled', false);
+                    }
+                    else {
+                        $('#regBtnDiv').fadeOut(300,function () {
+                            $('#rCode').fadeIn(300);
+                        });
+                    }
+
+
+                    //$('#bg').fadeOut(100);
+
+                }});
+
+
+
+        }
+    });
+    $('#cCodeBtn').click(function () {
+        $('#cCodeBtn').prop('disabled', true);
+        msgCode     = $('#msgCode').val();
+        password    = $('#password').val();
+        if (msgCode == ''){
+
+            $('#cCodeBtn').html('"کد" وارد نشده');
+            setTimeout(function () {
+                $('#cCodeBtn').html('تایید');
+            }, 2000);
+            $('#cCodeBtn').prop('disabled', false);
+            return false;
+        }
+        else if (msgCode.length != 6){
+
+            $('#cCodeBtn').html('"کد" وارد شده معتبر نیست');
+            setTimeout(function () {
+                $('#cCodeBtn').html('تایید');
+            }, 2000);
+            $('#cCodeBtn').prop('disabled', false);
+            return false;
+        }
+        else if (password == ''){
+
+            $('#cCodeBtn').html('"رمز عبور" وارد نشده');
+            setTimeout(function () {
+                $('#cCodeBtn').html('تایید');
+            }, 2000);
+            $('#cCodeBtn').prop('disabled', false);
+            return false;
+        }
+        else if (password.length < 6){
+
+            $('#regBtn').html('طول رشته "رمز عبور" باید حداقل 6 حرف باشد');
+            setTimeout(function () {
+                $('#regBtn').html('بازیابی');
+            }, 2000);
+            $('#regBtn').prop('disabled', false);
+            return false;
+        }
+       else {
+            $('#wait').fadeIn(100);
+            $('#cCodeBtn').html('در حال ارسال <span class="spinner-border spinner-border-sm mb-1"></span>');
+            $('#cCodeBtn').prop('disabled', true);
+
+            $.ajax({
+                url: '/updatePass',
+                data: {
+                    rCode      : msgCode,
+                    password   : password,
+                },
+                method: 'POST',
+                success :function(data){
+                    if (data.status){
+                        $('#cCodeBtn').html('بازیابی کامل شد، شما به صفحه ورود هدایت میشوید');
+                        setTimeout(function () {
+                            window.location.href = "<% host%>/login";
+                        }, 1500);
+
+                    }
+                    else {
+                        $('#cCodeBtn').html('"کد" وارد شده معتبر نیست');
+                        setTimeout(function () {
+                            $('#cCodeBtn').html('تایید');
+                        }, 2000);
+                        $('#cCodeBtn').prop('disabled', false);
+                    }
+
+
+
+                    //$('#bg').fadeOut(100);
+
+                }});
+
+
+
+        }
+    });
+
+
+</script>
+</html>

@@ -35,7 +35,7 @@ router.route('/fbca').get(preCond,dailyJson,hourlyJson,home.filterCarsAdv);
 router.route('/cars').get(preCond,dailyJson,hourlyJson,home.cars);
 router.route('/send').get(checkPeople,preCond,dailyJson,hourlyJson,home.send);
 router.route('/pay').get(checkPeople,preCond,dailyJson,hourlyJson,home.pay);
-router.route('/pay/ch').get(checkPeople,preCond,dailyJson,hourlyJson,home.payCheck);
+router.route('/pay/ch').post(checkPeople,preCond,dailyJson,hourlyJson,home.payCheck);
 router.route('/advComment').post(dailyJson,checkPeopleAjax,home.advComment);
 router.route('/registeAdv').post(dailyJson,checkPeopleAjax,home.registeAdv);
 router.route('/editA/updateAdv').post(dailyJson,checkPeopleAjax,home.updateAdv);
@@ -57,6 +57,9 @@ router.route('/sendRcode').post(home.sendRcode);
 router.route('/register').post(preCond,dailyJson,hourlyJson,home.registerPeople);
 router.route('/my').get(checkPeople,preCond,dailyJson,hourlyJson,peopleInf,home.my);
 router.route('/cities/:id').get(home.cities);
+router.route('/fg/p').get(preCond,dailyJson,hourlyJson,home.forgetPass);
+router.route('/sendPcode').post(home.sendPcode);
+router.route('/updatePass').post(preCond,dailyJson,hourlyJson,home.updatePass);
 
 router.route('/siteUploadImage').post(type,home.siteUploadImage);
 router.route('/siteUploadVideo').post(type,home.siteUploadVideo);
@@ -64,6 +67,7 @@ router.route('/siteDeleteUploaded').post(home.siteDeleteUploaded);
 
 router.route('/uploading').post(type,home.uploading);
 router.route('/deleteUploaded').post(home.deleteUploaded);
+
 
 
 

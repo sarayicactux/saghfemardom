@@ -136,6 +136,15 @@ images = cAdvs[i].CarAdvImages;
                             </p>
 
                         </div>
+                        <% if(cAdvs[i].video_url.length > 10){%>
+                            <div class="p-2 row p-0 m-0">
+                                <div class="col-12 m-0 p-0 adv">
+                                    <video  class="videoU" data-path="<%- host+'/'+cAdvs[i].video_url %>" controls="" preload="auto">
+                                        <source src="<%- host+'/'+cAdvs[i].video_url %>" type="video/mp4">
+                                    </video>
+                                </div>
+                            </div>
+                        <% } %>
                             <div class="col-sm-12 mt-3 p-0  adv">
                                 <h3  >راه های تماس</h3>
                                 <span class="fa fa-phone" ></span><%- cAdvs[i].person.phone%>
