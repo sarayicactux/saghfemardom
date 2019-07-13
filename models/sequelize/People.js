@@ -14,7 +14,7 @@ const People = sequelize.define('people', {
     instagram: Sequelize.STRING,
     description: Sequelize.STRING,
     business_type: Sequelize.INTEGER,
-    credit: Sequelize.INTEGER,
+    credit: Sequelize.STRING,
     business_gr: Sequelize.INTEGER,
     phone: Sequelize.STRING,
     pro: Sequelize.INTEGER,

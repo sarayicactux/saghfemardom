@@ -25,6 +25,33 @@ module.exports = {
     sendSmsCode:function (mobile) {
 
         var val = Math.floor(1000 + Math.random() * 9000);
+        var token        = val;
+        var receptor     = mobile;
+        var template     = 'saghf';
+        var type         = 'sms';
+        var options = {
+            url: 'https://api.kavenegar.com/v1/785649594935524D732F666F7970474C7A312B61425355454558302B6335302F3373353135796364366A303D/verify/lookup.json',
+            method: 'POST',
+            form: {
+                token: token,
+                receptor: receptor,
+                template:template,
+                type:type,
+            }
+        };
+
+        function callback(error, response, body) {
+
+
+        }
+        smsRequest(options, callback);
+        return val;
+
+    },
+    /*
+    sendSmsCode:function (mobile) {
+
+        var val = Math.floor(1000 + Math.random() * 9000);
         var method       = 'sendsms';
         var from         = 50004007;
         var to           = mobile;
@@ -53,7 +80,7 @@ module.exports = {
         smsRequest(options, callback);
         return val;
 
-    },
+    },*/
     sendPassSmsCode:function (mobile) {
 
         var val = Math.floor(100000 + Math.random() * 900000);

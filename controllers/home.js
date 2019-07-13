@@ -809,7 +809,7 @@ module.exports = {
                             updated_at      : created_at,
                         }).then(function (row) {
                             req.session.people.credit = 50000;
-                            Models.User.update({
+                            Models.People.update({
                                 credit : 50000
                             },{
                                 where:{
@@ -1028,13 +1028,15 @@ module.exports = {
                     }
                     res.json({status:true});
                     function newAdvImage(adv_id,imgPath){
-                                newImg = {
-                                    adv_id : adv_id,
-                                    img_url: imgPath,
-                                    created_at     : created_at,
-                                    updated_at     : created_at
-                                };
-                                Models.AdvImage.create(newImg);
+                        if(imgPath.length>5) {
+                            newImg = {
+                                adv_id: adv_id,
+                                img_url: imgPath,
+                                created_at: created_at,
+                                updated_at: created_at
+                            };
+                            Models.AdvImage.create(newImg);
+                        }
                                 
                     }
 
@@ -1090,13 +1092,15 @@ module.exports = {
                 });
                     res.json({status:true});
                     function newAdvImage(adv_id,imgPath){
-                                newImg = {
-                                    adv_id : adv_id,
-                                    img_url: imgPath,
-                                    created_at     : created_at,
-                                    updated_at     : created_at
-                                };
-                                Models.AdvImage.create(newImg);
+                        if(imgPath.length>5) {
+                            newImg = {
+                                adv_id: adv_id,
+                                img_url: imgPath,
+                                created_at: created_at,
+                                updated_at: created_at
+                            };
+                            Models.AdvImage.create(newImg);
+                        }
 
                     }
 
@@ -1139,13 +1143,16 @@ module.exports = {
                     }
                     res.json({status:true});
                     function newCarAdvImage(adv_id,imgPath){
-                                newImg = {
-                                    adv_id : adv_id,
-                                    img_url: imgPath,
-                                    created_at     : created_at,
-                                    updated_at     : created_at
-                                };
-                                Models.CarAdvImage.create(newImg);
+                                if(imgPath.length>5){
+                                    newImg = {
+                                        adv_id : adv_id,
+                                        img_url: imgPath,
+                                        created_at     : created_at,
+                                        updated_at     : created_at
+                                    };
+                                    Models.CarAdvImage.create(newImg);
+                                }
+
                                 
                     }
 
@@ -1199,13 +1206,15 @@ module.exports = {
 
             res.json({status:true});
             function newCarAdvImage(adv_id,imgPath){
-                newImg = {
-                    adv_id : adv_id,
-                    img_url: imgPath,
-                    created_at     : created_at,
-                    updated_at     : created_at
-                };
-                Models.CarAdvImage.create(newImg);
+                if(imgPath.length>5) {
+                    newImg = {
+                        adv_id: adv_id,
+                        img_url: imgPath,
+                        created_at: created_at,
+                        updated_at: created_at
+                    };
+                    Models.CarAdvImage.create(newImg);
+                }
 
             }
 
@@ -1253,13 +1262,15 @@ module.exports = {
                     }
                     res.json({status:true});
                     function newCarAdvImage(adv_id,imgPath){
-                                newImg = {
-                                    adv_id : adv_id,
-                                    img_url: imgPath,
-                                    created_at     : created_at,
-                                    updated_at     : created_at
-                                };
-                                Models.CarAdvImage.create(newImg);
+                        if(imgPath.length>5) {
+                            newImg = {
+                                adv_id: adv_id,
+                                img_url: imgPath,
+                                created_at: created_at,
+                                updated_at: created_at
+                            };
+                            Models.CarAdvImage.create(newImg);
+                        }
 
                     }
 
@@ -1318,13 +1329,15 @@ module.exports = {
             });
             res.json({status:true});
             function newCarAdvImage(adv_id,imgPath){
-                newImg = {
-                    adv_id : adv_id,
-                    img_url: imgPath,
-                    created_at     : created_at,
-                    updated_at     : created_at
-                };
-                Models.CarAdvImage.create(newImg);
+                if(imgPath.length>5) {
+                    newImg = {
+                        adv_id: adv_id,
+                        img_url: imgPath,
+                        created_at: created_at,
+                        updated_at: created_at
+                    };
+                    Models.CarAdvImage.create(newImg);
+                }
 
             }
 
@@ -1576,6 +1589,16 @@ module.exports = {
         var file    = req.body.fileName;
         var inputId = req.body.inputId;
         fs.unlinkSync(appRoot + '/public/'+file);
+        Models.CarAdvImage.destroy({
+            where:{
+                img_url: file
+            }
+        });
+        Models.AdvImage.destroy({
+            where:{
+                img_url: file
+            }
+        });
         res.send('<input id="'+inputId+'Path"  type="hidden" value="">');
     },
     siteDeleteUploaded:function (req,res) {
