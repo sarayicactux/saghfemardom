@@ -1,0 +1,1016 @@
+@font-face{font-family:"IRANSans_FaNum";src:url('fonts/eot/IRANSansWeb.eot?1532072864');src:url('fonts/eot/IRANSansWeb.eot?&1532072864#iefix') format('embedded-opentype'),url('fonts/woff2/IRANSansWeb(FaNum).woff2?1532072864') format('woff2'),url('fonts/woff/IRANSansWeb(FaNum).woff?1532072864') format('woff'),url('fonts/ttf/IRANSansWeb(FaNum).ttf?1532072864') format('truetype');}
+body{
+
+    direction: rtl;text-align: justify;
+    font-family: IRANSans_FaNum;
+    background: #f0f0f0;
+
+}
+.art-list-title:hover{
+    text-decoration: none; color:#666666;
+}
+
+.articleBr {
+    color: #666666;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 12px;
+}
+.articleBr:hover{
+    text-decoration: none; color:grey;
+}
+.topBtn {
+    font-size: 16px !important;
+    background: #2DB84C !important;
+}
+
+.form-control {
+    font-size: 14px !important;
+    line-height:30px !important;
+
+}
+.make-me-sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0px;
+
+    padding: 0 15px;
+}
+@media screen and (min-width: 700px) {
+    .audioContent {
+        width: 100%;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        background:#0b93d5 ;
+        color: #ffffff !important;
+        text-align: center;
+        line-height: 30px !important;
+        font-size: 17px !important;
+    }
+    .imgSlider {
+        height: 305px !important;
+        max-height: 305px !important;
+        width: 100%;
+        max-width: 100%;
+    }
+    .carCel {
+        font-size: 15px;
+        font-weight: 500;
+    }
+    .live__scroll::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+    }
+    .live__scroll {
+        overflow-x: scroll;
+        scrollbar-color: #303030 grey;
+        scrollbar-width: thin;
+    }
+    /* Track */
+    .live__scroll::-webkit-scrollbar-track {
+        box-shadow: inset 1px 1px 5px grey;
+    }
+
+    /* Handle */
+    .live__scroll::-webkit-scrollbar-thumb {
+        background: #303030;
+    }
+
+    /* Handle on hover */
+    .live__scroll::-webkit-scrollbar-thumb:hover {
+        background: #313131;
+    }
+    .newsBar {
+        display: block;
+        font-size: 13px;
+    }
+    .mainHeader {
+        text-align: center;
+        margin-bottom: 15px;
+
+    }
+
+    .sliderMain{
+        height: 502px;
+
+
+    }
+
+    .slider2{
+        height: 250px;
+    }
+    .art-list-sum{
+        display: block;
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 30px;
+
+    }
+    .art-list-title{
+        color: #505050;
+        font-weight: 600;
+        font-style: normal;
+        line-height: 30px;
+        font-size: 16px;
+    }
+    .contacts{
+        display: block;
+    }
+
+}
+@media screen and (max-width: 700px) {
+    .audioContent {
+        width: 100%;
+        padding-top: 7px;
+        padding-bottom: 19px;
+        background:#0b93d5 ;
+        color: #ffffff;
+        text-align: center;
+        line-height: 20px  !important;
+        font-size: 12px !important;
+    }
+    .imgSlider {
+        height: 189px !important;
+        max-height: 189px !important;
+        width: 100%;
+        max-width: 100%;
+    }
+    .carCel {
+        font-size: 12px;
+        font-weight: 400;
+    }
+    .newsBar {
+        display: none;
+    }
+    .mainHeader {
+        text-align: right;
+        line-height: 30px;
+        margin-bottom: 15px;
+    }
+    .tagsBox {
+        text-align: center;
+
+    }
+    .sliderMain{
+        height: 180px;
+    }
+    .slider2{
+        height: 180px;
+    }
+    .art-list-sum{
+        display: none;
+
+    }
+    .artCount {
+        display: none;
+    }
+
+    .art-list-title{
+        color: #505050;
+        font-weight: 500;
+        font-style: normal;
+        line-height: 30px;
+        font-size: 14px;
+    }
+    .contacts{
+        display: none;
+    }
+}
+.grad{
+
+    position: relative;
+    top: 0;
+    z-index: 4000;
+    background: -moz-linear-gradient(top,rgba(0,0,0,0) 0%,rgba(0,0,0,.1) 40%,rgba(0,0,0,.5) 75%,rgba(0,0,0,.75) 100%);
+    background: -webkit-gradient(linear,left top,left bottom,color-stop(0%,rgba(0,0,0,0)),color-stop(40%,rgba(0,0,0,.1)),color-stop(75%,rgba(0,0,0,.5)),color-stop(100%,rgba(0,0,0,.75)));
+    background: -webkit-linear-gradient(top,rgba(0,0,0,0) 0%,rgba(0,0,0,.1) 40%,rgba(0,0,0,.5) 75%,rgba(0,0,0,.75) 100%);
+    background: -o-linear-gradient(top,rgba(0,0,0,0) 0%,rgba(0,0,0,.1) 40%,rgba(0,0,0,.5) 75%,rgba(0,0,0,.75) 100%);
+    background: -ms-linear-gradient(top,rgba(0,0,0,0) 0%,rgba(0,0,0,.1) 40%,rgba(0,0,0,.5) 75%,rgba(0,0,0,.75) 100%);
+}
+.carSideBarTitle {
+    color: #158BE5;
+    font-size: 14px;
+    font-weight: 400;
+}
+.calSlide {
+    width: 100% !important;
+    max-height: 410px !important;
+    overflow: hidden !important;
+}
+.carSideBarCity {
+    color: #303030;
+    font-size: 13px;
+    font-weight: 400;
+}
+.carSideBarTime {
+    color: #B7B7B7;
+    font-size: 12px;
+    font-weight: 400;
+}
+.carSideBarsType {
+    color: #EC6E00 !important;
+    font-size: 12px;
+    font-weight: 400;
+}
+.breadcrumbCustom{
+    font-size: 13px;
+}
+h1 {
+    font-size: 16px !important;
+    color: #EC6E00 !important;
+    line-height: 30px;
+}
+h2 {
+    font-size: 15px !important;
+    font-weight: bold;
+    line-height: 30px;
+}
+.adv h2{
+     font-size: 15px !important;
+     font-weight: 500;
+     line-height: 30px;
+ }
+.adv h3{
+    font-size: 14px !important;
+    font-weight: 500;
+    line-height: 30px;
+    color:#EC6E00 ;
+}
+.AricleSummary {
+    font-size: 14px;
+    line-height: 30px;
+}
+.myhr{
+    margin-top: 12px;
+    height: 1px;
+    background-color:#EC6E00;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+.footerHr{
+    margin-top: 10px;
+    height: 1px;
+    background-color:#ffffff;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+.linkColor{
+    color: #EC6E00;
+}
+.thisArticle{
+    background: #FCF6DA;
+    border-right:5px solid #EC6E00 !important;
+    font-size: 18px;
+}
+
+.thisArticleRows {
+    color: #808080;
+}
+.downloadBox{
+    background: #FFE2C9;
+}
+.content {
+    text-align: justify;
+    direction: rtl;
+    font-size: 14px;
+    line-height: 30px;
+    color: #333333;
+}
+td {
+    line-height: 30px;
+}
+.tags {
+    font-size: 12px;
+    margin-top: 3px;
+}
+.linkT{
+    color:#EC6E00 ;
+    font-size: 18px;
+    font-weight: 900;
+    margin-left: 5px;
+    padding-top: 0px
+}
+.box-header {
+    background: #EC6E00;  height: 40px; text-align: center;
+}
+.adsXsMain{
+    max-width: 100% !important;
+}
+th {
+    font-weight: 500 !important;
+}
+.page3H {
+    background: #BFBFBF;
+    font-size: 16px;
+    text-align: center;
+
+}
+.siteInputsFilter{
+    font-size: 18px !important;
+    padding-top: 21px !important;
+    padding-bottom: 21px !important;
+}
+.siteInputsFilter:focus{
+    box-shadow: 0 0 0 0px;
+}
+.siteInputs{
+    font-size: 18px !important;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+}
+.siteTextaria{
+    color: #505050;
+    font-size: 14px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    line-height: 10px;
+}
+.mainBtn{
+    background: #EC6E00;
+    font-size: 16px;
+    text-align: center;
+    color: #ffffff;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+}
+.mainBtn:hover{
+    background: #dc3545 !important;
+    border: 1px solid #EC6E00;
+    color: #ffffff !important;
+}
+.formTxt {
+    font-size: 12px;
+    color: #606060;
+}
+.comDate {
+    font-weight: 300;
+    font-size: 14px;
+}
+.replyCBtn{
+    background: #4D5D82;
+    color: #ffffff;
+    font-size: 12px;
+}
+.replyCBtn:hover{
+    background: #4D5DAD;
+    color: #ffffff;
+}
+.has-search .form-control {
+    padding-left: 28px;
+}
+.has-search {
+    padding-top: 16px
+}
+
+.form-control-feedback {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 100%;
+    top: 26px;
+    left: 5px;
+    height: 3.375rem;
+    line-height: 2.375rem;
+    text-align: left;
+    pointer-events: none;
+    color: #808080;
+}
+#menuBtn {
+    position: absolute;
+    left: 10px;
+}
+
+.searchInput:focus{
+    box-shadow: 0 0 0px ;
+    border: 0px solid ;
+    background: #ffffff;
+}
+.searchInput{
+    color: #dcdcdc;
+    font-size: 14px;
+    font-weight: 400;
+    background: #ffffff;
+}
+.filterInput:focus{
+    box-shadow: 0 0 0px ;
+    border: 1px solid  #0b93d5 ;
+    background: #ffffff;
+}
+.filterInput{
+    color: #303030;
+    font-size: 14px;
+    font-weight: 400;
+    background: #ffffff;
+}
+.scroll-touch {
+    -webkit-overflow-scrolling: touch; /* Lets it scroll lazy */
+}
+.live__scroll .row{
+    display:block;
+}
+.live__scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+.live__scroll .row{
+    display:block;
+}
+.live__scroll .live__scroll--box {
+    display: inline-block;
+    float: none;
+}
+
+.topNav {
+    z-index: 5000;
+    background: #165D8D;
+}
+.sideBarBox {
+    padding-bottom: 10px !important;
+    padding-right: 10px !important;
+}
+.sideBarLink {
+    padding-bottom: 12px !important;
+}
+.searchDivMobile {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 5004;
+    background: #ffffff;
+    color: #808080;
+
+}
+
+.bottom-right {
+    font-size: 18px;
+    position: absolute;
+    bottom: 6px;
+    right: 8px;
+    padding: 5px;
+    font-weight: 300;
+}
+.statis{
+    background: #ffffff;
+}
+.container {
+    position: relative;
+    text-align: right;
+    color: white;
+}
+.pagination {
+    display: inline-block;
+}
+
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+}
+
+.pagination a.active {
+    background-color: #EC6E00;
+    color: white;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}
+h3 {
+    font-family: IRANSans_FaNum;
+}
+.fa-num{
+    font-family: IRANSans_FaNum;
+}
+.pagination{
+    font-family: IRANSans_FaNum;
+}
+.dataTables_info{
+    font-family: IRANSans_FaNum;
+}
+.nav-link{
+    font-family:IRANSans_FaNum ;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 30px;
+
+}
+.dropdown-item{
+    font-size: 18px;
+}
+.menu{
+    font-size: 20px;
+    color: #e6352a;
+
+}
+.boxesWline  {
+    overflow:hidden;
+    font-weight: 500 !important;
+
+}
+.boxesWline:after {
+    content:'';
+    display:inline-block;
+    width:100%; height:100%;
+    margin-left:-100%;
+    border-bottom:2px solid #EC6E00;
+
+}
+.make-me-sticky2 {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 75px;
+    padding: 0 0 0 0;
+    z-index: 2;
+
+}
+.make-me-sticky3 {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 295px;
+    padding: 0 0 0 0;
+    z-index: 1;
+
+
+}
+.footer-link{
+    color: #ffffff;
+}
+.footer-link:hover  { text-decoration: none; color: #e51a2d }
+#myBtn {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 99;
+    font-size: 18px;
+    cursor: pointer;
+}
+.custom-link:hover  { text-decoration: none;
+    color: #e51a2d;
+}
+.custom-link{
+    font-size: 12px;
+    color: #EC6E00;
+
+}
+.infoGrafic:hover  { text-decoration: none }
+.infoGrafic{
+    font-size: 16px;
+    line-height: 30px;
+}
+.circleIcon {
+    width: 15px;
+    height: 15px;
+    padding: 0px;
+}
+.likeIcon {
+    width: 13px;
+    height: 13px;
+    padding: 0px;
+}
+.headerIcon {
+    width: 60px;
+    height: 60px;
+}
+.navBIcon {
+    width: 15px;
+    height: 15px;
+    padding: 0px;
+
+}
+.closeSearchIcon {
+     width: 18px;
+     height: 18px;
+     margin-top: 9px;
+     margin-bottom: 10px;
+
+ }
+.topIcon{
+    width: 40px;
+    height: 40px;
+    padding: 0px;
+}
+.uploading{
+    display:none;
+    z-index: 4000;
+    background-color: #f0fff0;
+    opacity: 0.5;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top:0px;
+    left: 0px;
+}
+.uploadLoadingImg{
+    display:none;
+    z-index: 10000;
+    position: fixed;
+    padding: 20px;
+    border-radius: 20px;
+    background-color:#2196F3 ;
+    height: 200px;
+    width: 20%;
+    top:30%;
+    left: 40%;
+    text-align: center;
+}
+.upPre{
+    background: #0b93d5;
+    border-radius: 10px;
+    text-align: center;
+}
+.otherH2 {
+    font-weight: 500 !important;
+}
+.datatable{
+    font-family: IRANSans_FaNum;
+}
+.count {
+    font-family: IRANSans_FaNum;
+}
+.content table {
+
+    border: 1px solid #cccccc;
+
+    direction: rtl;
+
+    margin: 20px auto;
+
+    max-width: 100%;
+
+    width: 100%;
+
+}
+
+.content table > thead > tr > th,
+
+.content table > tbody > tr > th,
+
+.content table > tfoot > tr > th,
+
+.content table > thead > tr > td,
+
+.content table > tbody > tr > td,
+
+.content table > tfoot > tr > td {
+
+    border-top: 1px solid #dddddd;
+
+    line-height: 1.42857;
+
+    padding: 12px;
+
+    vertical-align: top;
+
+}
+
+
+
+.content table > tbody > tr:nth-of-type(odd) {
+
+    background-color: #f9f9f9;
+
+}
+
+
+
+.content table tr:first-child {
+
+    background-color: #EC6E00 !important;
+
+    color: #ffffff !important;
+
+}
+
+
+
+.content table tr:first-child {
+
+    background-color: #EC6E00 !important;
+
+    color: #fff !important;
+
+}
+
+
+
+.content table td {
+
+    text-align: center;
+
+    padding-top: 16px !important;
+    padding-bottom: 16px !important;
+
+    font-size: 16px;
+
+}
+
+.content table td a {
+
+    color: #303030 !important;
+
+
+
+
+}
+
+.content table th {
+
+    font-size: 16px;
+
+    padding: 14px !important;
+
+    text-align: center;
+
+}
+
+
+
+.content img {
+
+    display: block;
+    max-width: 100% !important;
+    height: auto;
+    margin: 30px auto;
+}
+.content a {
+
+    color: #EC6E00;
+
+
+}
+.content a:hover{
+    text-decoration: none; color:#EC3000;
+}
+
+
+
+.content ul {
+
+    color: #555555;
+
+    font-size: 13px;
+
+    line-height: 25px;
+
+    margin: 10px 0;
+
+    padding: 0 55px;
+
+    text-align: right;
+
+}
+
+
+
+.content ol {
+
+    color: #555555;
+
+    font-size: 13px;
+
+    line-height: 25px;
+
+    margin: 10px 0;
+
+    padding: 0 55px;
+
+    text-align: right;
+
+}
+.content h2 {
+
+    font-size: 15px !important;
+    font-weight: bold;
+    line-height: 30px;
+    background: #F3EED3;
+    border: 1px solid #E8E2C0;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
+
+}
+
+
+
+
+
+
+.content h3 {
+
+    font-size: 16px;
+
+    padding: 0 20px 0 0;
+
+}
+
+
+
+.content h4 {
+
+    font-size: 15px;
+
+    padding: 0 20px 0 0;
+
+}
+
+
+
+.myImg {
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.myImg:hover {opacity: 0.7;}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 5002; /* Sit on top */
+    padding-top: 120px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+    overflow: hidden;
+}
+
+/* Modal Content (image) */
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+}
+
+/* Caption of Modal Image */
+#caption {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    text-align: center;
+    color: #ccc;
+    padding: 10px 0;
+    height: 150px;
+}
+
+/* Add Animation */
+.modal-content, #caption {
+    -webkit-animation-name: zoom;
+    -webkit-animation-duration: 0.6s;
+    animation-name: zoom;
+    animation-duration: 0.6s;
+}
+
+@-webkit-keyframes zoom {
+    from {-webkit-transform:scale(0)}
+    to {-webkit-transform:scale(1)}
+}
+
+@keyframes zoom {
+    from {transform:scale(0)}
+    to {transform:scale(1)}
+}
+
+/* The Close Button */
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px){
+    .modal-content {
+        width: 100%;
+    }
+}
+.formPlaceHolder{
+    position: relative;
+    margin: 0px 0px;
+}
+.formPlaceHolder label{
+    position: absolute;
+    padding-right: 10px;
+    top:13px;
+    z-index: 4;
+}
+.formPlaceHolder input{
+    position: relative;
+    padding-top:  10px;
+    z-index: 5;
+}
+.formPlaceHolder input:focus + label,.formPlaceHolder input:not(:placeholder-shown) + label{
+    opacity:1;
+    transform: scale(.9) translateY(-180%) translateX(5px);
+    color:#505050;
+    font-size: 15px;
+}
+.formPlaceHolder textarea:focus + label,.formPlaceHolder textarea:not(:placeholder-shown) + label{
+    opacity:1;
+    transform: scale(.9) translateY(-180%) translateX(5px);
+    color:#505050;
+    font-size: 15px;
+}
+.formPlaceHolder{
+    padding: 10px;
+    margin:15px 0px;
+}
+.formPlaceHolder input{
+    width:100%;
+}
+.formPlaceHolder textarea{
+    width:100%;
+}
+.formPlaceHolder label,.formPlaceHolder input{
+    transition: all 0.2s;
+    transition-timing-function: ease;
+    transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+    opacity:0.7;
+}
+.formPlaceHolder label,.formPlaceHolder textarea{
+    transition: all 0.2s;
+    transition-timing-function: ease;
+    transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+    opacity:0.7;
+}
+.rCode {
+    background: #CEFFC5;
+    border: 1px solid #618537;
+    color: #0F9705;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-size: 12px;
+}
+.upload-btn-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+
+}
+
+.uploadBtn {
+    border: 1px solid gray;
+    color: gray;
+    background-color: #fafafa;
+    padding: 18px 40px;
+    border-radius: 5px;
+    width: 100%;
+    font-size: 20px;
+    font-weight: bold;
+
+}
+.upload-btn-wrapper input[type=file] {
+    font-size: 60px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+.deleteIcon {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    opacity: .6;
+}
+.deleteIcon:hover {
+    opacity: .9;
+}
+.deleteVideoIcon {
+    position: absolute;
+    top: 8px;
+    right: 20px;
+    opacity: .3;
+    z-index: 5003;
+}
+.deleteVideoIcon:hover {
+    opacity: .9;
+}
+.upVideo {
+    font-size: 12px;
+}
+.videoU{
+    max-width: 100%;
+}
+.sideBarImage {
+    width: 100%;
+    max-width: 100%;
+}

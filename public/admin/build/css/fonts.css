@@ -1,0 +1,61 @@
+@font-face {
+    font-family: "ns";
+    font-style: normal;
+    font-weight: bold;
+    src: url('../fonts/nassim-bold.eot?') format('eot'), url('../fonts/nassim-bold.woff') format('woff'),url("../fonts/nassim-bold.ttf") format("truetype");
+}
+@font-face {
+    font-family: 'IRNazanin';
+    font-weight:normal;
+    src: url('../fonts/IRNazanin.eot?#') format('eot'),  /* IE6–8 */
+    url('../fonts/IRNazanin.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    url('../fonts/IRNazanin.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+h3 {
+    font-family: IRANSans_FaNum;
+}
+.fa-num{
+    font-family: IRANSans_FaNum;
+}
+.pagination{
+    font-family: IRANSans_FaNum;
+}
+.dataTables_info{
+    font-family: IRANSans_FaNum;
+}
+
+.uploading{
+    display:none;
+    z-index: 4000;
+    background-color: #f0fff0;
+    opacity: 0.5;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top:0px;
+    left: 0px;
+}
+.uploadLoadingImg{
+    display:none;
+    z-index: 10000;
+    position: fixed;
+    padding: 20px;
+    border-radius: 20px;
+    background-color:#2196F3 ;
+    height: 200px;
+    width: 20%;
+    top:30%;
+    left: 40%;
+    text-align: center;
+}
+.upPre{
+    background: #0b93d5;
+    border-radius: 10px;
+    text-align: center;
+}
+.datatable{
+    font-family: IRANSans_FaNum;
+}
+.count {
+    font-family: IRANSans_FaNum;
+}

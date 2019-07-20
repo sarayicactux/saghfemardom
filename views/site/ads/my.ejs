@@ -105,7 +105,9 @@ pageUrl:"https://saghfemardom.ir"
 
                                                 <div class="col-5">
                                                     <div align="left">
+													<% if(images.length > 0){%>
                                                         <img class="sideBarImage" src="<%- host+'/'+images[0].img_url %>">
+														<% } %>
 
                                                     </div>
                                                 </div>
@@ -251,7 +253,10 @@ pageUrl:"https://saghfemardom.ir"
 
                                                 <div class="col-5">
                                                     <div align="left">
+													<% if(images.length > 0){%>
                                                         <img class="sideBarImage" src="<%- host+'/'+images[0].img_url %>">
+														
+														<% } %>
 
                                                     </div>
                                                 </div>
@@ -294,7 +299,9 @@ pageUrl:"https://saghfemardom.ir"
 
                                                 <div class="col-5">
                                                     <div align="left">
+													<% if(images.length > 0){%>
                                                         <img class="sideBarImage" src="<%- host+'/'+images[0].img_url %>">
+														<% } %>
 
                                                     </div>
                                                 </div>
@@ -356,15 +363,17 @@ pageUrl:"https://saghfemardom.ir"
 
                                                 <div class="col-5">
                                                     <div align="left">
+													<% if(images.length >0){%>
                                                         <img class="sideBarImage" src="<%- host+'/'+images[0].img_url %>">
-
+													<% }%>
                                                     </div>
                                                 </div>
 
                                             </div>
                                             <hr>
                                         </div>
-                                        <% } %>
+                                        <%
+										} %>
 
 
 

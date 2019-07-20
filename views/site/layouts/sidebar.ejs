@@ -10,7 +10,11 @@
                 <%
                 carAdv = res.lastCarAdv;
                 for (i=0;i<carAdv.length; i++){
-                imageA = carAdv[i].CarAdvImages[0];
+				if(carAdv[i].CarAdvImages.length > 1){
+				imageA = carAdv[i].CarAdvImages[0];
+				
+                
+				
                 %>
                 <a class="custom-link" href="<%- host+"/cd/"+carAdv[i].id%>">
                     <div class="row">
@@ -28,7 +32,9 @@
                     </div>
                 </a>
                     <hr>
-                <% } %>
+                <%
+}
+				} %>
 
 
             </div>

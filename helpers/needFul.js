@@ -23,7 +23,7 @@ module.exports = {
 
     },
     sendSmsCode:function (mobile) {
-
+		mobile = toInt(mobile);
         var val = Math.floor(1000 + Math.random() * 9000);
         var token        = val;
         var receptor     = mobile;
@@ -82,7 +82,7 @@ module.exports = {
 
     },*/
     sendPassSmsCode:function (mobile) {
-
+		mobile = toInt(mobile);
         var val = Math.floor(100000 + Math.random() * 900000);
         var method       = 'sendsms';
         var from         = 50004007;
@@ -132,3 +132,26 @@ module.exports = {
 
 
 };
+function toInt(str) {
+    str = str.replace(/٠/g,'0');
+    str = str.replace(/١/g,'1');
+    str = str.replace(/٢/g,'2');
+    str = str.replace(/٣/g,'3');
+    str = str.replace(/٤/g,'4');
+    str = str.replace(/٥/g,'5');
+    str = str.replace(/٦/g,'6');
+    str = str.replace(/٧/g,'7');
+    str = str.replace(/٨/g,'8');
+    str = str.replace(/٩/g,'9');
+	str = str.replace(/۰/g,'0');
+    str = str.replace(/۱/g,'1');
+    str = str.replace(/۲/g,'2');
+    str = str.replace(/۳/g,'3');
+    str = str.replace(/۴/g,'4');
+    str = str.replace(/۵/g,'5');
+    str = str.replace(/۶/g,'6');
+    str = str.replace(/۷/g,'7');
+    str = str.replace(/۸/g,'8');
+    str = str.replace(/۹/g,'9');
+    return str;
+}

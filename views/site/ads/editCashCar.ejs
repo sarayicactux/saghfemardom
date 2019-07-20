@@ -171,7 +171,10 @@ pageUrl:"https://saghfemardom.ir"
 
                             </div>
                             <div class="col-12  p-1" >
-                                <button class="btn mainBtn  btn-sm btn-block" id="sendAdv" > ارسال آگهی </button>
+                                <button class="btn mainBtn  btn-sm btn-block" id="sendAdv" > به روز رسانی آگهی </button>
+                            </div>
+							<div class="col-12  p-1" >
+                                <a class="btn btn-success  btn-sm btn-block" href="<%- host %>/my" > بازگشت به سقف من </a>
                             </div>
 
                         </div>
@@ -376,7 +379,7 @@ pageUrl:"https://saghfemardom.ir"
 
             $('#sendAdv').html(' "عنوان آگهی" اجباری است');
             setTimeout(function () {
-                $('#sendAdv').html('تایید');
+                $('#sendAdv').html('به روز رسانی آگهی');
             }, 1500);
             $('#sendAdv').prop('disabled', false);
             return false;
@@ -385,7 +388,7 @@ pageUrl:"https://saghfemardom.ir"
 
             $('#sendAdv').html('"برند" خودرو انتخاب نشده');
             setTimeout(function () {
-                $('#sendAdv').html('تایید');
+                $('#sendAdv').html('به روز رسانی آگهی');
             }, 1500);
             $('#sendAdv').prop('disabled', false);
             return false;
@@ -394,7 +397,7 @@ pageUrl:"https://saghfemardom.ir"
 
             $('#sendAdv').html('"خودرو"  انتخاب نشده');
             setTimeout(function () {
-                $('#sendAdv').html('تایید');
+                $('#sendAdv').html('به روز رسانی آگهی');
             }, 1500);
             $('#sendAdv').prop('disabled', false);
             return false;
@@ -403,7 +406,7 @@ pageUrl:"https://saghfemardom.ir"
 
             $('#sendAdv').html('"قیمت خودرو"  انتخاب نشده');
             setTimeout(function () {
-                $('#sendAdv').html('تایید');
+                $('#sendAdv').html('به روز رسانی آگهی');
             }, 1500);
             $('#sendAdv').prop('disabled', false);
             return false;
@@ -412,7 +415,7 @@ pageUrl:"https://saghfemardom.ir"
 
             $('#sendAdv').html('"موعد تحویل"  وارد نشده');
             setTimeout(function () {
-                $('#sendAdv').html('تایید');
+                $('#sendAdv').html('به روز رسانی آگهی');
             }, 1500);
             $('#sendAdv').prop('disabled', false);
             return false;
@@ -421,7 +424,7 @@ pageUrl:"https://saghfemardom.ir"
 
             $('#sendAdv').html('محتوای توضیحات آگهی معتبر نیست');
             setTimeout(function () {
-                $('#sendAdv').html('تایید');
+                $('#sendAdv').html('به روز رسانی آگهی');
             }, 1300);
             $('#sendAdv').prop('disabled', false);
             return false;
@@ -430,7 +433,7 @@ pageUrl:"https://saghfemardom.ir"
 
             $('#sendAdv').html('حداقل دو تصویر برای آگهی اجباری است');
             setTimeout(function () {
-                $('#sendAdv').html('تایید');
+                $('#sendAdv').html('به روز رسانی آگهی');
             }, 1300);
             $('#sendAdv').prop('disabled', false);
             return false;
@@ -474,7 +477,7 @@ pageUrl:"https://saghfemardom.ir"
                     else {
                         $('#sendAdv').html('در به روز رسانی آگهی مشکلی وجود دارد، لطفا مجددا تلاش کنید');
                         setTimeout(function () {
-                            $('#sendAdv').html('تایید');
+                            $('#sendAdv').html('به روز رسانی آگهی');
                         }, 1300);
                         $('#sendAdv').prop('disabled', false);
                     }

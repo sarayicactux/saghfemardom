@@ -1,3 +1,6 @@
+<%
+carPrice = res.carPrice;
+ if(carPrice.lenght > 0){ %>
 <div class="row  pl-2">
     <div class="col-md-12 shadow-sm border  pb-2 bg-white text-dark">
         <div class="p-2 row p-0">
@@ -39,37 +42,8 @@
         </div>
     </div>
 </div>
+<% } %>
 <div class="row mt-2  pl-2">
-    <div class="col-md-12 shadow-sm border  pb-2 bg-white text-dark">
-        <div class="p-2 row p-0">
-            <div class="col-12 m-0 p-0">
-                <h2  class="boxesWline linkColor">اخبار خودرویی </h2>
-            </div>
-        </div>
-        <div class="row  mt-1">
-            <%
-            carNews = res.carNews;
-            for (i=0;i<carNews.length;i++){
-            %>
-            <div class="col-md-12 sideBarBox">
-
-                <div class="row">
-                    <div class="col-1 " >
-                        <span class="linkT">&blacksquare;</span>
-
-                    </div>
-                    <div class="col-10 border-bottom sideBarLink">
-                        <a href="<%- host+'/news/'+carNews[i].slug%>" class="custom-link text-dark" ><%- carNews[i].title %></a>
-                    </div>
-                </div>
-
-            </div>
-            <% } %>
-
-        </div>
-    </div>
-</div>
-<div class="row mt-2 make-me-sticky2 pl-2">
     <div class="col-md-12 shadow-sm border  pb-2 bg-white text-dark">
         <div class="p-2 row p-0">
             <div class="col-12 m-0 p-0">
@@ -94,6 +68,36 @@
                     </div>
 
                 </div>
+            <% } %>
+
+        </div>
+    </div>
+</div>
+<div class="row mt-2 make-me-sticky2 pl-2">
+    <div class="col-md-12 shadow-sm border  pb-2 bg-white text-dark">
+        <div class="p-2 row p-0">
+            <div class="col-12 m-0 p-0">
+                <h2  class="boxesWline linkColor">اخبار خودرویی </h2>
+            </div>
+        </div>
+        <div class="row  mt-1">
+            <%
+            carNews = res.carNews;
+            for (i=0;i<carNews.length;i++){
+            %>
+            <div class="col-md-12 sideBarBox">
+
+                <div class="row">
+                    <div class="col-1 " >
+                        <span class="linkT">&blacksquare;</span>
+
+                    </div>
+                    <div class="col-10 border-bottom sideBarLink">
+                        <a href="<%- host+'/news/'+carNews[i].slug%>" class="custom-link text-dark" ><%- carNews[i].title %></a>
+                    </div>
+                </div>
+
+            </div>
             <% } %>
 
         </div>
