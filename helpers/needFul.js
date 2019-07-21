@@ -84,24 +84,18 @@ module.exports = {
     sendPassSmsCode:function (mobile) {
 		mobile = toInt(mobile);
         var val = Math.floor(100000 + Math.random() * 900000);
-        var method       = 'sendsms';
-        var from         = 50004007;
-        var to           = mobile;
-        var text         = 'کد مورد نیاز برای بازیابی رمز ورود در سقف مردم : '+val;
-        var type         = 0;
-        var username     = 'saghfemardom';
-        var password     = 'e455933ffefad1a167466726fe3a42e0';
+        var token        = val;
+        var receptor     = mobile;
+        var template     = 'saghf2';
+        var type         = 'sms';
         var options = {
-            url: 'http://185.112.33.60/webservice/url/send.php',
+            url: 'https://api.kavenegar.com/v1/785649594935524D732F666F7970474C7A312B61425355454558302B6335302F3373353135796364366A303D/verify/lookup.json',
             method: 'POST',
             form: {
-                method: method,
-                from: from,
-                to:to,
-                text:text,
+                token: token,
+                receptor: receptor,
+                template:template,
                 type:type,
-                username:username,
-                password:password,
             }
         };
 

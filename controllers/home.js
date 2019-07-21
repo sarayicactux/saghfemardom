@@ -392,7 +392,7 @@ module.exports = {
             });
         } ,
     bCar:function(req,res){
-        {
+
             page = 1;
             if (req.query.page){
                 if (parseInt(req.query.page) < 2){
@@ -436,7 +436,7 @@ module.exports = {
 
                 })
             });
-        }
+
     },
     filterCars: function (req,res) {
         filterParams = req.query;
@@ -1743,6 +1743,114 @@ module.exports = {
             req.session.destroy();
         }
     },
+    search:function (req,res) {
+        res.render('site/pages/search',{res:res,jDate:jDate,needFul:needFul});
+    },
+    searchR:function (req,res) {
+            form = prInj.PrAll(req.body);
+            mobile = form.mobile;
+            Models.People.findAll({
+                where:{
+                    $or:{
+                        mobile:{
+                            $like: '%'+mobile+'%'
+                        }
+
+                    }
+                }
+            }).then(function (peoples) {
+                res.render('site/pages/searchR',{peoples:peoples,jDate:jDate,needFul:needFul});
+            }).catch(function (r) {
+                res.status(404);
+                res.render('errors/404');
+            })
+    },
+    peopleB:function (req,res) {
+        id = prInj.PrInj(req.params.id);
+        page = 1;
+        if (req.query.page){
+            if (parseInt(req.query.page) < 2){
+                res.redirect(host)
+            }
+            page = req.query.page;
+            page = parseInt(prInj.PrInj(page));
+
+        }
+        Models.Adv.findAll({where:{status: 1,dis_status   : 1,user_id:id}}).then(function (allAdv) {
+            Models.Adv.findAll({
+                where:{
+                    status      : 1,
+                    dis_status  : 1,
+                    user_id     :id
+                },
+                order:[
+                    ['id','desc']
+                ],
+                include:[
+                    Models.BusinessGr,
+                    Models.AdvImage,
+                    Models.People,
+                    Models.Comment
+                ],
+                offset:(page-1)*10,
+                limit:10
+            }).then(function (bAdvs) {
+                advCnt = allAdv.length;
+                refU = host+'/people/b/'+id;
+                res.render('site/index',{refU:refU,page:page,advCnt:advCnt,bAdvs:bAdvs,res:res,jDate:jDate,needFul:needFul});
+
+            })
+        });
+    },
+    peopleCar:function (req,res) {
+        id = prInj.PrInj(req.params.id);
+        page = 1;
+        if (req.query.page){
+            if (parseInt(req.query.page) < 2){
+                res.redirect(host)
+            }
+            page = req.query.page;
+            page = parseInt(prInj.PrInj(page));
+
+        }
+        Models.CarAdv.findAll({where:{
+                status       : 1,
+                dis_status   : 1,
+                user_id      : id
+            }}).then(function (allAdv) {
+            Models.CarAdv.findAll({
+                where:{
+                    status       : 1,
+                    dis_status   : 1,
+                    user_id      : id
+                },
+                order:[
+                    ['id','desc']
+                ],
+                include:[
+                    Models.CarAdvImage,
+                    Models.Brand1,
+                    Models.Car,
+                    Models.People
+                ],
+                offset:(page-1)*10,
+                limit:10
+            }).then(function (cAdvs) {
+                advCnt = allAdv.length;
+                refU = host+'/people/car/'+id;
+                credit = 0;
+                loginStat = false;
+                if (req.session.people){
+                    credit = req.session.people.credit;
+                    loginStat = true;
+                }
+                res.render('site/pages/byeCar',{loginStat:loginStat,credit:credit,refU:refU,page:page,advCnt:advCnt,cAdvs:cAdvs,res:res,jDate:jDate,needFul:needFul});
+
+
+            })
+        });
+    }
+
 
 
 };

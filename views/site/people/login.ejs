@@ -35,7 +35,22 @@ pageUrl:"https://saghfemardom.ir"
                             <h2  class="boxesWline linkColor">ورود </h2>
                         </div>
                     </div>
-                    <div class="row  mt-1">
+                    <span  id="chooseS">
+                        <div class="col-12 p-1">
+                            <a href="<%- host %>/register" class="btn btn-info form-control text-white pt-1">برای ثبت نام اینجا کلیک کنید</a>
+                        </div>
+                    <div class="col-12 p-1">
+                        <a onclick="$('#chooseS').slideUp(1,function() {
+                          $('#loginFrm').slideDown(300)
+                        })" class="btn btn-success form-control text-white pt-1">اگر قبلا ثبت نام کردید، اینجا کلیک کنید</a>
+
+
+                        </div>
+                        <div class="col-12 p-1">
+                            <a href="<%- host %>/fg/p" class="btn btn-warning form-control text-white pt-1">اگر رمز عبور خود را فراموش کردید، کلیک کنید</a>
+                        </div>
+                    </span>
+                    <div id="loginFrm" style="display: none" class="row  mt-1">
                         <div class="col-md-12  ">
                             <div class="row">
                                 <div class="col-12 col-md-12 p-1 formPlaceHolder" >

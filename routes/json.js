@@ -82,7 +82,11 @@ function daily(req,res,next){
       ]
      }).then(function (BusinessType) {
       res.BusinessType = BusinessType;
-         Models.StaticContent.findAll().then(function (staticContent) {
+         Models.StaticContent.findAll({
+             order:[
+                 ['id','DESC']
+             ]
+         }).then(function (staticContent) {
 
              res.staticContent = staticContent;
              next();
