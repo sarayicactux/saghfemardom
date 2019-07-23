@@ -26,6 +26,7 @@ const Modules               = require('../models/sequelize/Module');
 const Role                  = require('../models/sequelize/Role');
 const Permission            = require('../models/sequelize/Permission');
 const Payment               = require('../models/sequelize/Payment');
+const RegisterRq            = require('../models/sequelize/RegisterRq');
 
 
 
@@ -135,6 +136,7 @@ Models.Modules      = Modules;
 Models.Role         = Role;
 Models.Permission   = Permission;
 Models.Payment      = Payment;
+Models.RegisterRq   = RegisterRq;
 Models.CommentLikeDislike     = CommentLikeDislike;
 
 

@@ -1,5 +1,5 @@
 const smsRequest    = require('request');
-
+const hasher        = require("node-php-password");
 
 module.exports = {
 
@@ -21,6 +21,12 @@ module.exports = {
             mod =  modules.indexOf(module_id)
             return access[mod];
 
+    },
+    tokenCreator:function(){
+        var val = Math.floor(10000000 + Math.random() * 90000000);
+        now = new Date();
+        token = hasher.hash(now+ val);
+        return token;
     },
     sendSmsCode:function (mobile) {
 		mobile = toInt(mobile);
@@ -107,7 +113,7 @@ module.exports = {
         return val;
 
     },
-    checkMime(filename,type){
+    checkMime:function(filename,type){
         check = true;
         if(type == 1){
             mimeList = ['jpg','jpeg','png'];
@@ -122,6 +128,29 @@ module.exports = {
         if (checkMime == -1)check = false;
         return check
 
+    },
+    toInt:function(str){
+        str = str.replace(/٠/g,'0');
+        str = str.replace(/١/g,'1');
+        str = str.replace(/٢/g,'2');
+        str = str.replace(/٣/g,'3');
+        str = str.replace(/٤/g,'4');
+        str = str.replace(/٥/g,'5');
+        str = str.replace(/٦/g,'6');
+        str = str.replace(/٧/g,'7');
+        str = str.replace(/٨/g,'8');
+        str = str.replace(/٩/g,'9');
+        str = str.replace(/۰/g,'0');
+        str = str.replace(/۱/g,'1');
+        str = str.replace(/۲/g,'2');
+        str = str.replace(/۳/g,'3');
+        str = str.replace(/۴/g,'4');
+        str = str.replace(/۵/g,'5');
+        str = str.replace(/۶/g,'6');
+        str = str.replace(/۷/g,'7');
+        str = str.replace(/۸/g,'8');
+        str = str.replace(/۹/g,'9');
+        return str;
     }
 
 

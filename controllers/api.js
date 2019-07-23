@@ -29,26 +29,6 @@ var options = {
 module.exports = {
 
 
-    sitemap:function(req,res){
-        now = new Date();
-        var created_at = date.format(now, 'YYYY-MM-DD HH:mm:ss');
-
-
-
-
-        sitemap = sm.createSitemap ({
-            hostname: '',
-            cacheTime: 600000,        // 600 sec - cache purge period
-            urls: urls
-        });
-        sitemap.toXML( function (err, xml) {
-            if (err) {
-                return res.status(500).end();
-            }
-            res.header('Content-Type', 'application/xml');
-            res.send( xml );
-        });
-    },
     index: function (req,res) {
         page = 1;
         if (req.query.page){
@@ -78,13 +58,311 @@ module.exports = {
                 limit:10
             }).then(function (bAdvs) {
                 advCnt = allAdv.length;
-                refU = host;
-                res.render('site/index',{refU:refU,page:page,advCnt:advCnt,bAdvs:bAdvs,res:res,jDate:jDate,needFul:needFul});
+                res.json({
+                    advCnt      : advCnt,
+                    advs        : bAdvs,
+                    carNews     : res.carNews,
+                    saghfNews   : res.saghfNews,
+                    lastCarAdv  : res.lastCarAdv,
+                    carPrice    : res.carPrice,
+                    status      : true,
+                    reason      : ''
+                });return;
+
 
             })
+        }).catch(function (err) {
+            res.json({
+                status      : false,
+                reason      : 'Internal server error'
+
+            });return
         });
 
     },
+    register:function(req,res){
+            token = needFul.tokenCreator();
+            clientIp = requestIp.getClientIp(req);
+            var created_at = date.format(now, 'YYYY-MM-DD HH:mm:ss');
+            Models.RegisterRq.create({
+                token : token,
+                ip    : clientIp,
+                rq_time : now,
+                created_at : created_at
+
+            }).then(function (r) {
+                    res.json({
+                        token: token,
+                        status      : true,
+                        reason      : ''
+
+                    });return
+            }).catch(function (err) {
+
+                res.json({
+                    status      : false,
+                    reason      : 'Internal server error'
+
+                });return
+            })
+    },
+    sendRcode:function(req,res){
+        var form        = prInj.PrAll(req.body);
+        if ( typeof form.token === 'undefined'  ) {
+
+            res.json({
+                status      : false,
+                reason      : 'Token not posted'
+
+            });return
+        }
+        clientIp = requestIp.getClientIp(req);
+        Models.RegisterRq.findOne({where:{ip:clientIp}})
+            .then(function (m) {
+                if(m){
+                    if(m.count>4){
+                        res.json({
+                            status      : false,
+                            reason      : 'Much unsuccessful attempt'
+
+                        });return
+                    }
+                }
+                Models.RegisterRq.findOne({
+                    where: {
+                        token : form.token
+                    }
+                })
+                    .then(function (r) {
+                        if(! r ){
+
+                            res.json({
+                                status      : false,
+                                reason      : 'Token is not valid'
+
+                            });return
+                        }
+                        if(r.count > 4 ){
+
+                            res.json({
+                                status      : false,
+                                reason      : 'Much unsuccessful attempt'
+
+                            });return
+                        }
+
+                        Models.People.findOne({where:{mobile:form.mobile}})
+                            .then(function (people) {
+                                if(!people){
+                                    if (r.mobile == null){
+                                        count = 1;
+                                    }
+                                    else {
+                                        count = r.count + 1;
+                                    }
+                                        mobile = form.mobile;
+                                        code = needFul.sendSmsCode(form.mobile);
+                                        Models.RegisterRq.update({
+                                            count  : count,
+                                            mobile : mobile,
+                                            code   : code,
+                                        },{
+                                            where:{
+                                                id : r.id
+                                            }
+                                        })
+                                            .then(function (row) {
+                                                res.json({
+                                                    status      : true,
+                                                    reason      : ''
+
+                                                });return
+                                            })
+                                            .catch(function (err) {
+                                                res.json({
+                                                    status      : false,
+                                                    reason      : 'Internal server error'
+
+                                                });return
+                                            })
+
+
+                                }
+                                else {
+
+                                    res.json({
+                                        status      : false,
+                                        reason      : 'The sent phone number is invalid or duplicate'
+
+                                    });return
+                                }
+                            })
+                    })
+            });
+
+
+
+    },
+    registerPeople:function(req,res){
+        var form        = prInj.PrAll(req.body);
+        var code        = form.rCode;
+        code = needFul.toInt(code);
+        if ( typeof form.token === 'undefined'  ) {
+
+            res.json({
+                status      : false,
+                reason      : 'Token not posted'
+
+            });return
+        }
+        Models.RegisterRq.findOne({
+            where: {
+                token : form.token
+            }
+        })
+            .then(function (r) {
+                if(!r){
+                    res.json({
+                        status      : false,
+                        reason      : 'Token Expired'
+
+                    });return
+                }
+                else {
+                    if (code != r.code){
+                        res.json({
+                            status      : false,
+                            reason      : 'Code not valid'
+
+                        });return
+                    }
+                    else {
+                        var slug = form.name+ form.family;
+                        slug = slug.replace(/ /g,'-');
+                        slug = slug.replace(/--/g,'-');
+                        now = new Date();
+                        var created_at = date.format(now, 'YYYY-MM-DD HH:mm:ss');
+                        newPeople = {
+                            name           : form.name,
+                            family         : form.family,
+                            mobile         : r.mobile,
+                            password       : Password.hash(form.password),
+                            rcode          : code,
+                            created_at     : created_at,
+                            updated_at     : created_at,
+                        }
+                        Models.People.create(newPeople).then(function (newP) {
+                            r.destroy();
+                            res.json({
+                                status      : true,
+                                reason      : ''
+
+                            });return
+                        }).catch(function () {
+                            res.json({
+                                status      : false,
+                                reason      : 'Internal server error'
+
+                            });return
+                        });
+                    }
+                }
+            })
+
+
+
+
+
+
+
+    },
+    checkLogin:function(req,res){
+
+        token = needFul.tokenCreator();
+        var pass     = prInj.PrInj(req.body.password);
+        var mobile   = prInj.PrInj(req.body.mobile);
+        Models.People.findOne({
+            where:{mobile:mobile}
+        }).then(function (row) {
+            if (row.length != 0){
+
+                if (Password.verify(pass, row.password)){
+                    row.update({
+                        token : token
+                    })
+                    res.json({
+                        token       : token,
+                        status      : true,
+                        reason      : 'Internal server error'
+
+                    });return
+
+
+                }
+                else {
+                    res.json({
+                        status      : false,
+                        reason      : 'Internal server error'
+
+                    });return
+                }
+            }
+
+            else {
+                res.json({
+                    status      : false,
+                    reason      : 'Internal server error'
+
+                });return
+            }
+        })
+            .catch(function (err) {
+                res.json({
+                    status      : false,
+                    reason      : 'Internal server error'
+
+                });return
+            })
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     bAdvs: function (req,res) {
         page = 1;
         if (req.query.page){
@@ -1371,121 +1649,8 @@ module.exports = {
             res.json({status:false});return;
         })
     },
-    checkLogin:function(req,res){
-        var pass     = prInj.PrInj(req.body.password);
-        var mobile   = prInj.PrInj(req.body.mobile);
-        Models.People.findOne({
-            where:{mobile:mobile}
-        }).then(function (row) {
-            if (row.length != 0){
-
-                if (Password.verify(pass, row.password)){
-
-                    req.session.people = row;
-                   res.json({status:true});return;
 
 
-                }
-                else {
-                    res.json({status:false});return;
-                }
-            }
-
-            else {
-                res.json({status:false});return;
-            }
-        })
-            .catch(function (err) {
-                res.json({status:false});
-                return;
-            })
-    },
-    register:function(req,res){
-        if (!req.session.people){
-
-            now = new Date();
-            req.session.regRq = Password.hash(now+'k');
-            res.render('site/people/register',{res:res,jDate:jDate,needFul:needFul});
-        }
-        else {
-            res.render('site/ads/chooseType',{res:res,jDate:jDate,needFul:needFul});
-        }
-
-    },
-    sendRcode:function(req,res){
-        var form        = prInj.PrAll(req.body);
-        Models.People.findOne({where:{mobile:form.mobile}})
-            .then(function (people) {
-                if(!people){
-                    if (!req.session.regRq){
-                        res.json( {status:true});return
-                    }
-
-                    else {
-                        if (!req.session.count){
-                            req.session.count = 1;
-                            req.session.fBody = form;
-                            rq = needFul.sendSmsCode(form.mobile);
-
-                            req.session.rCode = rq;
-                            res.json( {status:true});return
-
-
-                        }
-                        else {
-                            if (req.session.count < 4){
-                                req.session.count += 1;
-                                rq = needFul.sendSmsCode(form.mobile);
-                                req.session.fBody = form;
-                                req.session.rCode = rq;
-                                res.json( {status:true});return
-                            }
-                            res.json( {status:true});return
-                        }
-                    }
-                }
-                else {
-                    res.json( {status:false});return
-                }
-            })
-
-    },
-    registerPeople:function(req,res){
-        var code        = prInj.PrInj(req.body.rCode);
-        code = needFul.toInt(code);
-        if (!req.session.regRq){
-            res.json( {status: false});return;
-        }
-        if (!req.session.fBody){
-            res.json( {status: false});return;
-        }
-        if (req.session.rCode != code) {
-            res.json( {status: false});return;
-        }
-        else {
-            form = req.session.fBody;
-            var slug = form.name+ form.family;
-            slug = slug.replace(/ /g,'-');
-            slug = slug.replace(/--/g,'-');
-            now = new Date();
-            var created_at = date.format(now, 'YYYY-MM-DD HH:mm:ss');
-            newPeople = {
-                name           : form.name,
-                family         : form.family,
-                mobile         : form.mobile,
-                password       : Password.hash(form.password),
-                rcode          : code,
-                created_at     : created_at,
-                updated_at     : created_at,
-            }
-            Models.People.create(newPeople).then(function (newP) {
-                res.json( {status: true});return;
-            }).catch(function () {
-                res.json( {status: false});return;
-            });
-            req.session.destroy();
-        }
-    },
     my:function(req,res){
 
         peopleInf = res.peopleInf;
@@ -1644,19 +1809,7 @@ module.exports = {
         fs.unlinkSync(appRoot + '/public/'+file);
         res.send('<input id="'+inputId+'Path"  type="hidden" value="">');
     },
-    login:function(req,res){
-        if (!req.session.people){
-            res.render('site/people/login',{
-                error: '',
-                res:res,
-                jDate:jDate,
-                needFul:needFul
-            });
-        }
-        else {
-            res.render('site/ads/chooseType',{res:res,jDate:jDate,needFul:needFul});
-        }
-    },
+
     logOut:function(req,res){
         req.session.destroy();
         res.redirect(host);

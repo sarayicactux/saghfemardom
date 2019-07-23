@@ -28,8 +28,18 @@ var     app = express();
 app.use(helmet()); //برای جلوگیری از حملات XSS
 app.use(xssFilter({ setOnOldIE: true }));
 app.use(xssFilter());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(errorHandler());
+//app.use(bodyParser.urlencoded({ extended: true }));
+//app.use(bodyParser.json());
+app.use(bodyParser.json({
+    limit: '50mb'
+}));
+
+app.use(bodyParser.urlencoded({
+    limit: '50mb',
+    parameterLimit: 100000,
+    extended: true
+}));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('panel',express.static( 'public/panel'));
@@ -88,6 +98,7 @@ const siteLimiter = rateLimit({
 
 
 var     siteRoutes  = require('./routes/site');
+var     apiRoutes   = require('./routes/api');
 var     json        = require('./routes/json');
 var     panel       = require('./routes/panel');
 //var     seo         = require('./routes/seo');
@@ -125,6 +136,7 @@ app.post('/upload', upload.single('file'), function(req, res) {
 app.use('/panel/admin', checkAdmin,admin);
 app.use('/panel', panel);
 app.use('/json', json);
+app.use('/api', apiRoutes);
 app.use('/', siteRoutes);
 
 

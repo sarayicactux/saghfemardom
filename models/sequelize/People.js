@@ -2,6 +2,7 @@ var sequelize = require('../../configs/seq-config');
 const   Sequelize = require('sequelize');
 
 const People = sequelize.define('people', {
+    token: Sequelize.STRING,
     username: Sequelize.STRING,
     password: Sequelize.STRING,
     name: Sequelize.STRING,
