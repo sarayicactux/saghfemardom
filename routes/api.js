@@ -19,8 +19,22 @@ var api            = require('../controllers/api');
 router.route('/').get(preCond,dailyJson,hourlyJson,api.index);
 router.route('/register').get(api.register);
 router.route('/sendRcode').post(sendRcode,api.sendRcode);
-router.route('/register').post(preCond,dailyJson,hourlyJson,api.registerPeople);
+router.route('/register').post(api.registerPeople);
 router.route('/login').post(api.checkLogin);
+router.route('/logOut/:id').get(api.logOut);
+router.route('/fg/p').get(api.forgetPass);
+router.route('/sendPcode').post(sendRcode,api.sendPcode);
+router.route('/updatePass').post(api.updatePass);
+router.route('/news/:id').get(api.newsDetail);
+router.route('/news').get(api.news);
+router.route('/faq').get(api.faq);
+router.route('/a/:id').get(dailyJson,api.bAdvs);
+router.route('/cd/:id').get(api.carAdvDetail);
+router.route('/search').post(api.searchR);
+router.route('/bca/:model_id/:selling_type').get(api.byeSellingType);
+router.route('/people/b/:id').get(api.peopleB);
+router.route('/people/car/:id').get(api.peopleCar);
+router.route('/modelsList/:br').get(api.modelsList);
 
 
 
@@ -38,16 +52,15 @@ router.route('/login').post(api.checkLogin);
 
 
 
-router.route('/news/:slug').get(preCond,dailyJson,hourlyJson,api.newsDetail);
-router.route('/news').get(preCond,dailyJson,hourlyJson,api.news);
-router.route('/faq').get(preCond,dailyJson,hourlyJson,api.faq);
-router.route('/a/:id').get(preCond,dailyJson,hourlyJson,api.bAdvs);
-router.route('/cd/:id').get(preCond,dailyJson,hourlyJson,api.carAdvDetail);
-router.route('/search').get(preCond,dailyJson,hourlyJson,api.search);
-router.route('/search').post(preCond,dailyJson,hourlyJson,api.searchR);
-router.route('/bca/:model_id/:selling_type').get(preCond,dailyJson,hourlyJson,api.byeSellingType);
-router.route('/people/b/:id').get(preCond,dailyJson,hourlyJson,api.peopleB);
-router.route('/people/car/:id').get(preCond,dailyJson,hourlyJson,api.peopleCar);
+
+
+
+
+
+
+
+
+
 router.route('/editA/:id').get(checkPeople,preCond,dailyJson,hourlyJson,api.editA);
 router.route('/editC/:id').get(checkPeople,preCond,dailyJson,hourlyJson,api.editC);
 router.route('/changeAdvStat/:status/:id').get(checkPeople,preCond,dailyJson,hourlyJson,api.changeAdvStat);
@@ -71,15 +84,12 @@ router.route('/registeinstCar').post(dailyJson,checkPeopleAjax,api.registeinstCa
 router.route('/updateProfile').post(dailyJson,checkPeopleAjax,api.updateProfile);
 router.route('/chooseAdvType').post(dailyJson,hourlyJson,checkPeopleAjax,api.chooseAdvType);
 router.route('/citiesList').post(dailyJson,api.citiesList);
-router.route('/modelsList').post(api.modelsList);
+
 router.route('/businessGrsList').post(dailyJson,api.businessGrsList);
-router.route('/logOut').get(api.logOut);
 
 router.route('/my').get(checkPeople,preCond,dailyJson,hourlyJson,peopleInf,api.my);
-router.route('/cities/:id').get(api.cities);
-router.route('/fg/p').get(preCond,dailyJson,hourlyJson,api.forgetPass);
-router.route('/sendPcode').post(api.sendPcode);
-router.route('/updatePass').post(preCond,dailyJson,hourlyJson,api.updatePass);
+
+
 
 router.route('/siteUploadImage').post(type,api.siteUploadImage);
 router.route('/siteUploadVideo').post(type,api.siteUploadVideo);
@@ -231,13 +241,7 @@ function checkPeople(req,res,next) {
 }
 function pageLog(req,res,next){}
 function dailyJson(req,res,next){
-    if(!req.session.people) {
-        peopleGinf = [];
-    }
-    else {
-        peopleGinf = req.session.people;
-    }
-    res.peopleGinf = peopleGinf;
+
     const daily  = path.resolve()+'/public/daily.json';
     jsonfile.readFile(daily, function (err, obj) {
         if (err) console.error(err);

@@ -449,7 +449,7 @@ module.exports = {
 
                 whereO.push({
                     model : {
-                        $like : model
+                        $like : '%'+model+'%'
                     }
                 });
             }
@@ -1374,6 +1374,7 @@ module.exports = {
     checkLogin:function(req,res){
         var pass     = prInj.PrInj(req.body.password);
         var mobile   = prInj.PrInj(req.body.mobile);
+        mobile = needFul.toInt(mobile)
         Models.People.findOne({
             where:{mobile:mobile}
         }).then(function (row) {
@@ -1414,7 +1415,7 @@ module.exports = {
     },
     sendRcode:function(req,res){
         var form        = prInj.PrAll(req.body);
-        Models.People.findOne({where:{mobile:form.mobile}})
+        Models.People.findOne({where:{mobile:needFul.toInt(form.mobile)}})
             .then(function (people) {
                 if(!people){
                     if (!req.session.regRq){
@@ -1472,7 +1473,7 @@ module.exports = {
             newPeople = {
                 name           : form.name,
                 family         : form.family,
-                mobile         : form.mobile,
+                mobile         : needFul.toInt(form.mobile),
                 password       : Password.hash(form.password),
                 rcode          : code,
                 created_at     : created_at,
@@ -1674,7 +1675,7 @@ module.exports = {
     },
     sendPcode:function(req,res){
         var form        = prInj.PrAll(req.body);
-        Models.People.findOne({where:{mobile:form.mobile}})
+        Models.People.findOne({where:{mobile:needFul.toInt(form.mobile)}})
             .then(function (people) {
                 if(people){
                     if (!req.session.regRq){
@@ -1685,7 +1686,7 @@ module.exports = {
                         if (!req.session.count){
                             req.session.count = 1;
                             req.session.fBody = form;
-                            rq = needFul.sendPassSmsCode(form.mobile);
+                            rq = needFul.sendPassSmsCode(needFul.toInt(form.mobile));
 
                             req.session.rCode = rq;
                             res.json( {status:true});return
@@ -1735,7 +1736,7 @@ module.exports = {
             Models.People.update(upPass,
                 {
                 where:{
-                    mobile : form.mobile
+                    mobile : needFul.toInt(form.mobile)
                 }
             }).then(function (p) {
                 res.json( {status: true});return;
@@ -1750,7 +1751,7 @@ module.exports = {
     },
     searchR:function (req,res) {
             form = prInj.PrAll(req.body);
-            mobile = form.mobile;
+            mobile = needFul.toInt(form.mobile);
             Models.People.findAll({
                 where:{
                     $or:{

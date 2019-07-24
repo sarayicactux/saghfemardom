@@ -84,7 +84,7 @@ function daily(req,res,next){
       res.BusinessType = BusinessType;
          Models.StaticContent.findAll({
              order:[
-                 ['id','DESC']
+                 ['id','ASC']
              ]
          }).then(function (staticContent) {
 

@@ -33,7 +33,11 @@ module.exports = {
         page = 1;
         if (req.query.page){
             if (parseInt(req.query.page) < 2){
-                res.redirect(host)
+                res.json({
+                    status      : false,
+                    reason      : 'خطا در اطلاعات ارسال'
+
+                });return
             }
             page = req.query.page;
             page = parseInt(prInj.PrInj(page));
@@ -58,13 +62,44 @@ module.exports = {
                 limit:10
             }).then(function (bAdvs) {
                 advCnt = allAdv.length;
+                carNews = [];
+                b = res.carNews;
+                for(i=0;i<b.length;i++){
+                    buffer = {
+                        id    : b[i].id,
+                        title : b[i].title,
+                        slug  : b[i].slug,
+                        summary : b[i].summary,
+                        thumb : b[i].thumb,
+                    };
+                    carNews.push(buffer);
+
+
+                }
+                saghfNews = [];
+                b = res.saghfNews;
+                for(i=0;i<b.length;i++){
+                    buffer = {
+                        id    : b[i].id,
+                        title : b[i].title,
+                        slug  : b[i].slug,
+                        summary : b[i].summary,
+                        thumb : b[i].thumb,
+                    };
+                    saghfNews.push(buffer);
+
+
+                }
+
                 res.json({
                     advCnt      : advCnt,
                     advs        : bAdvs,
-                    carNews     : res.carNews,
-                    saghfNews   : res.saghfNews,
+                    carNews     : carNews,
+                    saghfNews   : saghfNews,
                     lastCarAdv  : res.lastCarAdv,
                     carPrice    : res.carPrice,
+                    proCity     : res.daily.proCity,
+                    brands      : res.daily.brands,
                     status      : true,
                     reason      : ''
                 });return;
@@ -74,15 +109,20 @@ module.exports = {
         }).catch(function (err) {
             res.json({
                 status      : false,
-                reason      : 'Internal server error'
+                reason      : 'خطای داخلی سرور'
 
             });return
         });
 
     },
     register:function(req,res){
+          
             token = needFul.tokenCreator();
-            clientIp = requestIp.getClientIp(req);
+            clientIp = req.headers['x-forwarded-for'] ||
+            req.connection.remoteAddress ||
+            req.socket.remoteAddress ||
+            req.connection.socket.remoteAddress;;
+            now = new Date();
             var created_at = date.format(now, 'YYYY-MM-DD HH:mm:ss');
             Models.RegisterRq.create({
                 token : token,
@@ -101,7 +141,7 @@ module.exports = {
 
                 res.json({
                     status      : false,
-                    reason      : 'Internal server error'
+                    reason      : 'خطای داخلی سرور'
 
                 });return
             })
@@ -112,18 +152,21 @@ module.exports = {
 
             res.json({
                 status      : false,
-                reason      : 'Token not posted'
+                reason      : 'توکن ارسال نشده'
 
             });return
         }
-        clientIp = requestIp.getClientIp(req);
+        clientIp = req.headers['x-forwarded-for'] ||
+            req.connection.remoteAddress ||
+            req.socket.remoteAddress ||
+            req.connection.socket.remoteAddress;;
         Models.RegisterRq.findOne({where:{ip:clientIp}})
             .then(function (m) {
                 if(m){
                     if(m.count>4){
                         res.json({
                             status      : false,
-                            reason      : 'Much unsuccessful attempt'
+                            reason      : 'تلاش بیشتر از تعداد مجاز'
 
                         });return
                     }
@@ -138,7 +181,7 @@ module.exports = {
 
                             res.json({
                                 status      : false,
-                                reason      : 'Token is not valid'
+                                reason      : 'توکن معتبر نیست'
 
                             });return
                         }
@@ -146,12 +189,18 @@ module.exports = {
 
                             res.json({
                                 status      : false,
-                                reason      : 'Much unsuccessful attempt'
+                                reason      : 'تلاش بیشتر از تعداد مجاز'
 
                             });return
                         }
+                        if (form.mobile.length < 10){
+                            res.json({
+                                status      : false,
+                                reason      : 'شماره موبایل ارسال شده، معتبر نیست'
 
-                        Models.People.findOne({where:{mobile:form.mobile}})
+                            });return
+                        }
+                        Models.People.findOne({where:{mobile:needFul.toInt(form.mobile)}})
                             .then(function (people) {
                                 if(!people){
                                     if (r.mobile == null){
@@ -160,8 +209,8 @@ module.exports = {
                                     else {
                                         count = r.count + 1;
                                     }
-                                        mobile = form.mobile;
-                                        code = needFul.sendSmsCode(form.mobile);
+                                        mobile = needFul.toInt(form.mobile);
+                                        code = needFul.sendSmsCode(needFul.toInt(form.mobile));
                                         Models.RegisterRq.update({
                                             count  : count,
                                             mobile : mobile,
@@ -181,7 +230,7 @@ module.exports = {
                                             .catch(function (err) {
                                                 res.json({
                                                     status      : false,
-                                                    reason      : 'Internal server error'
+                                                    reason      : 'خطای داخلی سرور'
 
                                                 });return
                                             })
@@ -192,7 +241,7 @@ module.exports = {
 
                                     res.json({
                                         status      : false,
-                                        reason      : 'The sent phone number is invalid or duplicate'
+                                        reason      : 'شماره ارسال شده تکراری و یا نامعتبر است'
 
                                     });return
                                 }
@@ -205,13 +254,20 @@ module.exports = {
     },
     registerPeople:function(req,res){
         var form        = prInj.PrAll(req.body);
+        if (form.mobile.length < 10){
+            res.json({
+                status      : false,
+                reason      : 'شماره موبایل ارسال شده، معتبر نیست'
+
+            });return
+        }
         var code        = form.rCode;
         code = needFul.toInt(code);
         if ( typeof form.token === 'undefined'  ) {
 
             res.json({
                 status      : false,
-                reason      : 'Token not posted'
+                reason      : 'توکن ارسال نشده'
 
             });return
         }
@@ -224,7 +280,7 @@ module.exports = {
                 if(!r){
                     res.json({
                         status      : false,
-                        reason      : 'Token Expired'
+                        reason      : 'توکن نامعتبر است'
 
                     });return
                 }
@@ -232,7 +288,7 @@ module.exports = {
                     if (code != r.code){
                         res.json({
                             status      : false,
-                            reason      : 'Code not valid'
+                            reason      : 'کد ارسال شده نامعتبر است'
 
                         });return
                     }
@@ -261,7 +317,7 @@ module.exports = {
                         }).catch(function () {
                             res.json({
                                 status      : false,
-                                reason      : 'Internal server error'
+                                reason      : 'خطای داخلی سرور'
 
                             });return
                         });
@@ -281,6 +337,14 @@ module.exports = {
         token = needFul.tokenCreator();
         var pass     = prInj.PrInj(req.body.password);
         var mobile   = prInj.PrInj(req.body.mobile);
+        mobile = needFul.toInt(mobile);
+        if (mobile < 10){
+            res.json({
+                status      : false,
+                reason      : 'شماره موبایل ارسال شده، معتبر نیست'
+
+            });return
+        }
         Models.People.findOne({
             where:{mobile:mobile}
         }).then(function (row) {
@@ -293,7 +357,7 @@ module.exports = {
                     res.json({
                         token       : token,
                         status      : true,
-                        reason      : 'Internal server error'
+                        reason      : ''
 
                     });return
 
@@ -302,7 +366,7 @@ module.exports = {
                 else {
                     res.json({
                         status      : false,
-                        reason      : 'Internal server error'
+                        reason      : 'خطای داخلی سرور'
 
                     });return
                 }
@@ -311,7 +375,7 @@ module.exports = {
             else {
                 res.json({
                     status      : false,
-                    reason      : 'Internal server error'
+                    reason      : 'خطای داخلی سرور'
 
                 });return
             }
@@ -319,55 +383,456 @@ module.exports = {
             .catch(function (err) {
                 res.json({
                     status      : false,
-                    reason      : 'Internal server error'
+                    reason      : 'خطای داخلی سرور'
 
                 });return
             })
     },
+    logOut:function(req,res){
+        id = prInj.PrInj(req.params.id);
+        Models.People.update({
+            token : ''
+        },{
+            where:{
+                id : id
+            }
+        }).then(function (e) {
+            res.json({
+                status      : true,
+                reason      : ''
+
+            });return;
+        }).catch(function (err) {
+            res.json({
+                status      : false,
+                reason      : 'خطا در اطلاعات ارسال'
+
+            });return;
+        })
+
+    },
+    changePass:function(req,res){
+        var form        = prInj.PrAll(req.body);
+        token = form.token;
+        id    = form.id;
+        clientIp = req.headers['x-forwarded-for'] ||
+            req.connection.remoteAddress ||
+            req.socket.remoteAddress ||
+            req.connection.socket.remoteAddress;;
+        now = new Date();
+        var created_at = date.format(now, 'YYYY-MM-DD HH:mm:ss');
+        Models.People.findByPk(id)
+            .then(function (people) {
+                if(people){
+                    if(people.token == token){
+                        Models.RegisterRq.create({
+                            token : token,
+                            ip    : clientIp,
+                            rq_time : now,
+                            created_at : created_at
+
+                        }).then(function (r) {
+                            res.json({
+                                status      : true,
+                                reason      : ''
+
+                            });return
+                        }).catch(function (err) {
+
+                            res.json({
+                                status      : false,
+                                reason      : 'خطای داخلی سرور'
+
+                            });return
+                        })
+                    }
+                    else {
+                        res.json({
+                            status      : false,
+                            reason      : 'توکن ارسال شده معتبر نیست'
+
+                        });return
+                    }
+                }
+                else {
+                    res.json({
+                        status      : false,
+                        reason      : 'کاربر پیدا نشد'
+
+                    });return
+                }
+            })
+            .catch(function (err) {
+                res.json({
+                    status      : false,
+                    reason      : 'خطای داخلی سرور'
+
+                });return
+            })
+
+    },
+    forgetPass:function(req,res){
+        token = needFul.tokenCreator();
+        clientIp = req.headers['x-forwarded-for'] ||
+            req.connection.remoteAddress ||
+            req.socket.remoteAddress ||
+            req.connection.socket.remoteAddress;;
+        now = new Date();
+        var created_at = date.format(now, 'YYYY-MM-DD HH:mm:ss');
+        Models.RegisterRq.create({
+            token : token,
+            ip    : clientIp,
+            rq_time : now,
+            created_at : created_at
+
+        }).then(function (r) {
+            res.json({
+                token: token,
+                status      : true,
+                reason      : ''
+
+            });return
+        }).catch(function (err) {
+
+            res.json({
+                status      : false,
+                reason      : 'خطای داخلی سرور'
+
+            });return
+        })
+    },
+    sendPcode:function(req,res){
+        var form        = prInj.PrAll(req.body);
+        if ( typeof form.token === 'undefined'  ) {
+
+            res.json({
+                status      : false,
+                reason      : 'توکن ارسال نشده'
+
+            });return
+        }
+        if (form.mobile.length < 10){
+            res.json({
+                status      : false,
+                reason      : 'شماره موبایل ارسال شده، معتبر نیست'
+
+            });return
+        }
+        clientIp = req.headers['x-forwarded-for'] ||
+            req.connection.remoteAddress ||
+            req.socket.remoteAddress ||
+            req.connection.socket.remoteAddress;;
+        Models.RegisterRq.findOne({where:{ip:clientIp}})
+            .then(function (m) {
+                if(m){
+                    if(m.count>4){
+                        res.json({
+                            status      : false,
+                            reason      : 'تلاش بیشتر از تعداد مجاز'
+
+                        });return
+                    }
+                }
+                Models.RegisterRq.findOne({
+                    where: {
+                        token : form.token
+                    }
+                })
+                    .then(function (r) {
+                        if(! r ){
+
+                            res.json({
+                                status      : false,
+                                reason      : 'توکن معتبر نیست'
+
+                            });return
+                        }
+                        if(r.count > 4 ){
+
+                            res.json({
+                                status      : false,
+                                reason      : 'تلاش بیشتر از تعداد مجاز'
+
+                            });return
+                        }
+
+                        Models.People.findOne({where:{mobile:needFul.toInt(form.mobile)}})
+                            .then(function (people) {
+                                if(people){
+                                    if (r.mobile == null){
+                                        count = 1;
+                                    }
+                                    else {
+                                        count = r.count + 1;
+                                    }
+                                    mobile = needFul.toInt(form.mobile);
+                                    code = needFul.sendPassSmsCode(needFul.toInt(form.mobile));
+                                    Models.RegisterRq.update({
+                                        count  : count,
+                                        mobile : mobile,
+                                        code   : code,
+                                    },{
+                                        where:{
+                                            id : r.id
+                                        }
+                                    })
+                                        .then(function (row) {
+                                            res.json({
+                                                status      : true,
+                                                reason      : ''
+
+                                            });return
+                                        })
+                                        .catch(function (err) {
+                                            res.json({
+                                                status      : false,
+                                                reason      : 'خطای داخلی سرور'
+
+                                            });return
+                                        })
+
+
+                                }
+                                else {
+
+                                    res.json({
+                                        status      : false,
+                                        reason      : 'شماره ارسال شده نامعتبر است'
+
+                                    });return
+                                }
+                            })
+                    })
+            });
 
 
 
+    },
+    updatePass:function(req,res){
+        var form        = prInj.PrAll(req.body);
+        if (form.mobile.length < 10){
+            res.json({
+                status      : false,
+                reason      : 'شماره موبایل ارسال شده، معتبر نیست'
+
+            });return
+        }
+        token = form.token;
+        var code        = prInj.PrInj(req.body.rCode);
+        code = needFul.toInt(code);
+        var password    = prInj.PrInj(req.body.password);
+        if ( typeof form.token === 'undefined'  ) {
+
+            res.json({
+                status      : false,
+                reason      : 'توکن ارسال نشده'
+
+            });return
+        }
+        Models.People.findOne({where:{mobile:needFul.toInt(form.mobile)}})
+            .then(function (people) {
+
+                if(people) {
+
+                    Models.RegisterRq.findOne()
+                        .then(function (r) {
+                            if (needFul.toInt(form.mobile) != r.mobile){
+                                res.json({
+                                    status: false,
+                                    reason: 'شماره تلفن ارسال شده صحیح نیست'
+
+                                });
+                                return
+                            }
+                            if (r.token == token) {
+                                if (r.code != code) {
+                                    res.json({
+                                        status: false,
+                                        reason: 'کد ارسال شده نامعتبر است'
+
+                                    });
+                                    return
+                                } else {
+                                    now = new Date();
+                                    var updated_at = date.format(now, 'YYYY-MM-DD HH:mm:ss');
+                                    upPass = {
+                                        password: Password.hash(password),
+                                        updated_at: updated_at,
+                                    }
+                                    Models.People.update(upPass,
+                                        {
+                                            where: {
+                                                mobile: needFul.toInt(form.mobile)
+                                            }
+                                        }).then(function (p) {
+                                        res.json({
+                                            status: true,
+                                            reason: ''
+
+                                        });
+                                        return
+                                    }).catch(function () {
+                                        res.json({
+                                            status: false,
+                                            reason: 'خطای داخلی سرور'
+
+                                        });
+                                        return
+                                    });
+                                }
+                            } else {
+                                res.json({
+                                    status: false,
+                                    reason: 'توکن ارسال شده معتبر نیست'
+
+                                });
+                                return
+                            }
+                        })
+                        .catch(function (err) {
+                            res.json({
+                                status: false,
+                                reason: 'خطای داخلی سرور'
+
+                            });
+                            return
+                        })
 
 
+                }
+                else {
+                    res.json({
+                        status      : false,
+                        reason      : 'کاربر پیدا نشد'
+
+                    });return
+                }
+            })
+            .catch(function (err) {
+                res.json({
+                    status      : false,
+                    reason      : 'خطای داخلی سرور'
+
+                });return
+            })
+
+    },
+    newsDetail:function(req,res){
+        id = prInj.PrInj(req.params.id);
+        Models.News.findOne({
+            where:{
+                id      : id,
+                active  : 1
+            }
+        }).then(function (newD) {
+            if(newD){
+                res.json({
+                    newsDetail  : newD,
+                    status      : true,
+                    reason      : ''
+
+                });return
+            }
+            else {
+                res.json({
+                    status      : false,
+                    reason      : 'خبر مورد نظر یافت نشد'
+
+                });return
+            }
+
+        })
 
 
+    },
+    news: function (req,res) {
+        page = 1;
+        if (req.query.page){
+            if (parseInt(req.query.page) < 2){
+                res.json({
+                    status      : false,
+                    reason      : 'خطا در اطلاعات ارسال'
+
+                });return
+            }
+            page = req.query.page;
+            page = parseInt(prInj.PrInj(page));
+
+        }
+        Models.News.findAll({where:{active: 1}})
+            .then(function (allNews) {
+                newsCnt = allNews.length;
+                Models.News.findAll({
+                    where:{
+                        active: 1,
+                    },
+                    order:[
+                        ['id','desc']
+                    ],
+                    offset:(page-1)*10,
+                    limit:10
+                }).then(function (b) {
+                    newsA = [];
+                    for(i=0;i<b.length;i++){
+                        buffer = {
+                            id    : b[i].id,
+                            title : b[i].title,
+                            slug  : b[i].slug,
+                            summary : b[i].summary,
+                            thumb : b[i].thumb,
+                        };
+                        newsA.push(buffer);
+
+                    }
+                    res.json({
+                        newsCnt     : newsCnt,
+                        news        : newsA,
+                        page        : page,
+                        status      : true,
+                        reason      : ''
+
+                    });return
+
+                }).catch(function (err) {
+                    res.json({
+                        status      : false,
+                        reason      : 'خطای داخلی سرور'
+
+                    });return
+                })
+            })
 
 
+    },
+    faq: function (req,res) {
+
+        Models.Faq.findAll({where:{active: 1}})
+            .then(function (faqs){
+                res.json({
+                    faqs     : faqs,
+                    status   : true,
+                    reason   : ''
+
+                });return
+            }).catch(function (err) {
+            res.json({
+                status      : false,
+                reason      : 'خطای داخلی سرور'
+
+            });return
+        })
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    },
     bAdvs: function (req,res) {
         page = 1;
         if (req.query.page){
             if (parseInt(req.query.page) < 2){
-                res.redirect(host)
+                res.json({
+                    status      : false,
+                    reason      : 'خطا در اطلاعات ارسال'
+
+                });return
             }
             page = req.query.page;
             page = parseInt(prInj.PrInj(page));
@@ -404,23 +869,380 @@ module.exports = {
                         ]
                     }).then(function (bT) {
                         if (bT.length != 0){
-                            refU = host+'/a/'+business_type_id;
-                            res.render('site/pages/advs',{refU:refU,page:page,advCnt:advCnt,bT:bT,bAdvs:bAdvs,res:res,jDate:jDate,needFul:needFul});
+                            res.json({
+                                advCnt      : advCnt,
+                                bAdvs       : bAdvs,
+                                businessType: bT,
+                                page        : page,
+                                status      : true,
+                                reason      : ''
 
+                            });return
                         }
                         else {
-                            res.render('errors/404');
+                            res.json({
+                                status      : false,
+                                reason      : 'خطای داخلی سرور'
+
+                            });return
                         }
                     })
 
                 }).catch(function (err) {
-                    console.log(err);
-                    res.render('errors/404');
+                    res.json({
+                        status      : false,
+                        reason      : 'خطای داخلی سرور'
+
+                    });return
                 })
             })
 
 
     },
+    carAdvDetail:function(req,res){
+        id        = prInj.PrInj(req.params.id);
+
+        Models.CarAdv.findAll({where:{
+                status   : 1,
+                dis_status   : 1,
+                id       : id
+            }, include:[
+                Models.CarAdvImage,
+                Models.Brand1,
+                Models.Car,
+                Models.People
+            ]
+        }).then(function (cAdvs) {
+            if (cAdvs.length == 1){
+                Models.CarAdv.findAll({
+                    where:{
+                        status       : 1,
+                        dis_status   : 1,
+                        model        : cAdvs[0].model,
+                        id           : {
+                            $ne : cAdvs[0].id
+                        }
+                    },
+                    order:[
+                        ['id','desc']
+                    ],
+                    include:[
+                        Models.CarAdvImage,
+                        Models.Brand1,
+                        Models.Car,
+                        Models.People
+                    ],
+                    offset:0,
+                    limit:10
+                }).then(function (relative) {
+
+                    res.json({
+
+                        cAdv        : cAdvs,
+                        relative    : relative,
+                        status      : true,
+                        reason      : ''
+
+                    });return
+
+
+                })
+            }
+            else {
+                res.json({
+                    status      : false,
+                    reason      : 'خطای داخلی سرور'
+
+                });return
+            }
+
+        });
+    } ,
+    searchR:function (req,res) {
+        form = prInj.PrAll(req.body);
+        mobile = needFul.toInt(form.mobile);
+        Models.People.findAll({
+            where:{
+                $or:{
+                    mobile:{
+                        $like: '%'+mobile+'%'
+                    }
+
+                }
+            },
+            attributes: ['id', 'name', 'family', 'mobile', 'slug', 'phone']
+
+        }).then(function (peoples) {
+            res.json({
+
+                peoples     : peoples,
+                status      : true,
+                reason      : ''
+
+            });return
+        }).catch(function (r) {
+            res.json({
+                status      : false,
+                reason      : 'خطای داخلی سرور'
+
+            });return
+        })
+    },
+    byeSellingType:function(req,res){
+
+        model        = prInj.PrInj(req.params.model_id);
+        selling_type = prInj.PrInj(req.params.selling_type);
+        page = 1;
+        if (req.query.page){
+            if (parseInt(req.query.page) < 2){
+                res.json({
+                    status      : false,
+                    reason      : 'خطا در اطلاعات ارسال'
+
+                });return
+            }
+            page = req.query.page;
+            page = parseInt(prInj.PrInj(page));
+
+        }
+        Models.CarAdv.findAll({where:{
+                status       : 1,
+                dis_status   : 1,
+                selling_type : selling_type,
+                model        : model,
+            }}).then(function (allAdv) {
+            Models.CarAdv.findAll({
+                where:{
+                    dis_status   : 1,
+                    status       : 1,
+                    selling_type : selling_type,
+                    model        : model,
+                },
+                order:[
+                    ['id','desc']
+                ],
+                include:[
+                    Models.CarAdvImage,
+                    Models.Brand1,
+                    Models.Car,
+                    Models.People
+                ],
+                offset:(page-1)*10,
+                limit:10
+            }).then(function (cAdvs) {
+                advCnt = allAdv.length;
+                res.json({
+
+                    cAdv        : cAdvs,
+                    advCnt      : advCnt,
+                    page        : page,
+                    status      : true,
+                    reason      : ''
+                });return;
+
+
+            })
+                .catch(function (err) {
+                    res.json({
+                        status      : false,
+                        reason      : 'خطای داخلی سرور'
+
+                    });return
+                });
+        });
+    } ,
+    peopleB:function (req,res) {
+        id = prInj.PrInj(req.params.id);
+        page = 1;
+        if (req.query.page){
+            if (parseInt(req.query.page) < 2){
+                res.json({
+                    status      : false,
+                    reason      : 'خطا در اطلاعات ارسال'
+
+                });return
+            }
+            page = req.query.page;
+            page = parseInt(prInj.PrInj(page));
+
+        }
+        Models.Adv.findAll({where:{status: 1,dis_status   : 1,user_id:id}}).then(function (allAdv) {
+            Models.Adv.findAll({
+                where:{
+                    status      : 1,
+                    dis_status  : 1,
+                    user_id     :id
+                },
+                order:[
+                    ['id','desc']
+                ],
+                include:[
+                    Models.BusinessGr,
+                    Models.AdvImage,
+                    Models.People,
+                    Models.Comment
+                ],
+                offset:(page-1)*10,
+                limit:10
+            }).then(function (bAdvs) {
+                advCnt = allAdv.length;
+                res.json({
+
+                    bAdvs       : bAdvs,
+                    advCnt      : advCnt,
+                    page        : page,
+                    status      : true,
+                    reason      : ''
+                });return;
+
+            })
+        });
+    },
+    peopleCar:function (req,res) {
+        id = prInj.PrInj(req.params.id);
+        page = 1;
+        if (req.query.page){
+            if (parseInt(req.query.page) < 2){
+                res.json({
+                    status      : false,
+                    reason      : 'خطا در اطلاعات ارسال'
+
+                });return
+            }
+            page = req.query.page;
+            page = parseInt(prInj.PrInj(page));
+
+        }
+        Models.CarAdv.findAll({where:{
+                status       : 1,
+                dis_status   : 1,
+                user_id      : id
+            }}).then(function (allAdv) {
+            Models.CarAdv.findAll({
+                where:{
+                    status       : 1,
+                    dis_status   : 1,
+                    user_id      : id
+                },
+                order:[
+                    ['id','desc']
+                ],
+                include:[
+                    Models.CarAdvImage,
+                    Models.Brand1,
+                    Models.Car,
+                    Models.People
+                ],
+                offset:(page-1)*10,
+                limit:10
+            }).then(function (cAdvs) {
+                advCnt = allAdv.length;
+                res.json({
+
+                    cAdvs       : cAdvs,
+                    advCnt      : advCnt,
+                    page        : page,
+                    status      : true,
+                    reason      : ''
+                });return;
+
+
+            }).catch(function (err) {
+                res.json({
+                    status      : false,
+                    reason      : 'خطا در اطلاعات ارسال'
+
+                });return
+            });
+        }).catch(function (err) {
+            res.json({
+                status      : false,
+                reason      : 'خطا در اطلاعات ارسال'
+
+            });return
+        });
+    },
+    modelsList:function(req,res){
+        br = req.params.br;
+        Models.Car.findAll({
+            where:{
+                $or : {
+                    brand1_id: br,
+                    brand2_id: br
+                }
+
+            },
+            attributes: ['id', 'brand1_id', 'brand1_id', 'model']
+        }).then(function(cars){
+            res.json({
+                cars        : cars,
+                status      : true,
+                reason      : ''
+
+            });return
+        }).catch(function (err) {
+            res.json({
+                status      : false,
+                reason      : 'خطا در اطلاعات ارسال'
+
+            });return
+        });
+
+
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     filterAdvs: function (req,res) {
         filterParams = req.query;
         whereO = [];
@@ -490,7 +1312,11 @@ module.exports = {
         page = 1;
         if (req.query.page){
             if (parseInt(req.query.page) < 2){
-                res.redirect(host)
+                res.json({
+                    status      : false,
+                    reason      : 'خطا در اطلاعات ارسال'
+
+                });return
             }
             page = req.query.page;
             page = parseInt(prInj.PrInj(page));
@@ -527,13 +1353,21 @@ module.exports = {
 
                         }
                         else {
-                            res.render('errors/404');
+                            res.json({
+                    status      : false,
+                    reason      : 'خطا در اطلاعات ارسال'
+
+                });return
                         }
                     })
 
                 }).catch(function (err) {
                     console.log(err);
-                    res.render('errors/404');
+                    res.json({
+                    status      : false,
+                    reason      : 'خطا در اطلاعات ارسال'
+
+                });return
                 })
             })
 
@@ -558,123 +1392,18 @@ module.exports = {
         })
 
     },
-    byeSellingType:function(req,res){
-        model        = prInj.PrInj(req.params.model_id);
-        selling_type = prInj.PrInj(req.params.selling_type);
-            page = 1;
-            if (req.query.page){
-                if (parseInt(req.query.page) < 2){
-                    res.redirect(host)
-                }
-                page = req.query.page;
-                page = parseInt(prInj.PrInj(page));
-
-            }
-            Models.CarAdv.findAll({where:{
-                    status       : 1,
-                    dis_status   : 1,
-                    selling_type : selling_type,
-                    model        : model,
-                }}).then(function (allAdv) {
-                Models.CarAdv.findAll({
-                    where:{
-                        dis_status   : 1,
-                        status       : 1,
-                        selling_type : selling_type,
-                        model        : model,
-                    },
-                    order:[
-                        ['id','desc']
-                    ],
-                    include:[
-                        Models.CarAdvImage,
-                        Models.Brand1,
-                        Models.Car,
-                        Models.People
-                    ],
-                    offset:(page-1)*10,
-                    limit:10
-                }).then(function (cAdvs) {
-                    advCnt = allAdv.length;
-                    refU = host+'/bca/'+model+'/'+selling_type;
-                    credit = 0;
-                    loginStat = false;
-                    if (req.session.people){
-                        credit = req.session.people.credit;
-                        loginStat = true;
-                    }
-                    filterParams = {};
-                    filterParams.model        = model;
-                    filterParams.selling_type = selling_type;
-
-                    res.render('site/pages/byeSellingType',{loginStat:loginStat,filterParams:filterParams,credit:credit,refU:refU,page:page,advCnt:advCnt,cAdvs:cAdvs,res:res,jDate:jDate,needFul:needFul});
 
 
-                })
-            });
-        } ,
-    carAdvDetail:function(req,res){
-        id        = prInj.PrInj(req.params.id);
-
-            Models.CarAdv.findAll({where:{
-                    status   : 1,
-                    dis_status   : 1,
-                    id       : id
-                }, include:[
-                    Models.CarAdvImage,
-                    Models.Brand1,
-                    Models.Car,
-                    Models.People
-                ]
-            }).then(function (cAdvs) {
-                    if (cAdvs.length == 1){
-                        Models.CarAdv.findAll({
-                            where:{
-                                status       : 1,
-                                dis_status   : 1,
-                                model        : cAdvs[0].model,
-                                id           : {
-                                    $ne : cAdvs[0].id
-                                }
-                            },
-                            order:[
-                                ['id','desc']
-                            ],
-                            include:[
-                                Models.CarAdvImage,
-                                Models.Brand1,
-                                Models.Car,
-                                Models.People
-                            ],
-                            offset:0,
-                            limit:10
-                        }).then(function (relative) {
-                            credit = 0;
-                            loginStat = false;
-                            if (req.session.people){
-                                credit = req.session.people.credit;
-                                loginStat = true;
-                            }
-                            advCnt = 1;
-                            refU = host+'/cd/'+id;
-                            page = 1;
-                           res.render('site/pages/carAdvDetail',{loginStat:loginStat,credit:credit,refU:refU,page:page,advCnt:advCnt,relative:relative,cAdvs:cAdvs,res:res,jDate:jDate,needFul:needFul});
-
-
-                        })
-                    }
-                    else {
-                        res.render('errors/404');
-                    }
-
-            });
-        } ,
     bCar:function(req,res){
 
             page = 1;
             if (req.query.page){
                 if (parseInt(req.query.page) < 2){
-                    res.redirect(host)
+                    res.json({
+                    status      : false,
+                    reason      : 'خطا در اطلاعات ارسال'
+
+                });return
                 }
                 page = req.query.page;
                 page = parseInt(prInj.PrInj(page));
@@ -843,7 +1572,11 @@ module.exports = {
         page = 1;
         if (req.query.page){
             if (parseInt(req.query.page) < 2){
-                res.redirect(host)
+                res.json({
+                    status      : false,
+                    reason      : 'خطا در اطلاعات ارسال'
+
+                });return
             }
             page = req.query.page;
             page = parseInt(prInj.PrInj(page));
@@ -877,7 +1610,11 @@ module.exports = {
 
                 }).catch(function (err) {
                     console.log(err);
-                    res.render('errors/404');
+                    res.json({
+                    status      : false,
+                    reason      : 'خطا در اطلاعات ارسال'
+
+                });return
                 })
             })
 
@@ -886,7 +1623,11 @@ module.exports = {
         pro_id = req.params.id;
         proCity.find('all',{where:'pro_id = '+ pro_id},function (err,cities) {
             if (err){
-                res.render('errors/500');
+                res.json({
+                    status      : false,
+                    reason      : 'خطای داخلی سرور'
+
+                });return
             }
             else {
                 res.render('site/all/cities',{cities:cities});
@@ -894,70 +1635,9 @@ module.exports = {
         });
 
     },
-    newsDetail:function(req,res){
-        slug = prInj.PrInj(req.params.slug);
-        Models.News.findOne({
-            where:{
-                slug    : slug,
-                active  : 1
-            }
-        }).then(function (newD) {
-            if(newD){
-                res.render('site/pages/newsDetail',{newD:newD,res:res,jDate:jDate,needFul:needFul});
-            }
-            else {
-                res.status(404);
-                res.render('errors/404');
-            }
-
-        })
 
 
-    },
-    news: function (req,res) {
-        page = 1;
-        if (req.query.page){
-            if (parseInt(req.query.page) < 2){
-                res.redirect(host)
-            }
-            page = req.query.page;
-            page = parseInt(prInj.PrInj(page));
 
-        }
-        Models.News.findAll({where:{active: 1}})
-            .then(function (allNews) {
-                newsCnt = allNews.length;
-                Models.News.findAll({
-                    where:{
-                        active: 1,
-                    },
-                    order:[
-                        ['id','desc']
-                    ],
-                    offset:(page-1)*10,
-                    limit:10
-                }).then(function (news) {
-                    refU = host+'/news';
-                    res.render('site/pages/news',{refU:refU,page:page,newsCnt:newsCnt,news:news,res:res,jDate:jDate,needFul:needFul});
-
-
-                }).catch(function (err) {
-                    console.log(err);
-                    res.render('errors/404');
-                })
-            })
-
-
-    },
-    faq: function (req,res) {
-
-        Models.Faq.findAll({where:{active: 1}})
-            .then(function (faqs){
-                res.render('site/pages/faq',{faqs:faqs,res:res,jDate:jDate,needFul:needFul});
-            })
-
-
-    },
     advComment:function(req,res){
         var form        = prInj.PrAll(req.body);
         people_id = peopleGinf.id;
@@ -1035,7 +1715,11 @@ module.exports = {
         function callback(error, response, body) {
 
             if (error){
-                res.redirect(host);return
+                res.json({
+                    status      : false,
+                    reason      : 'خطا در اطلاعات ارسال'
+
+                });return;return
             }
             if (!error && response.statusCode == 200) {
                 gRes = JSON.parse(body);
@@ -1069,7 +1753,11 @@ module.exports = {
             function callback(error, response, body) {
 
                 if (error){
-                    res.redirect(host);return
+                    res.json({
+                    status      : false,
+                    reason      : 'خطا در اطلاعات ارسال'
+
+                });return;return
                 }
                 if (!error && response.statusCode == 200) {
                     gRes = JSON.parse(body);
@@ -1129,7 +1817,11 @@ module.exports = {
                 }
                 else {
                     res.status(404);
-                    res.render('errors/404');
+                    res.json({
+                    status      : false,
+                    reason      : 'خطا در اطلاعات ارسال'
+
+                });return
                 }
 
             })
@@ -1165,7 +1857,11 @@ module.exports = {
             }
             else {
                 res.status(404);
-                res.render('errors/404');
+                res.json({
+                    status      : false,
+                    reason      : 'خطا در اطلاعات ارسال'
+
+                });return
             }        })
     },
     changeAdvStat:function(req,res){
@@ -1227,22 +1923,7 @@ module.exports = {
 
             res.render('site/all/citiesList',{cities:cities});
     },
-    modelsList:function(req,res){
-        br = req.body.br;
-        Models.Car.findAll({
-            where:{
-                $or : {
-                     brand1_id: br,
-                     brand2_id: br
-                }
-               
-            }
-        }).then(function(cars){
-            res.render('site/all/modelList',{cars:cars});
-        });
-        
-        
-    },
+
     businessGrsList:function(req,res){
             bt = req.body.bt;
             allType = res.daily.BusinessType;
@@ -1810,201 +2491,13 @@ module.exports = {
         res.send('<input id="'+inputId+'Path"  type="hidden" value="">');
     },
 
-    logOut:function(req,res){
-        req.session.destroy();
-        res.redirect(host);
-    },
-    forgetPass:function (req,res) {
-        if (!req.session.people){
-
-            now = new Date();
-            req.session.regRq = Password.hash(now+'k');
-            res.render('site/people/forgetPass',{res:res,jDate:jDate,needFul:needFul});
-        }
-        else {
-            res.render('site/ads/chooseType',{res:res,jDate:jDate,needFul:needFul});
-        }
-    },
-    sendPcode:function(req,res){
-        var form        = prInj.PrAll(req.body);
-        Models.People.findOne({where:{mobile:form.mobile}})
-            .then(function (people) {
-                if(people){
-                    if (!req.session.regRq){
-                        res.json( {status:true});return
-                    }
-
-                    else {
-                        if (!req.session.count){
-                            req.session.count = 1;
-                            req.session.fBody = form;
-                            rq = needFul.sendPassSmsCode(form.mobile);
-
-                            req.session.rCode = rq;
-                            res.json( {status:true});return
 
 
-                        }
-                        else {
-                            if (req.session.count < 4){
-                                req.session.count += 1;
-                                rq = needFul.sendPassSmsCode(form.mobile);
-                                req.session.fBody = form;
-                                req.session.rCode = rq;
-                                res.json( {status:true});return
-                            }
-                            res.json( {status:true});return
-                        }
-                    }
-                }
-                else {
-                    res.json( {status:false});return
-                }
-            })
-
-    },
-    updatePass:function(req,res){
-        var code        = prInj.PrInj(req.body.rCode);
-        code = needFul.toInt(code);
-        var password    = prInj.PrInj(req.body.password);
-        if (!req.session.regRq){
-            res.json( {status: false});return;
-        }
-        if (!req.session.fBody){
-            res.json( {status: false});return;
-        }
-        if (req.session.rCode != code) {
-            res.json( {status: false});return;
-        }
-        else {
-            form = req.session.fBody;
-
-            now = new Date();
-            var updated_at = date.format(now, 'YYYY-MM-DD HH:mm:ss');
-            upPass = {
-                password       : Password.hash(password),
-                updated_at     : updated_at,
-            }
-            Models.People.update(upPass,
-                {
-                where:{
-                    mobile : form.mobile
-                }
-            }).then(function (p) {
-                res.json( {status: true});return;
-            }).catch(function () {
-                res.json( {status: false});return;
-            });
-            req.session.destroy();
-        }
-    },
-    search:function (req,res) {
-        res.render('site/pages/search',{res:res,jDate:jDate,needFul:needFul});
-    },
-    searchR:function (req,res) {
-            form = prInj.PrAll(req.body);
-            mobile = form.mobile;
-            Models.People.findAll({
-                where:{
-                    $or:{
-                        mobile:{
-                            $like: '%'+mobile+'%'
-                        }
-
-                    }
-                }
-            }).then(function (peoples) {
-                res.render('site/pages/searchR',{peoples:peoples,jDate:jDate,needFul:needFul});
-            }).catch(function (r) {
-                res.status(404);
-                res.render('errors/404');
-            })
-    },
-    peopleB:function (req,res) {
-        id = prInj.PrInj(req.params.id);
-        page = 1;
-        if (req.query.page){
-            if (parseInt(req.query.page) < 2){
-                res.redirect(host)
-            }
-            page = req.query.page;
-            page = parseInt(prInj.PrInj(page));
-
-        }
-        Models.Adv.findAll({where:{status: 1,dis_status   : 1,user_id:id}}).then(function (allAdv) {
-            Models.Adv.findAll({
-                where:{
-                    status      : 1,
-                    dis_status  : 1,
-                    user_id     :id
-                },
-                order:[
-                    ['id','desc']
-                ],
-                include:[
-                    Models.BusinessGr,
-                    Models.AdvImage,
-                    Models.People,
-                    Models.Comment
-                ],
-                offset:(page-1)*10,
-                limit:10
-            }).then(function (bAdvs) {
-                advCnt = allAdv.length;
-                refU = host+'/people/b/'+id;
-                res.render('site/index',{refU:refU,page:page,advCnt:advCnt,bAdvs:bAdvs,res:res,jDate:jDate,needFul:needFul});
-
-            })
-        });
-    },
-    peopleCar:function (req,res) {
-        id = prInj.PrInj(req.params.id);
-        page = 1;
-        if (req.query.page){
-            if (parseInt(req.query.page) < 2){
-                res.redirect(host)
-            }
-            page = req.query.page;
-            page = parseInt(prInj.PrInj(page));
-
-        }
-        Models.CarAdv.findAll({where:{
-                status       : 1,
-                dis_status   : 1,
-                user_id      : id
-            }}).then(function (allAdv) {
-            Models.CarAdv.findAll({
-                where:{
-                    status       : 1,
-                    dis_status   : 1,
-                    user_id      : id
-                },
-                order:[
-                    ['id','desc']
-                ],
-                include:[
-                    Models.CarAdvImage,
-                    Models.Brand1,
-                    Models.Car,
-                    Models.People
-                ],
-                offset:(page-1)*10,
-                limit:10
-            }).then(function (cAdvs) {
-                advCnt = allAdv.length;
-                refU = host+'/people/car/'+id;
-                credit = 0;
-                loginStat = false;
-                if (req.session.people){
-                    credit = req.session.people.credit;
-                    loginStat = true;
-                }
-                res.render('site/pages/byeCar',{loginStat:loginStat,credit:credit,refU:refU,page:page,advCnt:advCnt,cAdvs:cAdvs,res:res,jDate:jDate,needFul:needFul});
 
 
-            })
-        });
-    }
+
+    
+
 
 
 

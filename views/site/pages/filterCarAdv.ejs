@@ -160,6 +160,23 @@ pageUrl:"https://saghfemardom.ir"
 <script src="<%- host%>/admin/vendors/select2/dist/js/select2.full.min.js"></script>
 <%- include ../layouts/scripts.ejs%>
 <script>
+    function modelsList(br) {
+        if (br != '0'){
+            $('#carsListPlace').html('در حال دریافت لیست <span class="spinner-border spinner-border-sm mb-1"></span>');
+            $.post('/modelsList', {
+                    br        : br,
+                },
+                function(data){
+                    $('#carsListPlace').html(data);
+
+                });
+        }
+        else {
+            htm = '<select id="model" name="model" class="select2 form-control siteInputs"><option value="0">برند را انتخاب کنید</option></select>';
+            $('#carsListPlace').html(htm);
+        }
+
+    }
     function citiesList(pro) {
         $('#citiesListPlace').html('در حال دریافت لیست <span class="spinner-border spinner-border-sm mb-1"></span>');
         $.post('/citiesList', {

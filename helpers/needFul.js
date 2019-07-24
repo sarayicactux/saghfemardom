@@ -50,7 +50,7 @@ module.exports = {
 
 
         }
-        smsRequest(options, callback);
+        //smsRequest(options, callback);
         return val;
 
     },
@@ -109,7 +109,7 @@ module.exports = {
 
 
         }
-        smsRequest(options, callback);
+        //smsRequest(options, callback);
         return val;
 
     },
