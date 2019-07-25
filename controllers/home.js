@@ -33,11 +33,79 @@ module.exports = {
         now = new Date();
         var created_at = date.format(now, 'YYYY-MM-DD HH:mm:ss');
 
-
+        urls = [];
+        urls[0] = {
+            url         : "",
+            lastmod     : now,
+            changefreq  : 'daily',
+            priority    : 0.9,
+        };
+        urls[1] = {
+            url         : "faq",
+            lastmod     : now,
+            changefreq  : 'daily',
+            priority    : 0.9,
+        };
+        urls[2] = {
+            url         : "news",
+            lastmod     : now,
+            changefreq  : 'daily',
+            priority    : 0.9,
+        };
+        urls[3] = {
+            url         : "cars",
+            lastmod     : now,
+            changefreq  : 'daily',
+            priority    : 0.9,
+        };
+        urls[4] = {
+            url         : "bCar",
+            lastmod     : now,
+            changefreq  : 'daily',
+            priority    : 0.9,
+        };
+        urls[5] = {
+            url         : "a/1",
+            lastmod     : now,
+            changefreq  : 'daily',
+            priority    : 0.9,
+        };
+        urls[6] = {
+            url         : "a/2",
+            lastmod     : now,
+            changefreq  : 'daily',
+            priority    : 0.9,
+        };
+        urls[7] = {
+            url         : "a/3",
+            lastmod     : now,
+            changefreq  : 'daily',
+            priority    : 0.9,
+        };
+        CarAdv = res.CarAdv;
+        for (i=0;i<CarAdv.length;i++){
+            b = {
+                url         : CarAdv[i].url,
+                lastmod     : CarAdv[i].lastmod,
+                changefreq  : CarAdv[i].changefreq,
+                priority    : CarAdv[i].priority,
+            };
+            urls.push(b);
+        }
+        news = res.news;
+        for (i=0;i<news.length;i++){
+            b = {
+                url         : news[i].url,
+                lastmod     : news[i].lastmod,
+                changefreq  : news[i].changefreq,
+                priority    : news[i].priority,
+            };
+            urls.push(b);
+        }
 
 
         sitemap = sm.createSitemap ({
-            hostname: '',
+            hostname: 'https://saghfemardom.ir',
             cacheTime: 600000,        // 600 sec - cache purge period
             urls: urls
         });
@@ -157,7 +225,7 @@ module.exports = {
 
                 whereO.push({
                     title : {
-                        $like : title
+                        $like : '%'+title+'%'
                     }
                 });
             }
@@ -499,7 +567,7 @@ module.exports = {
 
                 whereO.push({
                     title : {
-                        $like : text
+                        $like : '%'+text+'%'
                     }
                 });
             }

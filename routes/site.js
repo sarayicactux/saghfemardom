@@ -253,139 +253,55 @@ function hourlyJson(req,res,next){
 }
 function sitemap(req,res,next){
 
-    Models.Category.findAll({
+    Models.CarAdv.findAll({
         order: [
-            ['rank', 'DESC'],
+            ['id', 'DESC'],
         ],
         where:{
-            have_con : 1,
+            status     : 1,
+            dis_status : 1,
         }
     })
         .then(function (c) {
-        cats = [];
+            CarAdv = [];
         for(i=0;i<c.length;i++){
-            cats[i] = {
-                'url'     : '/'+c[i].slug,
+            CarAdv[i] = {
+                'url'     : '/cd/'+c[i].id,
                 'lastmod' : c[i].updated_at,
                 'changefreq' : 'daily',
                 'priority' : 0.5,
             }
 
         }
-        res.cats = cats;
+        res.CarAdv = CarAdv;
+            Models.News.findAll({
+                where:{
+                    active : 1
+                },
+                order: [
+                    ['id', 'DESC'],
+                ]
+            })
+                .then(function (c) {
+                    news = [];
+                    for(i=0;i<c.length;i++){
+                        news[i] = {
+                            'url'     : '/news/'+c[i].slug,
+                            'lastmod' : c[i].updated_at,
+                            'changefreq' : 'daily',
+                            'priority' : 0.5,
+                        }
 
+                    }
+
+                    res.news = news;
+                    next();
+
+                });
 
     });
-    Models.News.findAll({
-        order: [
-            ['id', 'DESC'],
-        ]
-    })
-        .then(function (c) {
-            news = [];
-            for(i=0;i<c.length;i++){
-                news[i] = {
-                    'url'     : '/news/'+c[i].slug,
-                    'lastmod' : c[i].updated_at,
-                    'changefreq' : 'daily',
-                    'priority' : 0.5,
-                }
-
-            }
-            res.news = news;
 
 
-        });
-    Models.Source.findAll({
-        order: [
-            ['id', 'DESC'],
-        ]
-    })
-        .then(function (c) {
-            reference = [];
-            for(i=0;i<c.length;i++){
-                reference[i] = {
-                    'url'     : '/reference/'+c[i].slug,
-                    'lastmod' : c[i].updated_at,
-                    'changefreq' : 'daily',
-                    'priority' : 0.5,
-                }
-
-            }
-            res.reference = reference;
-
-
-        });
-    Models.User.findAll({
-        where:{
-            aType : 2,
-        }
-    })
-        .then(function (u) {
-            authors = [];
-            for(i=0;i<u.length;i++){
-                authors[i] = {
-                    'url'       : '/legalExpert/'+u[i].slug,
-                    'lastmod'   : u[i].updated_at,
-                    'changefreq': 'daily',
-                    'priority'  : 0.5,
-                }
-
-            }
-            res.authors = authors;
-        });
-    /*Models.SearchsResult.findAll({
-        where:{
-            results : {
-                $gt : 3
-            }
-        }
-    })
-        .then(function (s) {
-            searchs = [];
-            for(i=0;i<s.length;i++){
-                searchs[i] = {
-                    'url'       : '/findContent?q='+s[i].title,
-                    'lastmod'   : s[i].updated_at,
-                    'changefreq': 'daily',
-                    'priority'  : 0.9,
-                }
-
-            }
-            res.searchs = searchs;
-
-        });*/
-
-    Models.VContent.findAll({
-        order: [
-            ['id', 'DESC'],
-        ],
-        where:{
-            active : 1
-        },
-        include:[
-            Models.User
-        ],
-
-
-    })
-        .then(function (v) {
-
-            VContents = [];
-            for(i=0;i<v.length;i++){
-                VContents[i] = {
-                    'url'        : '/'+v[i].user.slug+'/'+v[i].slug,
-                    'lastmod'    : v[i].updated_at,
-                    'changefreq' : 'daily',
-                    'priority'   : 0.9,
-                }
-            }
-            res.VContents = VContents;
-            setTimeout(function() {
-                next();
-            }, 2000);
-
-        });
 
 }
 

@@ -35,6 +35,17 @@ router.route('/bca/:model_id/:selling_type').get(api.byeSellingType);
 router.route('/people/b/:id').get(api.peopleB);
 router.route('/people/car/:id').get(api.peopleCar);
 router.route('/modelsList/:br').get(api.modelsList);
+router.route('/bCar').get(api.bCar);
+router.route('/fad').get(dailyJson,api.filterAdvs);
+router.route('/fca').get(dailyJson,api.filterCars);
+router.route('/citiesList/:pro').get(dailyJson,api.citiesList);
+router.route('/fbca').get(dailyJson,api.filterCarsAdv);
+router.route('/cars').get(api.cars);
+router.route('/businessGrsList/:bt').get(dailyJson,api.businessGrsList);
+router.route('/advComment').post(api.advComment);
+router.route('/replyMsg').post(api.replyMsg);
+
+
 
 
 
@@ -65,28 +76,22 @@ router.route('/editA/:id').get(checkPeople,preCond,dailyJson,hourlyJson,api.edit
 router.route('/editC/:id').get(checkPeople,preCond,dailyJson,hourlyJson,api.editC);
 router.route('/changeAdvStat/:status/:id').get(checkPeople,preCond,dailyJson,hourlyJson,api.changeAdvStat);
 router.route('/changeCarStat/:status/:id').get(checkPeople,preCond,dailyJson,hourlyJson,api.changeCarStat);
-router.route('/bCar').get(preCond,dailyJson,hourlyJson,api.bCar);
-router.route('/fad').get(preCond,dailyJson,hourlyJson,api.filterAdvs);
-router.route('/fca').get(preCond,dailyJson,hourlyJson,api.filterCars);
-router.route('/fbca').get(preCond,dailyJson,hourlyJson,api.filterCarsAdv);
-router.route('/cars').get(preCond,dailyJson,hourlyJson,api.cars);
+
+
+
+
 router.route('/send').get(checkPeople,preCond,dailyJson,hourlyJson,api.send);
 router.route('/pay').get(checkPeople,preCond,dailyJson,hourlyJson,api.pay);
 router.route('/pay/ch').post(checkPeople,preCond,dailyJson,hourlyJson,api.payCheck);
-router.route('/advComment').post(dailyJson,checkPeopleAjax,api.advComment);
+
 router.route('/registeAdv').post(dailyJson,checkPeopleAjax,api.registeAdv);
 router.route('/editA/updateAdv').post(dailyJson,checkPeopleAjax,api.updateAdv);
 router.route('/editC/updateCashCar').post(dailyJson,checkPeopleAjax,api.updateCashCar);
 router.route('/editC/updateInstCar').post(dailyJson,checkPeopleAjax,api.updateInstCar);
-router.route('/replyMsg').post(dailyJson,checkPeopleAjax,api.replyMsg);
 router.route('/registeCashCar').post(dailyJson,checkPeopleAjax,api.registeCashCar);
 router.route('/registeinstCar').post(dailyJson,checkPeopleAjax,api.registeinstCar);
 router.route('/updateProfile').post(dailyJson,checkPeopleAjax,api.updateProfile);
 router.route('/chooseAdvType').post(dailyJson,hourlyJson,checkPeopleAjax,api.chooseAdvType);
-router.route('/citiesList').post(dailyJson,api.citiesList);
-
-router.route('/businessGrsList').post(dailyJson,api.businessGrsList);
-
 router.route('/my').get(checkPeople,preCond,dailyJson,hourlyJson,peopleInf,api.my);
 
 
